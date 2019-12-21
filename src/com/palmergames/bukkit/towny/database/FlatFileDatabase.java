@@ -30,16 +30,6 @@ public class FlatFileDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public void saveResidents() {
-		
-	}
-	
-	@Override
-	public boolean saveResident(Resident resident) {
-		return false;
-	}
-	
-	@Override
 	public boolean deleteResident(Resident resident) {
 		return false;
 	}
@@ -56,16 +46,6 @@ public class FlatFileDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean renameTown(Town town, String newName) {
-		return false;
-	}
-	
-	@Override
-	public void saveTowns() {
-		
-	}
-	
-	@Override
-	public boolean saveTown(Town town) {
 		return false;
 	}
 	
@@ -90,16 +70,6 @@ public class FlatFileDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public void saveNations() {
-		
-	}
-	
-	@Override
-	public boolean saveNation(Nation nation) {
-		return false;
-	}
-	
-	@Override
 	public boolean deleteNation(Nation nation) {
 		return false;
 	}
@@ -111,16 +81,6 @@ public class FlatFileDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean loadTownyWorld(String name) {
-		return false;
-	}
-	
-	@Override
-	public void saveWorlds() {
-		
-	}
-	
-	@Override
-	public boolean saveWorld(TownyWorld world) {
 		return false;
 	}
 	
@@ -138,17 +98,17 @@ public class FlatFileDatabase extends TownyDatabase {
 	public boolean loadTownBlock(int x, int z, TownyWorld world) {
 		return false;
 	}
-	
+
 	@Override
-	public void saveTownBlocks() {
-		
-	}
-	
-	@Override
-	public boolean saveTownBlock(TownBlock townBlock) {
+	public boolean save(Saveable obj) {
 		return false;
 	}
-	
+
+	@Override
+	public boolean saveObjects(List<Saveable> objects) {
+		return false;
+	}
+
 	@Override
 	public boolean deleteWorld(TownBlock townBlock) {
 		return false;

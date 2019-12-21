@@ -9,7 +9,9 @@ import com.palmergames.bukkit.towny.object.TownyWorld;
 import java.util.List;
 
 /**
- * @author Lukas Mansour (Articdive) & Suneet Tipirneni (Siris)
+ * @author Lukas Mansour (Articdive)
+ * @author Suneet Tipirneni (Siris)
+ * @see Saveable
  */
 public abstract class TownyDatabase {
 	protected TownyDatabase() {
@@ -28,7 +30,7 @@ public abstract class TownyDatabase {
 	/**
 	 * Finds all {@link Resident} dataset identifiers.
 	 *
-	 * @return {@link List<String>} dataset identifiers.
+	 * @return {@link List} dataset identifiers.
 	 */
 	public abstract List<String> loadResidents();
 	
@@ -50,19 +52,6 @@ public abstract class TownyDatabase {
 	public abstract boolean renameResident(Resident resident, String newName);
 	
 	/**
-	 * Saves all {@link Resident} from memory to the database.
-	 */
-	public abstract void saveResidents();
-	
-	/**
-	 * Saves a {@link Resident} from memory to the database.
-	 *
-	 * @param resident {@link Resident} to save.
-	 * @return true, if the {@link Resident} was successfully saved, false if otherwise.
-	 */
-	public abstract boolean saveResident(Resident resident);
-	
-	/**
 	 * Deletes a {@link Resident} from the database.
 	 *
 	 * @param resident {@link Resident} to delete.
@@ -75,7 +64,7 @@ public abstract class TownyDatabase {
 	/**
 	 * Finds all {@link Town} datasets identifiers.
 	 *
-	 * @return {@link List<String>} dataset identifiers.
+	 * @return {@link List} dataset identifiers.
 	 */
 	public abstract List<String> loadTowns();
 	
@@ -97,19 +86,6 @@ public abstract class TownyDatabase {
 	public abstract boolean renameTown(Town town, String newName);
 	
 	/**
-	 * Saves all {@link Town} from memory to the database.
-	 */
-	public abstract void saveTowns();
-	
-	/**
-	 * Saves a {@link Town} from memory to the database.
-	 *
-	 * @param town {@link Town} to save.
-	 * @return true, if the {@link Town} was successfully saved, false if otherwise.
-	 */
-	public abstract boolean saveTown(Town town);
-	
-	/**
 	 * Deletes a {@link Town} from the database.
 	 *
 	 * @param town {@link Town} to delete.
@@ -122,7 +98,7 @@ public abstract class TownyDatabase {
 	/**
 	 * Finds all {@link Nation} dataset identifiers.
 	 *
-	 * @return {@link List<String>} dataset identifiers.
+	 * @return {@link List} dataset identifiers.
 	 */
 	public abstract List<String> loadNations();
 	
@@ -144,19 +120,6 @@ public abstract class TownyDatabase {
 	public abstract boolean renameNation(Nation nation, String newName);
 	
 	/**
-	 * Saves all {@link Nation} from memory to the database.
-	 */
-	public abstract void saveNations();
-	
-	/**
-	 * Saves a {@link Nation} from memory to the database.
-	 *
-	 * @param nation {@link Nation} to save.
-	 * @return true, if the {@link Nation} was successfully saved, false if otherwise.
-	 */
-	public abstract boolean saveNation(Nation nation);
-	
-	/**
 	 * Deletes a {@link Nation} from the database.
 	 *
 	 * @param nation {@link Nation} to delete.
@@ -169,7 +132,7 @@ public abstract class TownyDatabase {
 	/**
 	 * Finds all {@link TownyWorld} dataset identifiers.
 	 *
-	 * @return {@link List<String>} dataset identifiers.
+	 * @return {@link List} of Strings that correspond to dataset identifiers.
 	 */
 	public abstract List<String> loadWorlds();
 	
@@ -180,19 +143,6 @@ public abstract class TownyDatabase {
 	 * @return true, if the {@link TownyWorld} was successfully loaded, false if otherwise.
 	 */
 	public abstract boolean loadTownyWorld(String name);
-	
-	/**
-	 * Saves all {@link TownyWorld} from memory to the database.
-	 */
-	public abstract void saveWorlds();
-	
-	/**
-	 * Saves a {@link TownyWorld} from memory to the database.
-	 *
-	 * @param world {@link TownyWorld} to save.
-	 * @return true, if the {@link TownyWorld} was successfully saved, false if otherwise.
-	 */
-	public abstract boolean saveWorld(TownyWorld world);
 	
 	/**
 	 * Deletes a {@link TownyWorld} from the database.
@@ -207,7 +157,7 @@ public abstract class TownyDatabase {
 	/**
 	 * Finds all {@link TownBlock} dataset identifiers.
 	 *
-	 * @return {@link List<String>} dataset identifiers.
+	 * @return {@link List} dataset identifiers.
 	 */
 	public abstract List<String> loadTownBlocks();
 	
@@ -220,19 +170,20 @@ public abstract class TownyDatabase {
 	 * @return true, if the {@link TownBlock} was successfully loaded, false if otherwise.
 	 */
 	public abstract boolean loadTownBlock(int x, int z, TownyWorld world);
-	
+
 	/**
-	 * Saves all {@link TownBlock} from memory to the database.
+	 * Saves any object conforming to the {@link Saveable} interface.
+	 * @param obj The {@link Saveable} object to be saved.
+	 * @return A boolean indicating if the save was successful.
 	 */
-	public abstract void saveTownBlocks();
-	
+	public abstract boolean save(Saveable obj);
+
 	/**
-	 * Saves a {@link TownBlock} from memory to the database.
-	 *
-	 * @param townBlock {@link TownBlock} to save.
-	 * @return true, if the {@link TownBlock} was successfully saved, false if otherwise.
+	 * Saves a list of objects conforming to {@link Saveable}.
+	 * @param objects The objects to be saved.
+	 * @return A boolean indicating if the save was successful.
 	 */
-	public abstract boolean saveTownBlock(TownBlock townBlock);
+	public abstract boolean saveObjects(List<Saveable> objects);
 	
 	/**
 	 * Deletes a {@link TownBlock} from the database.

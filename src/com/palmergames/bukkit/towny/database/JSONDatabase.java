@@ -8,6 +8,12 @@ import com.palmergames.bukkit.towny.object.TownyWorld;
 
 import java.util.List;
 
+/**
+ * TownyDatabase-implementing class that deals with storing towny objects,
+ * as json files.
+ * @author Lukas Mansour (ArticDive)
+ * @author Suneet Tipirneni (Siris)
+ */
 public class JSONDatabase extends TownyDatabase {
 	@Override
 	public boolean backup() {
@@ -26,16 +32,6 @@ public class JSONDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean renameResident(Resident resident, String newName) {
-		return false;
-	}
-	
-	@Override
-	public void saveResidents() {
-		
-	}
-	
-	@Override
-	public boolean saveResident(Resident resident) {
 		return false;
 	}
 	
@@ -60,16 +56,6 @@ public class JSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public void saveTowns() {
-		
-	}
-	
-	@Override
-	public boolean saveTown(Town town) {
-		return false;
-	}
-	
-	@Override
 	public boolean deleteTown(Town town) {
 		return false;
 	}
@@ -90,16 +76,6 @@ public class JSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public void saveNations() {
-		
-	}
-	
-	@Override
-	public boolean saveNation(Nation nation) {
-		return false;
-	}
-	
-	@Override
 	public boolean deleteNation(Nation nation) {
 		return false;
 	}
@@ -111,16 +87,6 @@ public class JSONDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean loadTownyWorld(String name) {
-		return false;
-	}
-	
-	@Override
-	public void saveWorlds() {
-		
-	}
-	
-	@Override
-	public boolean saveWorld(TownyWorld world) {
 		return false;
 	}
 	
@@ -138,17 +104,17 @@ public class JSONDatabase extends TownyDatabase {
 	public boolean loadTownBlock(int x, int z, TownyWorld world) {
 		return false;
 	}
-	
+
 	@Override
-	public void saveTownBlocks() {
-		
-	}
-	
-	@Override
-	public boolean saveTownBlock(TownBlock townBlock) {
+	public boolean save(Saveable obj) {
 		return false;
 	}
-	
+
+	@Override
+	public boolean saveObjects(List<Saveable> objects) {
+		return false;
+	}
+
 	@Override
 	public boolean deleteWorld(TownBlock townBlock) {
 		return false;
