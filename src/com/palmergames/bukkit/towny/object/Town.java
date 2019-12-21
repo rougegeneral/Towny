@@ -3,6 +3,7 @@ package com.palmergames.bukkit.towny.object;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.event.TownAddResidentEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.event.TownTagChangeEvent;
@@ -28,10 +29,13 @@ import org.bukkit.World;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender {
+import org.apache.commons.lang.reflect.FieldUtils;
+
+public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable {
 
 	private static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
 
@@ -1314,5 +1318,19 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 	
 	public int getConqueredDays() {
 		return this.conqueredDays;
+	}
+
+	@Override
+	public HashMap<String, Object> getKeyedValues() {
+	}
+
+	@Override
+	public String getStorableRootFilePath() {
+		return null;
+	}
+
+	@Override
+	public String getStorableName() {
+		return null;
 	}
 }

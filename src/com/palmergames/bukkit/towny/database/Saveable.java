@@ -1,5 +1,7 @@
 package com.palmergames.bukkit.towny.database;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 
 /**
@@ -18,16 +20,17 @@ public interface Saveable {
 	public HashMap<String, Object> getKeyedValues();
 
 	/**
-	 * Used for flatfile storage (including json) to determine the path which,
-	 * the data file for this object will be stored. 
+	 * Used for flatfile storage (excluding json, because it uses {@link Gson#toJson(Object)} to reflect fields)
+	 * to determine the path which, the data file for this object will be stored.
+	 * <strong>This should not include the actual name for the file, refer to {@link #getStorableName()}</strong>
 	 * @return A String that represents the path of where the object data should be stored.
 	 */
-	public String getStorableFilePath();
+	public String getStorableRootFilePath();
 
 	/**
-	 * Used for SQL storage (excluding json and standard flatfile) to determine
-	 * the table name to store the object's properties in.
-	 * @return A String detailing the table name.
+	 * Used for storage to determine the table name to store the object's 
+	 * properties in, or file to update/create.
+	 * @return A String detailing the storable name.
 	 */
-	public String getTableName();
+	public String getStorableName();
 }

@@ -1,11 +1,15 @@
 package com.palmergames.bukkit.towny.database;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
+import com.palmergames.util.FileMgmt;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -13,8 +17,22 @@ import java.util.List;
  * as json files.
  * @author Lukas Mansour (ArticDive)
  * @author Suneet Tipirneni (Siris)
+ * @see Saveable
+ * @see TownyDatabase
  */
 public class JSONDatabase extends TownyDatabase {
+	private GsonBuilder gsonBuilder;
+	private Gson gson;
+	
+	public JSONDatabase() {
+		gsonBuilder = new GsonBuilder();
+		
+		// Make sure file format is readable.
+		gsonBuilder.setPrettyPrinting();
+		
+		gson = gsonBuilder.create();
+	}
+	
 	@Override
 	public boolean backup() {
 		return false;
@@ -107,7 +125,18 @@ public class JSONDatabase extends TownyDatabase {
 
 	@Override
 	public boolean save(Saveable obj) {
-		return false;
+		// Convert the obj to json.
+		String contents = gson.toJson(obj);
+		
+		// Get file properties
+		String fileName = obj.getStorableName() + ".json";
+		String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
+		File file = new File(filePath);
+		
+		// Save file...
+		FileManager.saveFile(file, contents);
+		
+		return true;
 	}
 
 	@Override
