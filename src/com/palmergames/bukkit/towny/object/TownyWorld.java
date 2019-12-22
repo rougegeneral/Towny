@@ -798,7 +798,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 	}
 
 	@Override
-	public HashMap<String, Object> getKeyedValues() {
+	public HashMap<String, String> getKeyedValues() {
 		return null;
 	}
 

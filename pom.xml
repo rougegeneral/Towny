@@ -54,7 +54,7 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>github</id>
+            <id>github-tne</id>
             <url>https://maven.pkg.github.com/TheNewEconomy/packages/</url>
         </repository>
         <repository>
