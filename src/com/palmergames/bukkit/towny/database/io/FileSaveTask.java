@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.database;
+package com.palmergames.bukkit.towny.database.io;
 
 import com.palmergames.util.FileMgmt;
 

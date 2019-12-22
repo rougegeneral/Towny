@@ -1,6 +1,8 @@
 package com.palmergames.bukkit.towny;
 
 import com.earth2me.essentials.Essentials;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.metrics.Metrics;
 import com.palmergames.bukkit.towny.chat.TNCRegister;
@@ -17,6 +19,7 @@ import com.palmergames.bukkit.towny.command.commandobjects.CancelCommand;
 import com.palmergames.bukkit.towny.command.commandobjects.ConfirmCommand;
 import com.palmergames.bukkit.towny.command.commandobjects.DenyCommand;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
+import com.palmergames.bukkit.towny.database.JSONDatabase;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.huds.HUDManager;
@@ -167,6 +170,16 @@ public class Towny extends JavaPlugin {
 		}
 
 		registerEvents();
+		
+		ArrayList<Town> testTowns = new ArrayList<>(TownyUniverse.getInstance().getTownsMap().values());
+		Town testTown = testTowns.get(0);
+
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		
+		
+		TownyMessaging.sendDebugMsg(gson.toJson(new Town("Thing")));
 
 		System.out.println("=============================================================");
 		if (isError()) {
