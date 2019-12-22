@@ -2,12 +2,12 @@ package com.palmergames.bukkit.towny.database;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.palmergames.bukkit.towny.database.io.FileManager;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
-import com.palmergames.util.FileMgmt;
 
 import java.io.File;
 import java.util.List;

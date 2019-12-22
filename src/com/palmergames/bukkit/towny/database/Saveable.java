@@ -17,7 +17,7 @@ public interface Saveable {
 	 * @return A {@link HashMap} keyed by field names and containing,
 	 * field values as the values in the map.
 	 */
-	public HashMap<String, Object> getKeyedValues();
+	HashMap<String, Object> getKeyedValues();
 
 	/**
 	 * Used for flatfile storage (excluding json, because it uses {@link Gson#toJson(Object)} to reflect fields)
@@ -25,12 +25,12 @@ public interface Saveable {
 	 * <strong>This should not include the actual name for the file, refer to {@link #getStorableName()}</strong>
 	 * @return A String that represents the path of where the object data should be stored.
 	 */
-	public String getStorableRootFilePath();
+	String getStorableRootFilePath();
 
 	/**
 	 * Used for storage to determine the table name to store the object's 
 	 * properties in, or file to update/create.
 	 * @return A String detailing the storable name.
 	 */
-	public String getStorableName();
+	String getStorableName();
 }
