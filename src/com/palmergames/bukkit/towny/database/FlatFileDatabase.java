@@ -1,12 +1,16 @@
 package com.palmergames.bukkit.towny.database;
 
+import com.palmergames.bukkit.towny.TownyMessaging;
+import com.palmergames.bukkit.towny.database.io.FileManager;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public class FlatFileDatabase extends TownyDatabase {
 	@Override
@@ -101,7 +105,22 @@ public class FlatFileDatabase extends TownyDatabase {
 
 	@Override
 	public boolean save(Saveable obj) {
-		return false;
+		StringBuilder contents = new StringBuilder();
+		// Convert the obj to string in format: key=value.
+		Map<String, String> keyedValues = obj.getKeyedValues();
+		for (Map.Entry<String, String> keyedValue : keyedValues.entrySet()) {
+			contents.append(keyedValue.getKey()).append("=").append(keyedValue.getValue()).append(System.getProperty("line.separator"));
+		}
+		// Get file properties
+		String fileName = obj.getStorableName() + ".txt";
+		String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
+		TownyMessaging.sendDebugMsg("Contents = " + contents);
+		File file = new File(filePath);
+		
+		// Save file...
+		FileManager.saveFile(file, contents.toString());
+		
+		return true;
 	}
 
 	@Override
