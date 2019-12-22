@@ -2,6 +2,7 @@ package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
@@ -10,13 +11,15 @@ import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 
-public class TownyWorld extends TownyObject {
+public class TownyWorld extends TownyObject implements Saveable {
 
 	private transient List<Town> towns = new ArrayList<>();
 	private UUID id;
@@ -35,8 +38,8 @@ public class TownyWorld extends TownyObject {
 			unclaimedZoneSwitch = null, unclaimedZoneItemUse = null;
 	private String unclaimedZoneName = null;
 	private transient ConcurrentHashMap<Coord, TownBlock> townBlocks = new ConcurrentHashMap<>();
-	private transient List<Coord> warZones = new ArrayList<>();
-	private transient List<String> entityExplosionProtection = null;
+	private List<Coord> warZones = new ArrayList<>();
+	private List<String> entityExplosionProtection = null;
 	
 	private boolean isUsingTowny = TownySettings.isUsingTowny();
 	private boolean isWarAllowed = TownySettings.isWarAllowed();
@@ -792,5 +795,20 @@ public class TownyWorld extends TownyObject {
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	@Override
+	public HashMap<String, Object> getKeyedValues() {
+		return null;
+	}
+
+	@Override
+	public String getStorableRootFilePath() {
+		return "worlds" + File.separator;
+	}
+
+	@Override
+	public String getStorableName() {
+		return "test_world";
 	}
 }

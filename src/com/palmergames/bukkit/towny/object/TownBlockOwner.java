@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TownBlockOwner extends TownyEconomyObject {
 
-	protected List<TownBlock> townBlocks = new ArrayList<>();
+	protected transient List<TownBlock> townBlocks = new ArrayList<>();
 	protected TownyPermission permissions = new TownyPermission();
 	
 	protected TownBlockOwner(String name) {

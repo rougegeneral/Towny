@@ -17,6 +17,7 @@ import com.palmergames.bukkit.towny.command.commandobjects.CancelCommand;
 import com.palmergames.bukkit.towny.command.commandobjects.ConfirmCommand;
 import com.palmergames.bukkit.towny.command.commandobjects.DenyCommand;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
+import com.palmergames.bukkit.towny.database.JSONDatabase;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.huds.HUDManager;
@@ -74,6 +75,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 /**
@@ -165,6 +167,20 @@ public class Towny extends JavaPlugin {
 			// Register all child permissions for ranks
 			TownyPerms.registerPermissionNodes();
 		}
+		
+		// ---------------------------- Testing Code ----------------------------
+		
+		ArrayList<TownyWorld> testWorlds = new ArrayList<>(TownyUniverse.getInstance().getWorldMap().values());
+		TownyWorld testWorld = testWorlds.get(0);
+		
+		ArrayList<Town> testTowns = new ArrayList<>(TownyUniverse.getInstance().getTownsMap().values());
+		Town testTown = testTowns.get(0);
+		
+		testWorld.setId(UUID.randomUUID());
+		
+		new JSONDatabase().save(testTown);
+
+		// ---------------------------- Testing Code ----------------------------
 
 		registerEvents();
 
