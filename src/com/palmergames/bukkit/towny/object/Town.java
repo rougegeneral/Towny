@@ -1322,6 +1322,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 
 	@Override
 	public HashMap<String, Object> getKeyedValues() {
+		return null;
 	}
 
 	@Override
