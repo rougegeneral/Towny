@@ -1,5 +1,6 @@
 package com.palmergames.bukkit.towny.object;
 
+import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
@@ -26,6 +27,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,40 +39,40 @@ import org.apache.commons.lang.reflect.FieldUtils;
 
 public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable {
 
-	private static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
+	private transient static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
 
-	private List<Resident> residents = new ArrayList<>();
-	private List<Resident> outlaws = new ArrayList<>();
-	private List<Location> outpostSpawns = new ArrayList<>();
-	private List<Location> jailSpawns = new ArrayList<>();
+	private transient List<Resident> residents = new ArrayList<>();
+	private transient List<Resident> outlaws = new ArrayList<>();
+	private transient List<Location> outpostSpawns = new ArrayList<>();
+	private transient List<Location> jailSpawns = new ArrayList<>();
 	
-	private Resident mayor;
-	private int bonusBlocks = 0;
-	private int purchasedBlocks = 0;
-	private double taxes = TownySettings.getTownDefaultTax();
-	private double plotTax= TownySettings.getTownDefaultPlotTax();
-	private double commercialPlotTax = TownySettings.getTownDefaultShopTax();
-	private double plotPrice = 0.0;
-	private double embassyPlotTax = TownySettings.getTownDefaultEmbassyTax();
-	private double commercialPlotPrice, embassyPlotPrice, spawnCost;
-	private Nation nation;
-	private boolean hasUpkeep = true;
-	private boolean isPublic = TownySettings.getTownDefaultPublic();
-	private boolean isTaxPercentage = TownySettings.getTownDefaultTaxPercentage();
-	private boolean isOpen = TownySettings.getTownDefaultOpen();
-	private String townBoard = "/town set board [msg]";
-	private String tag = "";
-	private TownBlock homeBlock;
+	private transient Resident mayor;
+	private transient int bonusBlocks = 0;
+	private transient int purchasedBlocks = 0;
+	private transient double taxes = TownySettings.getTownDefaultTax();
+	private transient double plotTax= TownySettings.getTownDefaultPlotTax();
+	private transient double commercialPlotTax = TownySettings.getTownDefaultShopTax();
+	private transient double plotPrice = 0.0;
+	private transient double embassyPlotTax = TownySettings.getTownDefaultEmbassyTax();
+	private transient double commercialPlotPrice, embassyPlotPrice, spawnCost;
+	private transient Nation nation;
+	private transient boolean hasUpkeep = true;
+	private transient boolean isPublic = TownySettings.getTownDefaultPublic();
+	private transient boolean isTaxPercentage = TownySettings.getTownDefaultTaxPercentage();
+	private transient boolean isOpen = TownySettings.getTownDefaultOpen();
+	private transient String townBoard = "/town set board [msg]";
+	private transient String tag = "";
+	private transient TownBlock homeBlock;
 	private TownyWorld world;
-	private Location spawn;
-	private boolean adminDisabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP disabled.
-	private boolean adminEnabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP enabled. Overrides the admin disabled too.
-	private UUID uuid;
-	private long registered;
+	private transient Location spawn;
+	private transient boolean adminDisabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP disabled.
+	private transient boolean adminEnabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP enabled. Overrides the admin disabled too.
+	private transient UUID uuid;
+	private transient long registered;
 	private transient List<Invite> receivedinvites = new ArrayList<>();
 	private transient List<Invite> sentinvites = new ArrayList<>();
-	private boolean isConquered = false;
-	private int conqueredDays;
+	private transient boolean isConquered = false;
+	private transient int conqueredDays;
 
 	public Town(String name) {
 		super(name);
@@ -1327,11 +1329,13 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 
 	@Override
 	public String getStorableRootFilePath() {
-		return null;
+		// NOTE: This is temporary until I setup the folder system.
+		return Towny.getPlugin().getDataFolder().getPath();
 	}
 
 	@Override
 	public String getStorableName() {
-		return null;
+		// Temporary testing name.
+		return "test_name";
 	}
 }

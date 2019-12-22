@@ -1,8 +1,12 @@
 package com.palmergames.bukkit.towny.database.io;
 
+import com.palmergames.bukkit.towny.Towny;
+import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.util.FileMgmt;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 
 /**
  * Used to save a towny file in a separate thread, to avoid
@@ -21,6 +25,8 @@ public class FileSaveTask extends Thread {
 	@Override
 	public void run() {
 		// Save the given file.
+		// create a writer
 		FileMgmt.stringToFile(contents, file);
+		
 	}
 }

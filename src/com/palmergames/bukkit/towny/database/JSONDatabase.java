@@ -2,7 +2,9 @@ package com.palmergames.bukkit.towny.database;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.database.io.FileManager;
+import com.palmergames.bukkit.towny.database.io.json.serializers.TownyWorldSerializer;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -30,6 +32,10 @@ public class JSONDatabase extends TownyDatabase {
 		// Make sure file format is readable.
 		gsonBuilder.setPrettyPrinting();
 		
+		// Register custom serializers.
+		gsonBuilder.registerTypeAdapter(TownyWorld.class, new TownyWorldSerializer());
+		
+		// Create.
 		gson = gsonBuilder.create();
 	}
 	
@@ -131,6 +137,7 @@ public class JSONDatabase extends TownyDatabase {
 		// Get file properties
 		String fileName = obj.getStorableName() + ".json";
 		String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
+		TownyMessaging.sendDebugMsg("Contents = " + contents);
 		File file = new File(filePath);
 		
 		// Save file...

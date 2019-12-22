@@ -12,12 +12,14 @@ import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 
 public class TownyWorld extends TownyObject {
 
-	private List<Town> towns = new ArrayList<>();
+	private transient List<Town> towns = new ArrayList<>();
+	private UUID id;
 	private boolean isClaimable = true;
 	private boolean isUsingPlotManagementDelete = TownySettings.isUsingPlotManagementDelete();
 	private boolean isUsingPlotManagementMayorDelete = TownySettings.isUsingPlotManagementMayorDelete();
@@ -32,9 +34,9 @@ public class TownyWorld extends TownyObject {
 	private Boolean unclaimedZoneBuild = null, unclaimedZoneDestroy = null,
 			unclaimedZoneSwitch = null, unclaimedZoneItemUse = null;
 	private String unclaimedZoneName = null;
-	private ConcurrentHashMap<Coord, TownBlock> townBlocks = new ConcurrentHashMap<>();
-	private List<Coord> warZones = new ArrayList<>();
-	private List<String> entityExplosionProtection = null;
+	private transient ConcurrentHashMap<Coord, TownBlock> townBlocks = new ConcurrentHashMap<>();
+	private transient List<Coord> warZones = new ArrayList<>();
+	private transient List<String> entityExplosionProtection = null;
 	
 	private boolean isUsingTowny = TownySettings.isUsingTowny();
 	private boolean isWarAllowed = TownySettings.isWarAllowed();
@@ -782,5 +784,13 @@ public class TownyWorld extends TownyObject {
 		super.removeMetaData(md);
 
 		TownyUniverse.getInstance().getDataSource().saveWorld(this);
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 }

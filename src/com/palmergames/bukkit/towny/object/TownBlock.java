@@ -13,6 +13,7 @@ import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Bukkit;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class TownBlock {
 
@@ -28,6 +29,7 @@ public class TownBlock {
 	private boolean locked = false;
 	private boolean outpost = false;
 	private HashSet<CustomDataField> metadata = null;
+	private UUID id;
 
 	//Plot level permissions
 	protected TownyPermission permissions = new TownyPermission();
@@ -493,5 +495,13 @@ public class TownBlock {
 		for (int i = 0; i < objects.length; i++) {
 			metadata.add(CustomDataField.load(objects[i]));
 		}
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 }
