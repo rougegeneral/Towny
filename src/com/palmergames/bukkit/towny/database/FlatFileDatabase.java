@@ -104,28 +104,27 @@ public class FlatFileDatabase extends TownyDatabase {
 	}
 
 	@Override
-	public boolean save(Saveable obj) {
-		StringBuilder contents = new StringBuilder();
-		// Convert the obj to string in format: key=value.
-		Map<String, String> keyedValues = obj.getKeyedValues();
-		for (Map.Entry<String, String> keyedValue : keyedValues.entrySet()) {
-			contents.append(keyedValue.getKey()).append("=").append(keyedValue.getValue()).append(System.getProperty("line.separator"));
-		}
-		// Get file properties
-		String fileName = obj.getStorableName() + ".txt";
-		String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
-		TownyMessaging.sendDebugMsg("Contents = " + contents);
-		File file = new File(filePath);
+	public boolean save(Saveable... objs) {
 		
-		// Save file...
-		FileManager.saveFile(file, contents.toString());
+		StringBuilder contents = new StringBuilder();
+		
+		for (Saveable obj : objs) {
+			// Convert the obj to string in format: key=value.
+			Map<String, String> keyedValues = obj.getKeyedValues();
+			for (Map.Entry<String, String> keyedValue : keyedValues.entrySet()) {
+				contents.append(keyedValue.getKey()).append("=").append(keyedValue.getValue()).append(System.getProperty("line.separator"));
+			}
+			// Get file properties
+			String fileName = obj.getStorableName() + ".txt";
+			String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
+			TownyMessaging.sendDebugMsg("Contents = " + contents);
+			File file = new File(filePath);
+
+			// Save file...
+			FileManager.saveFile(file, contents.toString());
+		}
 		
 		return true;
-	}
-
-	@Override
-	public boolean saveObjects(List<Saveable> objects) {
-		return false;
 	}
 
 	@Override

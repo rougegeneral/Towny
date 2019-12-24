@@ -173,17 +173,10 @@ public abstract class TownyDatabase {
 
 	/**
 	 * Saves any object conforming to the {@link Saveable} interface.
-	 * @param obj The {@link Saveable} object to be saved.
+	 * @param objs The {@link Saveable} object(s) to be saved.
 	 * @return A boolean indicating if the save was successful.
 	 */
-	public abstract boolean save(Saveable obj);
-
-	/**
-	 * Saves a list of objects conforming to {@link Saveable}.
-	 * @param objects The objects to be saved.
-	 * @return A boolean indicating if the save was successful.
-	 */
-	public abstract boolean saveObjects(List<Saveable> objects);
+	public abstract boolean save(Saveable... objs);
 	
 	/**
 	 * Deletes a {@link TownBlock} from the database.

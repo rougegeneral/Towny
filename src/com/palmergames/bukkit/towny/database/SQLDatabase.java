@@ -100,12 +100,7 @@ public class SQLDatabase extends TownyDatabase {
 	}
 
 	@Override
-	public boolean save(Saveable obj) {
-		return false;
-	}
-
-	@Override
-	public boolean saveObjects(List<Saveable> objects) {
+	public boolean save(Saveable... objs) {
 		return false;
 	}
 	

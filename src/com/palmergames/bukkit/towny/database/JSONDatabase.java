@@ -136,25 +136,23 @@ public class JSONDatabase extends TownyDatabase {
 	}
 
 	@Override
-	public boolean save(Saveable obj) {
-		// Convert the obj to json.
-		String contents = gson.toJson(obj);
+	public boolean save(Saveable... objs) {
 		
-		// Get file properties
-		String fileName = obj.getStorableName() + ".json";
-		String filePath = rootFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
-		TownyMessaging.sendDebugMsg("Contents = " + contents);
-		File file = new File(filePath);
-		
-		// Save file...
-		FileManager.saveFile(file, contents);
+		for (Saveable obj : objs) {
+			// Convert the obj to json.
+			String contents = gson.toJson(obj);
+
+			// Get file properties
+			String fileName = obj.getStorableName() + ".json";
+			String filePath = rootFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
+			TownyMessaging.sendDebugMsg("Contents = " + contents); // TODO: Debug Message.
+			File file = new File(filePath);
+
+			// Save file...
+			FileManager.saveFile(file, contents);
+		}
 		
 		return true;
-	}
-
-	@Override
-	public boolean saveObjects(List<Saveable> objects) {
-		return false;
 	}
 
 	@Override
