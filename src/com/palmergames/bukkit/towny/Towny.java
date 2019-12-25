@@ -1,6 +1,8 @@
 package com.palmergames.bukkit.towny;
 
 import com.earth2me.essentials.Essentials;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.metrics.Metrics;
 import com.palmergames.bukkit.towny.chat.TNCRegister;
@@ -18,6 +20,8 @@ import com.palmergames.bukkit.towny.command.commandobjects.ConfirmCommand;
 import com.palmergames.bukkit.towny.command.commandobjects.DenyCommand;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
 import com.palmergames.bukkit.towny.database.JSONDatabase;
+import com.palmergames.bukkit.towny.database.io.json.deserializers.TownDeserializer;
+import com.palmergames.bukkit.towny.database.io.json.serializers.TownSerializer;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.huds.HUDManager;
@@ -173,12 +177,35 @@ public class Towny extends JavaPlugin {
 		ArrayList<TownyWorld> testWorlds = new ArrayList<>(TownyUniverse.getInstance().getWorldMap().values());
 		TownyWorld testWorld = testWorlds.get(0);
 		
+		
 		ArrayList<Town> testTowns = new ArrayList<>(TownyUniverse.getInstance().getTownsMap().values());
 		Town testTown = testTowns.get(0);
 		
 		testWorld.setId(UUID.randomUUID());
 		
 		new JSONDatabase().save(testTown);
+		
+
+		GsonBuilder gsonBuilder = new GsonBuilder();
+
+		// Make sure file format is readable.
+		gsonBuilder.setPrettyPrinting();
+
+		// Register custom serializers.
+		gsonBuilder.registerTypeAdapter(Town.class, new TownSerializer());
+		gsonBuilder.registerTypeAdapter(Town.class, new TownDeserializer());
+
+		// Create.
+		Gson gson = gsonBuilder.create();
+		
+		TownyMessaging.sendErrorMsg(gson.toJson(testTown));
+		
+		String jStr = gson.toJson(testTown);
+		
+		Town loadTown = gson.fromJson(jStr, Town.class);
+		
+		TownyMessaging.sendErrorMsg("+++++++++++++++++++");
+		TownyMessaging.sendErrorMsg(loadTown.getWorld().getName());
 
 		// ---------------------------- Testing Code ----------------------------
 

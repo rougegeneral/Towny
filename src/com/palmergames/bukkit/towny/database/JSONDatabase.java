@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.database.io.FileManager;
+import com.palmergames.bukkit.towny.database.io.json.deserializers.TownDeserializer;
 import com.palmergames.bukkit.towny.database.io.json.serializers.TownSerializer;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -36,6 +37,7 @@ public class JSONDatabase extends TownyDatabase {
 		
 		// Register custom serializers.
 		gsonBuilder.registerTypeAdapter(Town.class, new TownSerializer());
+		gsonBuilder.registerTypeAdapter(Town.class, new TownDeserializer());
 		
 		// Create.
 		gson = gsonBuilder.create();
