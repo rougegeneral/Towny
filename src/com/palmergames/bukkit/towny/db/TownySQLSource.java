@@ -22,9 +22,9 @@ import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
 import com.palmergames.bukkit.towny.regen.TownyRegenAPI;
-import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.FileMgmt;
 import com.palmergames.util.StringMgmt;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
@@ -153,7 +153,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
         /*
          * Start our Async queue for pushing data to the database.
          */
-        task = BukkitTools.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        task = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
         
             while (!TownySQLSource.this.queryQueue.isEmpty()) {
             

@@ -10,6 +10,7 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.FileMgmt;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -191,11 +192,9 @@ public class TownyPerms {
 	 * 
 	 */
 	public static void updateOnlinePerms() {
-		
-		for (Player player : BukkitTools.getOnlinePlayers()) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			assignPermissions(null, player);
 		}
-		
 	}
 	
 	/**
@@ -473,7 +472,7 @@ public class TownyPerms {
 
 		registeredPermissions.clear();
 
-		for (Permission perm : BukkitTools.getPluginManager().getPermissions()) {
+		for (Permission perm : Bukkit.getPluginManager().getPermissions()) {
 			registeredPermissions.put(perm.getName().toLowerCase(), perm);
 		}
 

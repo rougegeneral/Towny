@@ -4,9 +4,7 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.database.FlatFileDatabase;
 import com.palmergames.bukkit.towny.database.Saveable;
-import com.palmergames.bukkit.towny.database.TownyDatabase;
 import com.palmergames.bukkit.towny.event.TownAddResidentEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.event.TownTagChangeEvent;
@@ -23,21 +21,17 @@ import com.palmergames.bukkit.towny.invites.TownyInviteSender;
 import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
-import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.StringMgmt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import org.apache.commons.lang.reflect.FieldUtils;
 
 public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable {
 
@@ -214,7 +208,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 		residents.add(resident);
 		resident.setTown(this);
 		
-		BukkitTools.getPluginManager().callEvent(new TownAddResidentEvent(resident, this));
+		Bukkit.getPluginManager().callEvent(new TownAddResidentEvent(resident, this));
 	}
 
 	public void addResidentCheck(Resident resident) throws AlreadyRegisteredException {
@@ -664,7 +658,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 			 * Trigger a resident removal event if they are in a town.
 			 */
 			if (resident.hasTown()) {
-				BukkitTools.getPluginManager().callEvent(new TownRemoveResidentEvent(resident, resident.getTown()));
+				Bukkit.getPluginManager().callEvent(new TownRemoveResidentEvent(resident, resident.getTown()));
 			}
 			resident.setTown(null);
 		} catch (AlreadyRegisteredException ignored) {
@@ -1055,7 +1049,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
     @Override
     protected World getBukkitWorld() {
         if (hasWorld()) {
-            return BukkitTools.getWorld(getWorld().getName());
+            return Bukkit.getWorld(getWorld().getName());
         } else {
             return super.getBukkitWorld();
         }

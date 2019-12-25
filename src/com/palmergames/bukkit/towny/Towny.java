@@ -137,7 +137,6 @@ public class Towny extends JavaPlugin {
 		isSpigot = BukkitTools.isSpigot();
 
 		// Setup classes
-		BukkitTools.initialize(this);
 		TownyTimerHandler.initialize(this);
 		TownyEconomyHandler.initialize(this);
 		TownyFormatter.initialize(this);
@@ -221,10 +220,11 @@ public class Towny extends JavaPlugin {
 
 		if (!isError()) {
 			// Re login anyone online. (In case of plugin reloading)
-			for (Player player : BukkitTools.getOnlinePlayers())
+			for (Player player : Bukkit.getOnlinePlayers()) {
 				if (player != null) {
 					townyUniverse.onLogin(player);
 				}
+			}
 		}
 	}
 
@@ -303,6 +303,7 @@ public class Towny extends JavaPlugin {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+			setError(true);
 			return false;
 		}
 		// Init logger
@@ -539,9 +540,11 @@ public class Towny extends JavaPlugin {
 
 	public World getServerWorld(String name) throws NotRegisteredException {
 
-		for (World world : BukkitTools.getWorlds())
-			if (world.getName().equals(name))
+		for (World world : Bukkit.getWorlds()) {
+			if (world.getName().equals(name)) {
 				return world;
+			}
+		}
 
 		throw new NotRegisteredException(String.format("A world called '$%s' has not been registered.", name));
 	}
@@ -593,7 +596,7 @@ public class Towny extends JavaPlugin {
 	 */
 	public void resetCache() {
 
-		for (Player player : BukkitTools.getOnlinePlayers())
+		for (Player player : Bukkit.getOnlinePlayers())
 			if (player != null)
 				getCache(player).resetAndUpdate(new WorldCoord(player.getWorld().getName(), Coord.parseCoord(player))); // Automatically
 																														// resets
@@ -607,7 +610,7 @@ public class Towny extends JavaPlugin {
 	 */
 	public void updateCache(WorldCoord worldCoord) {
 
-		for (Player player : BukkitTools.getOnlinePlayers())
+		for (Player player : Bukkit.getOnlinePlayers())
 			if (player != null)
 				if (Coord.parseCoord(player).equals(worldCoord))
 					getCache(player).resetAndUpdate(worldCoord); // Automatically
@@ -622,7 +625,7 @@ public class Towny extends JavaPlugin {
 
 		WorldCoord worldCoord = null;
 
-		for (Player player : BukkitTools.getOnlinePlayers()) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (player != null) {
 				worldCoord = new WorldCoord(player.getWorld().getName(), Coord.parseCoord(player));
 				PlayerCache cache = getCache(player);

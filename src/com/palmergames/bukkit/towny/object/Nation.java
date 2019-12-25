@@ -21,7 +21,6 @@ import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.war.flagwar.TownyWar;
-import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.StringMgmt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -206,7 +205,7 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 			towns.add(town);
 			town.setNation(this);
 			
-			BukkitTools.getPluginManager().callEvent(new NationAddTownEvent(town, this));
+			Bukkit.getPluginManager().callEvent(new NationAddTownEvent(town, this));
 		}
 	}
 
@@ -398,7 +397,7 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 		
 		towns.remove(town);
 		
-		BukkitTools.getPluginManager().callEvent(new NationRemoveTownEvent(town, this));
+		Bukkit.getPluginManager().callEvent(new NationRemoveTownEvent(town, this));
 	}
 
 	private void removeAllTowns() {
@@ -563,7 +562,7 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
     @Override
     protected World getBukkitWorld() {
         if (hasCapital() && getCapital().hasWorld()) {
-            return BukkitTools.getWorld(getCapital().getWorld().getName());
+            return Bukkit.getWorld(getCapital().getWorld().getName());
         } else {
             return super.getBukkitWorld();
         }

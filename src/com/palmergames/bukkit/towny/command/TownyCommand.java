@@ -21,7 +21,6 @@ import com.palmergames.bukkit.towny.object.TownyEconomyObject;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.war.eventwar.War;
-import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
 import com.palmergames.bukkit.util.Colors;
 import com.palmergames.util.KeyValue;
@@ -357,9 +356,9 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 		output.add("\u00A70--\u00A74##\u00A7c###\u00A74##\u00A70--   " + "\u00A73Residents: \u00A7b" + townyUniverse.getDataSource().getResidents().size() + Colors.Gray + " | " + "\u00A73Towns: \u00A7b" + townyUniverse.getDataSource().getTowns().size() + Colors.Gray + " | " + "\u00A73Nations: \u00A7b" + townyUniverse.getDataSource().getNations().size());
 		output.add("\u00A70----\u00A74#\u00A7c#\u00A74#\u00A70----   " + "\u00A73Worlds: \u00A7b" + townyUniverse.getDataSource().getWorlds().size() + Colors.Gray + " | " + "\u00A73TownBlocks: \u00A7b" + townyUniverse.getDataSource().getAllTownBlocks().size());
 		output.add("\u00A70-----\u00A74#\u00A70----- ");
-		Plugin test = Bukkit.getServer().getPluginManager().getPlugin("TownyChat");
+		Plugin test = Bukkit.getPluginManager().getPlugin("TownyChat");
 		if (test != null){
-			output.add("\u00A70-----------   \u00A76[\u00A7eTownyChat " + BukkitTools.getPluginManager().getPlugin("TownyChat").getDescription().getVersion() + "\u00A76]");
+			output.add("\u00A70-----------   \u00A76[\u00A7eTownyChat " + Bukkit.getPluginManager().getPlugin("TownyChat").getDescription().getVersion() + "\u00A76]");
 		}
 		return output;
 	}

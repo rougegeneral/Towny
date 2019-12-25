@@ -3,11 +3,10 @@ package com.palmergames.bukkit.towny.event;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.Transaction;
-import com.palmergames.bukkit.util.BukkitTools;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.Bukkit;
 
 public class TownPreTransactionEvent extends Event implements Cancellable {
 	private Town town;
@@ -69,7 +68,7 @@ public class TownPreTransactionEvent extends Event implements Cancellable {
 					break;
 			}
 		} catch (EconomyException e) {
-			BukkitTools.getServer().getLogger().warning(e.getMessage());
+			Bukkit.getLogger().warning(e.getMessage());
 		}
 
 		return 0;

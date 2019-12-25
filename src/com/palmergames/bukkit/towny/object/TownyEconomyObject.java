@@ -5,7 +5,7 @@ import com.palmergames.bukkit.towny.TownyEconomyHandler;
 import com.palmergames.bukkit.towny.TownyLogger;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
-import com.palmergames.bukkit.util.BukkitTools;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 /**
@@ -125,7 +125,7 @@ public class TownyEconomyObject extends TownyObject {
 	 * @return Bukkit world for the object
 	 */
 	protected World getBukkitWorld() {
-		return BukkitTools.getWorlds().get(0);
+		return Bukkit.getWorlds().get(0);
 	}
 
 	/**

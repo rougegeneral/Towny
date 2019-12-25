@@ -645,7 +645,7 @@ public class TownyEntityListener implements Listener {
 				// PlayerInteractEvent newEvent = new
 				// PlayerInteractEvent((Player)passenger, Action.PHYSICAL,
 				// null, block, BlockFace.SELF);
-				// Bukkit.getServer().getPluginManager().callEvent(newEvent);
+				// Bukkit.getPluginManager().callEvent(newEvent);
 
 				for (Entity passenger : passengers) {
 					if (!passenger.getType().equals(EntityType.PLAYER)) 

@@ -20,6 +20,7 @@ import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.tasks.SetDefaultModes;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.StringMgmt;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -549,7 +550,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 			townRanks.add(rank);
 			if (BukkitTools.isOnline(this.getName()))
 				TownyPerms.assignPermissions(this, null);
-			BukkitTools.getPluginManager().callEvent(new TownAddResidentRankEvent(this, rank, town));
+			Bukkit.getPluginManager().callEvent(new TownAddResidentRankEvent(this, rank, town));
 			return true;
 		}
 
@@ -575,7 +576,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 			if (BukkitTools.isOnline(this.getName())) {
 				TownyPerms.assignPermissions(this, null);
 			}
-			BukkitTools.getPluginManager().callEvent(new TownRemoveResidentRankEvent(this, rank, town));
+			Bukkit.getPluginManager().callEvent(new TownRemoveResidentRankEvent(this, rank, town));
 			return true;
 		}
 

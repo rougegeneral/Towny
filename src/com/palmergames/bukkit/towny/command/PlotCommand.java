@@ -491,7 +491,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 						}
 
 						PlotPreClearEvent preEvent = new PlotPreClearEvent(townBlock);
-						BukkitTools.getPluginManager().callEvent(preEvent);
+						Bukkit.getPluginManager().callEvent(preEvent);
 						
 						if (preEvent.isCancelled()) {
 							player.sendMessage(preEvent.getCancelMessage());
@@ -507,7 +507,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 								throw new TownyException(String.format(TownySettings.getLangString("msg_err_invalid_property"), material));
 
 						// Raise an event for the claim
-						BukkitTools.getPluginManager().callEvent(new PlotClearEvent(townBlock));
+						Bukkit.getPluginManager().callEvent(new PlotClearEvent(townBlock));
 
 					} else {
 						// Shouldn't ever reach here as a null townBlock should
@@ -703,7 +703,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 
 			//Change settings event
 			TownBlockSettingsChangedEvent event = new TownBlockSettingsChangedEvent(townBlock);
-			Bukkit.getServer().getPluginManager().callEvent(event);
+			Bukkit.getPluginManager().callEvent(event);
 			
 			// Reset all caches as this can affect everyone.
 			plugin.resetCache();
@@ -888,7 +888,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 
 				//Change settings event
 				TownBlockSettingsChangedEvent event = new TownBlockSettingsChangedEvent(townBlock);
-				Bukkit.getServer().getPluginManager().callEvent(event);
+				Bukkit.getPluginManager().callEvent(event);
 
 			} catch (Exception e) {
 				TownyMessaging.sendErrorMsg(player, e.getMessage());

@@ -189,7 +189,7 @@ public class War {
 	public void start() {
 		
 		EventWarPreStartEvent preEvent = new EventWarPreStartEvent();
-		Bukkit.getServer().getPluginManager().callEvent(preEvent);
+		Bukkit.getPluginManager().callEvent(preEvent);
 		if (preEvent.getWarSpoils() != 0.0)
 			try {
 				warSpoils.collect(preEvent.getWarSpoils(), "WarSpoils EventWarPreStartEvent Added");
@@ -247,7 +247,7 @@ public class War {
 			TownyMessaging.sendGlobalMessage(String.format(TownySettings.getLangString("msg_war_activate_war_hud_tip")));
 			
 			EventWarStartEvent event = new EventWarStartEvent(warringTowns, warringNations, warSpoils.getHoldingBalance());
-			Bukkit.getServer().getPluginManager().callEvent(event);
+			Bukkit.getPluginManager().callEvent(event);
 		} catch (EconomyException e) {
 			TownyMessaging.sendErrorMsg("[War] Could not seed spoils of war.");
 		}
@@ -285,7 +285,7 @@ public class War {
 	public void end() {
 		
 		// Send stats to the players
-		for (Player player : BukkitTools.getOnlinePlayers())
+		for (Player player : Bukkit.getOnlinePlayers())
 			if (player != null)
 				sendStats(player);
 		
@@ -328,7 +328,7 @@ public class War {
 				TownyMessaging.sendGlobalMessage(TownySettings.getWarTimeWinningTownSpoilsMsg(winningTownScore.key, TownyEconomyHandler.getFormattedBalance(halfWinnings), winningTownScore.value));
 				
 				EventWarEndEvent event = new EventWarEndEvent(warringTowns, winningTownScore.key, halfWinnings, warringNations, nationWinnings);
-				Bukkit.getServer().getPluginManager().callEvent(event);
+				Bukkit.getPluginManager().callEvent(event);
 			} catch (TownyException e) {
 			}
 		} catch (EconomyException e1) {}
@@ -405,7 +405,7 @@ public class War {
 		TownyMessaging.sendGlobalMessage(pointMessage);
 
 		TownScoredEvent event = new TownScoredEvent(town, townScores.get(town));
-		Bukkit.getServer().getPluginManager().callEvent(event);
+		Bukkit.getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -432,7 +432,7 @@ public class War {
 		TownyMessaging.sendGlobalMessage(pointMessage);
 
 		TownScoredEvent event = new TownScoredEvent(attackerTown, townScores.get(attackerTown));
-		Bukkit.getServer().getPluginManager().callEvent(event);
+		Bukkit.getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -472,7 +472,7 @@ public class War {
 
 		//Call PlotAttackedEvent to update scoreboard users
 		PlotAttackedEvent event = new PlotAttackedEvent(townBlock, wzd.getAllPlayers(), hp);
-		Bukkit.getServer().getPluginManager().callEvent(event);
+		Bukkit.getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -545,7 +545,7 @@ public class War {
 
 		//Call PlotAttackedEvent to update scoreboard users
 		PlotAttackedEvent event = new PlotAttackedEvent(townBlock, wzd.getAllPlayers(), hp);
-		Bukkit.getServer().getPluginManager().callEvent(event);
+		Bukkit.getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -664,7 +664,7 @@ public class War {
 	 * Removes a Nation from the war, attacked by a Town. 
 	 * @param attacker Town which attacked the Nation.
 	 * @param nation Nation being removed from the war.
-	 * @throws NotRegisteredException
+	 * @throws NotRegisteredException generic
 	 */
 	public void remove(Town attacker, Nation nation) throws NotRegisteredException {
 
@@ -680,7 +680,7 @@ public class War {
 	 * Removes a Town from the war, attacked by a Town.
 	 * @param attacker Town which attacked.
 	 * @param town Town which is being removed from the war.
-	 * @throws NotRegisteredException
+	 * @throws NotRegisteredException generic
 	 */
 	public void remove(Town attacker, Town town) throws NotRegisteredException {
 
@@ -728,7 +728,7 @@ public class War {
 	 * Called when a player is killed and their Town Bank cannot pay the war penalty.
 	 * Called when a Town voluntarily leaves a War.
 	 * Called by remove(Nation nation).
-	 * @param town
+	 * @param town Town to remove
 	 */
 	public void remove(Town town) {
 

@@ -8,12 +8,12 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.event.DeleteNationEvent;
 import com.palmergames.bukkit.towny.event.DeletePlayerEvent;
 import com.palmergames.bukkit.towny.event.DeleteTownEvent;
+import com.palmergames.bukkit.towny.event.PreDeleteNationEvent;
 import com.palmergames.bukkit.towny.event.PreDeleteTownEvent;
 import com.palmergames.bukkit.towny.event.RenameNationEvent;
 import com.palmergames.bukkit.towny.event.RenameResidentEvent;
 import com.palmergames.bukkit.towny.event.RenameTownEvent;
 import com.palmergames.bukkit.towny.event.TownUnclaimEvent;
-import com.palmergames.bukkit.towny.event.PreDeleteNationEvent;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.EmptyNationException;
@@ -30,8 +30,8 @@ import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
 import com.palmergames.bukkit.towny.regen.TownyRegenAPI;
 import com.palmergames.bukkit.towny.war.eventwar.WarSpoils;
-import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.NameValidation;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.naming.InvalidNameException;
@@ -321,7 +321,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			e.printStackTrace();
 		}
 
-		BukkitTools.getPluginManager().callEvent(new DeletePlayerEvent(resident.getName()));
+		Bukkit.getPluginManager().callEvent(new DeletePlayerEvent(resident.getName()));
 	}
 
 	public void removeOneOfManyTownBlocks(TownBlock townBlock, Town town) {
@@ -354,7 +354,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 
 		world.removeTownBlock(townBlock);
 		// Raise an event to signal the unclaim
-		BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, coord));	
+		Bukkit.getPluginManager().callEvent(new TownUnclaimEvent(town, coord));	
 	}
 	
 	@Override
@@ -397,7 +397,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			}
 		}
 		// Raise an event to signal the unclaim
-		BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, townBlock.getWorldCoord()));
+		Bukkit.getPluginManager().callEvent(new TownUnclaimEvent(town, townBlock.getWorldCoord()));
 	}
 
 	@Override
@@ -551,7 +551,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 	public void removeTown(Town town) {
 		
 		PreDeleteTownEvent preEvent = new PreDeleteTownEvent(town);
-		BukkitTools.getPluginManager().callEvent(preEvent);
+		Bukkit.getPluginManager().callEvent(preEvent);
 		
 		if (preEvent.isCancelled())
 			return;
@@ -616,14 +616,14 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		}
 		saveWorld(townyWorld);
 
-		BukkitTools.getPluginManager().callEvent(new DeleteTownEvent(town.getName()));
+		Bukkit.getPluginManager().callEvent(new DeleteTownEvent(town.getName()));
 	}
 
 	@Override
 	public void removeNation(Nation nation) {
 
 		PreDeleteNationEvent preEvent = new PreDeleteNationEvent(nation.getName());
-		BukkitTools.getPluginManager().callEvent(preEvent);
+		Bukkit.getPluginManager().callEvent(preEvent);
 		
 		if (preEvent.isCancelled())
 			return;
@@ -683,7 +683,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		plugin.resetCache();
 		saveNationList();
 
-		BukkitTools.getPluginManager().callEvent(new DeleteNationEvent(nation.getName()));
+		Bukkit.getPluginManager().callEvent(new DeleteNationEvent(nation.getName()));
 	}
 
 	@Override
@@ -841,7 +841,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			lock.unlock();
 		}
 
-		BukkitTools.getPluginManager().callEvent(new RenameTownEvent(oldName, town));
+		Bukkit.getPluginManager().callEvent(new RenameTownEvent(oldName, town));
 	}
 		
 
@@ -943,7 +943,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			lock.unlock();
 		}
 
-		BukkitTools.getPluginManager().callEvent(new RenameNationEvent(oldName, nation));
+		Bukkit.getPluginManager().callEvent(new RenameNationEvent(oldName, nation));
 	}
 
 	@Override
@@ -1079,7 +1079,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			lock.unlock();			
 		}
 		
-		BukkitTools.getPluginManager().callEvent(new RenameResidentEvent(oldName, resident));
+		Bukkit.getPluginManager().callEvent(new RenameResidentEvent(oldName, resident));
 	}
 	
 	/** 

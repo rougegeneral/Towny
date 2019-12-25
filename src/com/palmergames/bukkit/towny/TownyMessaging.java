@@ -12,6 +12,7 @@ import com.palmergames.bukkit.util.ChatTools;
 import com.palmergames.bukkit.util.Colors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -303,7 +304,7 @@ public class TownyMessaging {
 		for (String line : lines) {
 			LOGGER.info(ChatTools.stripColour("[Global Msg] " + line));
 		}
-		for (Player player : BukkitTools.getOnlinePlayers()) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (player != null) {
 				for (String line : lines) {
 					player.sendMessage(TownySettings.getLangString("default_towny_prefix") + line);
@@ -320,7 +321,7 @@ public class TownyMessaging {
 	 */
 	public static void sendGlobalMessage(String line) {
 		LOGGER.info(ChatTools.stripColour("[Global Message] " + line));
-		for (Player player : BukkitTools.getOnlinePlayers()) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (player != null)
 				try {
 					if (TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName()).isUsingTowny())

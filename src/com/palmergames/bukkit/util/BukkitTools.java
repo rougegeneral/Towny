@@ -9,14 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -29,30 +25,13 @@ import java.util.UUID;
  */
 
 public class BukkitTools {
-
-	private static Towny plugin = null;
-	private static Server server = null;
-	
-	public static void initialize(Towny plugin) {
-		BukkitTools.plugin = plugin;
-		BukkitTools.server = plugin.getServer();
-	}
-	
-	/**
-	 * Get an array of all online players
-	 * 
-	 * @return array of online players
-	 */
-	public static Collection<? extends Player> getOnlinePlayers() {
-		return getServer().getOnlinePlayers();
-	}
 	
 	public static List<Player> matchPlayer(String name) {
 		List<Player> matchedPlayers = new ArrayList<>();
 		
 		for (Player iterPlayer : Bukkit.getOnlinePlayers()) {
 			String iterPlayerName = iterPlayer.getName();
-			if (plugin.isCitizens2()) {
+			if (Towny.getPlugin().isCitizens2()) {
 				if (CitizensAPI.getNPCRegistry().isNPC(iterPlayer)) {
 					continue;
 				}
@@ -73,11 +52,11 @@ public class BukkitTools {
 	}
 	
 	public static Player getPlayerExact(String name) {
-		return getServer().getPlayerExact(name);
+		return Bukkit.getPlayerExact(name);
 	}
 	
 	public static Player getPlayer(String playerId) {
-		return getServer().getPlayer(playerId);
+		return Bukkit.getPlayer(playerId);
 	}
 	
 	/**
@@ -87,33 +66,12 @@ public class BukkitTools {
 	 * @return a true value if online
 	 */
 	public static boolean isOnline(String playerId) {
-		for (Player players : getOnlinePlayers()) {
-			if (players.getName().equals(playerId))
+		for (Player players : Bukkit.getOnlinePlayers()) {
+			if (players.getName().equals(playerId)) {
 				return true;
+			}
 		}
 		return false; 
-	}
-	
-	public static List<World> getWorlds() {
-		return  getServer().getWorlds();
-	}
-	
-	public static World getWorld(String name) {
-		return  getServer().getWorld(name);
-	}
-	
-	public static Server getServer() {
-		synchronized(server) {
-			return server;
-		}
-	}
-	
-	public static PluginManager getPluginManager() {
-		return getServer().getPluginManager();
-	}
-	
-	public static BukkitScheduler getScheduler() {
-		return getServer().getScheduler();
 	}
 	
 	/**
@@ -124,7 +82,7 @@ public class BukkitTools {
 	 * @return -1 if unable to schedule or an index to the task is successful.
 	 */
 	public static int scheduleSyncDelayedTask(Runnable task, long delay) {
-		return getScheduler().scheduleSyncDelayedTask(plugin, task, delay);
+		return Bukkit.getScheduler().scheduleSyncDelayedTask(Towny.getPlugin(), task, delay);
 	}
 	
 	/**
@@ -135,7 +93,7 @@ public class BukkitTools {
 	 * @return -1 if unable to schedule or an index to the task is successful.
 	 */
 	public static int scheduleAsyncDelayedTask(Runnable task, long delay) {
-		return getScheduler().runTaskLaterAsynchronously(plugin, task, delay).getTaskId();
+		return Bukkit.getScheduler().runTaskLaterAsynchronously(Towny.getPlugin(), task, delay).getTaskId();
 	}
 	
 	/**
@@ -147,7 +105,7 @@ public class BukkitTools {
 	 * @return -1 if unable to schedule or an index to the task is successful.
 	 */
 	public static int scheduleSyncRepeatingTask(Runnable task, long delay, long repeat) {
-		return getScheduler().scheduleSyncRepeatingTask(plugin, task, delay, repeat);
+		return Bukkit.getScheduler().scheduleSyncRepeatingTask(Towny.getPlugin(), task, delay, repeat);
 	}
 	
 	/**
@@ -159,7 +117,7 @@ public class BukkitTools {
 	 * @return -1 if unable to schedule or an index to the task is successful.
 	 */
 	public static int scheduleAsyncRepeatingTask(Runnable task, long delay, long repeat) {
-		return getScheduler().runTaskTimerAsynchronously(plugin, task, delay, repeat).getTaskId();
+		return Bukkit.getScheduler().runTaskTimerAsynchronously(Towny.getPlugin(), task, delay, repeat).getTaskId();
 	}
 	
 	/**
@@ -168,12 +126,13 @@ public class BukkitTools {
 	 * @return Map of world to online players.
 	 */
 	public static HashMap<String, Integer> getPlayersPerWorld() {
-
 		HashMap<String, Integer> m = new HashMap<>();
-		for (World world : getServer().getWorlds())
+		for (World world : Bukkit.getWorlds()) {
 			m.put(world.getName(), 0);
-		for (Player player :  getServer().getOnlinePlayers())
+		}
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			m.put(player.getWorld().getName(), m.get(player.getWorld().getName()) + 1);
+		}
 		return m;
 	}
 

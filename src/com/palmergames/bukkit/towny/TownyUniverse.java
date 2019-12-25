@@ -21,6 +21,7 @@ import com.palmergames.util.FileMgmt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -36,8 +37,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Towny's class for internal API Methods
- * If you don't want to change the dataSource, war, permissions or similiar behavior
- * and only for example want to get Resident objects you should use {@link TownyAPI}
  *
  * @author Lukas Mansour (Articdive)
  */
@@ -64,7 +63,6 @@ public class TownyUniverse {
     
     // TODO: Put loadSettings into the constructor, since it is 1-time-run code.
     boolean loadSettings() {
-        
         String saveDbType = TownySettings.getSaveDatabase();
         String loadDbType = TownySettings.getLoadDatabase();
         
@@ -268,10 +266,10 @@ public class TownyUniverse {
         List<String> out = new ArrayList<>();
         out.add(getTreeDepth(depth) + "Universe (1)");
         if (towny != null) {
-            out.add(getTreeDepth(depth + 1) + "Server (" + BukkitTools.getServer().getName() + ")");
-            out.add(getTreeDepth(depth + 2) + "Version: " + BukkitTools.getServer().getVersion());
+            out.add(getTreeDepth(depth + 1) + "Server (" + Bukkit.getServer().getName() + ")");
+            out.add(getTreeDepth(depth + 2) + "Version: " + Bukkit.getServer().getVersion());
             //out.add(getTreeDepth(depth + 2) + "Players: " + BukkitTools.getOnlinePlayers().length + "/" + BukkitTools.getServer().getMaxPlayers());
-            out.add(getTreeDepth(depth + 2) + "Worlds (" + BukkitTools.getWorlds().size() + "): " + Arrays.toString(BukkitTools.getWorlds().toArray(new World[0])));
+            out.add(getTreeDepth(depth + 2) + "Worlds (" + Bukkit.getWorlds().size() + "): " + Arrays.toString(Bukkit.getWorlds().toArray(new World[0])));
         }
         out.add(getTreeDepth(depth + 1) + "Worlds (" + worlds.size() + "):");
         for (TownyWorld world : worlds.values()) {
