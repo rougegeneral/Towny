@@ -360,15 +360,11 @@ public class PlayerCacheUtil {
 			}
 
 			// Resident with no town.
-			if (!resident.hasTown()) {
-				
-				if (townBlock.isWarZone()) {
-					if (!TownySettings.isWarTimeTownsNeutral())
-						return TownBlockStatus.WARZONE;
-					else
-						return TownBlockStatus.OUTSIDER;
-				}
-				throw new TownyException();
+			if (!resident.hasTown()) {				
+				if (TownyAPI.getInstance().isWarTime() && townBlock.isWarZone() && !TownySettings.isWarTimeTownsNeutral())
+					return TownBlockStatus.WARZONE;
+				else
+					return TownBlockStatus.OUTSIDER;
 			}	
 			
 			if (resident.getTown() != town) {
@@ -378,7 +374,7 @@ public class PlayerCacheUtil {
 				if (CombatUtil.isAlly(town, resident.getTown()))
 					return TownBlockStatus.TOWN_ALLY;
 				else if (CombatUtil.isEnemy(resident.getTown(), town)) {
-					if (townBlock.isWarZone() || War.isWarZone(townBlock.getWorldCoord()))
+					if (TownyAPI.getInstance().isWarTime() && townBlock.isWarZone() || War.isWarZone(townBlock.getWorldCoord()))
 						return TownBlockStatus.WARZONE;
 					else
 						return TownBlockStatus.ENEMY;
@@ -407,7 +403,10 @@ public class PlayerCacheUtil {
 	 */
 	private static boolean getPermission(Player player, TownBlockStatus status, WorldCoord pos, Material material, TownyPermission.ActionType action) {
 
-		if (status == TownBlockStatus.OFF_WORLD || status == TownBlockStatus.WARZONE || status == TownBlockStatus.PLOT_OWNER || status == TownBlockStatus.TOWN_OWNER) // || plugin.isTownyAdmin(player)) // status == TownBlockStatus.ADMIN ||
+		if (status == TownBlockStatus.OFF_WORLD || status == TownBlockStatus.PLOT_OWNER || status == TownBlockStatus.TOWN_OWNER) // || plugin.isTownyAdmin(player)) // status == TownBlockStatus.ADMIN ||
+			return true;
+		
+		if (status == TownBlockStatus.WARZONE && TownySettings.isAllowWarBlockGriefing())
 			return true;
 
 		if (status == TownBlockStatus.NOT_REGISTERED) {
