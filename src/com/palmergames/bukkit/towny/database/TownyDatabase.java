@@ -1,12 +1,20 @@
 package com.palmergames.bukkit.towny.database;
 
+import com.palmergames.bukkit.towny.Towny;
+import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
+import com.palmergames.util.FileMgmt;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,8 +25,32 @@ import java.util.UUID;
  * @see Saveable
  */
 public abstract class TownyDatabase {
+	protected static final Logger DATABASE_LOGGER = LogManager.getLogger(TownyDatabase.class);
 	protected TownyDatabase() {
-		
+		// Make sure we move the data around correctly
+		// After the database update we store stuff in
+		// Towny/database/flatfile/... instead of /Towny/data/...
+		File conversionBackup = new File(Towny.getPlugin().getDataFolder() + File.separator + "conversionbackup");
+		File oldDatabase = new File(Towny.getPlugin().getDataFolder() + File.separator + "data");
+		File newDatabase = new File(Towny.getPlugin().getDataFolder() + File.separator + "database" + File.separator + "flatfile");
+		if (oldDatabase.exists() && oldDatabase.isDirectory()) {
+			try {
+				FileMgmt.copyDirectory(oldDatabase, conversionBackup);
+			} catch (IOException e) {
+				DATABASE_LOGGER.log(Level.ERROR, "Failed to backup database before conversion.");
+				DATABASE_LOGGER.log(Level.ERROR, e.getMessage(), e);
+				throw new TownyRuntimeException("Failed to backup database before conversion.");
+			}
+			try {
+				FileMgmt.copyDirectory(oldDatabase, newDatabase);
+			} catch (IOException e) {
+				e.printStackTrace();
+				DATABASE_LOGGER.log(Level.ERROR, "Failed to copy database to its new location.");
+				DATABASE_LOGGER.log(Level.ERROR, e.getMessage(), e);
+				throw new TownyRuntimeException("Failed to copy database to its new location.");
+			}
+			FileMgmt.deleteFile(oldDatabase);
+		}
 	}
 	
 	/**

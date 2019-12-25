@@ -19,6 +19,7 @@ import com.palmergames.bukkit.towny.command.commandobjects.DenyCommand;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
 import com.palmergames.bukkit.towny.huds.HUDManager;
 import com.palmergames.bukkit.towny.invites.InviteHandler;
 import com.palmergames.bukkit.towny.listeners.TownyBlockListener;
@@ -127,16 +128,16 @@ public class Towny extends JavaPlugin {
 			TownySettings.loadConfig(getDataFolder() + File.separator + "settings" + File.separator + "config.yml", getVersion());
 			TownySettings.loadLanguage(getDataFolder() + File.separator + "settings", "english.yml");
 			TownyPerms.loadPerms(getDataFolder() + File.separator + "settings", "townyperms.yml");
-			
-		} catch (IOException e) {
+			// Init logger
+			TownyLogger.initialize();
+			// Get TownyUniverse
+			townyUniverse = TownyUniverse.getInstance();
+		} catch (IOException | TownyRuntimeException e) {
 			e.printStackTrace();
 			this.error = true;
 			return;
 		}
-		// Init logger
-		TownyLogger.initialize();
-		// Get TownyUniverse
-		townyUniverse = TownyUniverse.getInstance();
+		
 		
 		isSpigot = BukkitTools.isSpigot();
 
