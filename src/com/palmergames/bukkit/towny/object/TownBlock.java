@@ -4,6 +4,7 @@ import com.palmergames.bukkit.towny.TownyEconomyHandler;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.event.PlotChangeOwnerEvent;
 import com.palmergames.bukkit.towny.event.PlotChangeTypeEvent;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
@@ -13,9 +14,10 @@ import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Bukkit;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
 
-public class TownBlock {
+public class TownBlock implements Saveable {
 
 	// TODO: Admin only or possibly a group check
 	// private List<Group> groups;
@@ -503,5 +505,20 @@ public class TownBlock {
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+	
+	@Override
+	public Map<String, String> getKeyedValues() {
+		return null;
+	}
+	
+	@Override
+	public String getStorableRootFilePath() {
+		return null;
+	}
+	
+	@Override
+	public String getStorableName() {
+		return null;
 	}
 }

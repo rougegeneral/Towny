@@ -5,6 +5,7 @@ import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationType;
+import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.event.TownAddResidentRankEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentRankEvent;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
@@ -28,8 +29,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver {
+public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver, Saveable {
 	private List<Resident> friends = new ArrayList<>();
 	// private List<Object[][][]> regenUndo = new ArrayList<>(); // Feature is disabled as of MC 1.13, maybe it'll come back.
 	private Town town = null;
@@ -691,6 +693,20 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 
 		TownyUniverse.getInstance().getDataSource().saveResident(this);
 	}
-
+	
+	@Override
+	public Map<String, String> getKeyedValues() {
+		return null;
+	}
+	
+	@Override
+	public String getStorableRootFilePath() {
+		return null;
+	}
+	
+	@Override
+	public String getStorableName() {
+		return null;
+	}
 }
 

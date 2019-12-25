@@ -45,7 +45,8 @@ import java.util.UUID;
  * @author ElgarL
  * 
  */
-public abstract class TownyDatabaseHandler extends TownyDataSource {
+@Deprecated
+public final class TownyDatabaseHandler extends TownyDataSource {
 	final String rootFolderPath;
 	final String dataFolderPath;
 	final String settingsFolderPath;
@@ -62,8 +63,203 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 	}
 	
 	@Override
+	public boolean backup() {
+		return TownyUniverse.getInstance().backupDatabase();
+	}
+	
+	@Override
+	public void cleanupBackups() { }
+	
+	@Override
+	public void deleteUnusedResidents() { }
+	
+	@Override
+	public void cancelTask() {}
+	
+	@Override
+	public boolean loadTownBlockList() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadResidentList() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadTownList() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadNationList() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadWorldList() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadRegenList() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadSnapshotList() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadTownBlocks() {
+		return true;
+	}
+	
+	@Override
+	public boolean loadResident(Resident resident) {
+		return true;
+	}
+	
+	@Override
+	public boolean loadTown(Town town) {
+		return true;
+	}
+	
+	@Override
+	public boolean loadNation(Nation nation) {
+		return true;
+	}
+	
+	@Override
+	public boolean loadWorld(TownyWorld world) {
+		return true;
+	}
+	
+	@Override
+	public boolean saveTownBlockList() {
+		return true;
+	}
+	
+	@Override
+	public boolean saveResidentList() {
+		return true;
+	}
+	
+	@Override
+	public boolean saveTownList() {
+		return true;
+	}
+	
+	@Override
+	public boolean saveNationList() {
+		return true;
+	}
+	
+	@Override
+	public boolean saveWorldList() {
+		return true;
+	}
+	
+	@Override
+	public boolean saveRegenList() {
+		return true;
+	}
+	
+	@Override
+	public boolean saveSnapshotList() {
+		return true;
+	}
+	
+	@Override
+	public boolean saveResident(Resident resident) {
+		return TownyUniverse.getInstance().save(resident);
+	}
+	
+	@Override
+	public boolean saveTown(Town town) {
+		return TownyUniverse.getInstance().save(town);
+	}
+	
+	@Override
+	public boolean saveNation(Nation nation) {
+		return TownyUniverse.getInstance().save(nation);
+	}
+	
+	@Override
+	public boolean saveWorld(TownyWorld world) {
+		return TownyUniverse.getInstance().save(world);
+	}
+	
+	@Override
+	public boolean saveAllTownBlocks() {
+		for (TownBlock townBlock : TownyUniverse.getInstance().getTownBlocks()) {
+			if (!TownyUniverse.getInstance().save(townBlock)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean saveTownBlock(TownBlock townBlock) {
+		return TownyUniverse.getInstance().save(townBlock);
+	}
+	
+	@Override
+	public boolean savePlotData(PlotBlockData plotChunk) {
+		//TODO: This
+		return false;
+	}
+	
+	@Override
+	public PlotBlockData loadPlotData(String worldName, int x, int z) {
+		//TODO: This
+		return null;
+	}
+	
+	@Override
+	public PlotBlockData loadPlotData(TownBlock townBlock) {
+		//TODO: This
+		return null;
+	}
+	
+	@Override
+	public void deletePlotData(PlotBlockData plotChunk) {
+		//TODO: This
+		
+	}
+	
+	@Override
+	public void deleteResident(Resident resident) {
+		TownyUniverse.getInstance().unsafeDelete(resident);
+	}
+	
+	@Override
+	public void deleteTown(Town town) {
+		TownyUniverse.getInstance().unsafeDelete(town);
+	}
+	
+	@Override
+	public void deleteNation(Nation nation) {
+		TownyUniverse.getInstance().unsafeDelete(nation);
+	}
+	
+	@Override
+	public void deleteWorld(TownyWorld world) {
+		TownyUniverse.getInstance().unsafeDelete(world);
+	}
+	
+	@Override
+	public void deleteTownBlock(TownBlock townBlock) {
+		TownyUniverse.getInstance().unsafeDelete(townBlock);
+	}
+	
+	@Override
+	public void deleteFile(String file) { }
+	
+	@Override
 	public boolean hasResident(String name) {
-
 		try {
 			return TownySettings.isFakeResident(name) || universe.getResidentMap().containsKey(NameValidation.checkAndFilterPlayerName(name).toLowerCase());
 		} catch (InvalidNameException e) {
@@ -416,11 +612,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 
 	@Override
 	public List<TownBlock> getAllTownBlocks() {
-
-		List<TownBlock> townBlocks = new ArrayList<>();
-		for (TownyWorld world : getWorlds())
-			townBlocks.addAll(world.getTownBlocks());
-		return townBlocks;
+		return TownyUniverse.getInstance().getTownBlocks();
 	}
 
 	@Override
@@ -504,48 +696,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public void removeResidentList(Resident resident) {
-
-		String name = resident.getName();
-
-		//search and remove from all friends lists
-		List<Resident> toSave = new ArrayList<>();
-
-		for (Resident toCheck : new ArrayList<>(universe.getResidentMap().values())) {
-			TownyMessaging.sendDebugMsg("Checking friends of: " + toCheck.getName());
-			if (toCheck.hasFriend(resident)) {
-				try {
-					TownyMessaging.sendDebugMsg("       - Removing Friend: " + resident.getName());
-					toCheck.removeFriend(resident);
-					toSave.add(toCheck);
-				} catch (NotRegisteredException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		for (Resident toCheck : toSave)
-			saveResident(toCheck);
-
-		//Wipe and delete resident
-		try {
-			resident.clear();
-		} catch (EmptyTownException ex) {
-			removeTown(ex.getTown());
-		}
-		// Delete the residents file.
-		deleteResident(resident);
-		// Remove the residents record from memory.
-		universe.getResidentMap().remove(name.toLowerCase());
-
-		// Clear accounts
-		if (TownySettings.isUsingEconomy() && TownySettings.isDeleteEcoAccount())
-			resident.removeAccount();
-
-		plugin.deleteCache(name);
-		saveResidentList();
-
-	}
+	public void removeResidentList(Resident resident) {}
 
 	@Override
 	public void removeTown(Town town) {

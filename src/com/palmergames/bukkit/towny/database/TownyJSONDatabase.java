@@ -15,21 +15,23 @@ import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.util.FileMgmt;
 
 import java.io.File;
-import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * TownyDatabase-implementing class that deals with storing towny objects,
  * as json files.
+ *
  * @author Lukas Mansour (ArticDive)
  * @author Suneet Tipirneni (Siris)
  * @see Saveable
  * @see TownyDatabase
  */
-public class JSONDatabase extends TownyDatabase {
+public final class TownyJSONDatabase extends TownyDatabase {
 	private Gson gson;
 	private String rootFilePath;
 	
-	public JSONDatabase() {
+	public TownyJSONDatabase() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		
 		// Make sure file format is readable.
@@ -53,7 +55,7 @@ public class JSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public List<String> loadResidents() {
+	public Map<UUID, Resident> loadResidents() {
 		return null;
 	}
 	
@@ -63,17 +65,7 @@ public class JSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean renameResident(Resident resident, String newName) {
-		return false;
-	}
-	
-	@Override
-	public boolean deleteResident(Resident resident) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadTowns() {
+	public Map<UUID, Town> loadTowns() {
 		return null;
 	}
 	
@@ -83,17 +75,7 @@ public class JSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean renameTown(Town town, String newName) {
-		return false;
-	}
-	
-	@Override
-	public boolean deleteTown(Town town) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadNations() {
+	public Map<UUID, Nation> loadNations() {
 		return null;
 	}
 	
@@ -103,17 +85,7 @@ public class JSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean renameNation(Nation nation, String newName) {
-		return false;
-	}
-	
-	@Override
-	public boolean deleteNation(Nation nation) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadWorlds() {
+	public Map<UUID, TownyWorld> loadWorlds() {
 		return null;
 	}
 	
@@ -123,12 +95,7 @@ public class JSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean deleteWorld(TownyWorld world) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadTownBlocks() {
+	public Map<UUID, TownBlock> loadTownBlocks() {
 		return null;
 	}
 	
@@ -136,29 +103,29 @@ public class JSONDatabase extends TownyDatabase {
 	public boolean loadTownBlock(int x, int z, TownyWorld world) {
 		return false;
 	}
-
+	
 	@Override
 	public boolean save(Saveable... objs) {
 		
 		for (Saveable obj : objs) {
 			// Convert the obj to json.
 			String contents = gson.toJson(obj);
-
+			
 			// Get file properties
 			String fileName = obj.getStorableName() + ".json";
 			String filePath = rootFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
 			TownyMessaging.sendDebugMsg("Contents = " + contents); // TODO: Debug Message.
 			File file = new File(filePath);
-
+			
 			// Save file...
 			FileManager.saveFile(file, contents);
 		}
 		
 		return true;
 	}
-
+	
 	@Override
-	public boolean deleteWorld(TownBlock townBlock) {
+	public boolean delete(Saveable... objs) {
 		return false;
 	}
 	

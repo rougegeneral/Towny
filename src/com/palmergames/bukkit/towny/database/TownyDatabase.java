@@ -5,8 +5,11 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Lukas Mansour (Articdive)
@@ -32,7 +35,8 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
-	public abstract List<String> loadResidents();
+	
+	public abstract Map<UUID, Resident> loadResidents();
 	
 	/**
 	 * Loads a {@link Resident} dataset with its identifier.
@@ -42,23 +46,6 @@ public abstract class TownyDatabase {
 	 */
 	public abstract boolean loadResident(String identifier);
 	
-	/**
-	 * Renames a {@link Resident} to its new name.
-	 *
-	 * @param resident {@link Resident} to rename.
-	 * @param newName  {@link String} new name.
-	 * @return true, if the {@link Resident} was successfully renamed, false if otherwise.
-	 */
-	public abstract boolean renameResident(Resident resident, String newName);
-	
-	/**
-	 * Deletes a {@link Resident} from the database.
-	 *
-	 * @param resident {@link Resident} to delete.
-	 * @return true, if the {@link Resident} was successfully deleted, false if otherwise.
-	 */
-	public abstract boolean deleteResident(Resident resident);
-	
 	// Towns
 	
 	/**
@@ -66,7 +53,8 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
-	public abstract List<String> loadTowns();
+	@NotNull
+	public abstract Map<UUID, Town> loadTowns();
 	
 	/**
 	 * Loads a {@link Town} dataset with its identifier.
@@ -76,23 +64,6 @@ public abstract class TownyDatabase {
 	 */
 	public abstract boolean loadTown(String name);
 	
-	/**
-	 * Renames a {@link Town} to its new name.
-	 *
-	 * @param town    {@link Town} to rename.
-	 * @param newName {@link String} new name.
-	 * @return true, if the {@link Town} was successfully renamed, false if otherwise.
-	 */
-	public abstract boolean renameTown(Town town, String newName);
-	
-	/**
-	 * Deletes a {@link Town} from the database.
-	 *
-	 * @param town {@link Town} to delete.
-	 * @return true, if the {@link Town} was successfully deleted, false if otherwise.
-	 */
-	public abstract boolean deleteTown(Town town);
-	
 	// Nations
 	
 	/**
@@ -100,7 +71,7 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
-	public abstract List<String> loadNations();
+	public abstract Map<UUID, Nation> loadNations();
 	
 	/**
 	 * Loads a {@link Nation} dataset with its identifier.
@@ -110,23 +81,6 @@ public abstract class TownyDatabase {
 	 */
 	public abstract boolean loadNation(String name);
 	
-	/**
-	 * Renames a {@link Nation} to its new name.
-	 *
-	 * @param nation  {@link Nation} to rename.
-	 * @param newName {@link String} new name.
-	 * @return true, if the {@link Nation} was successfully renamed, false if otherwise.
-	 */
-	public abstract boolean renameNation(Nation nation, String newName);
-	
-	/**
-	 * Deletes a {@link Nation} from the database.
-	 *
-	 * @param nation {@link Nation} to delete.
-	 * @return true, if the {@link Nation} was successfully deleted, false if otherwise.
-	 */
-	public abstract boolean deleteNation(Nation nation);
-	
 	// Worlds
 	
 	/**
@@ -134,7 +88,8 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} of Strings that correspond to dataset identifiers.
 	 */
-	public abstract List<String> loadWorlds();
+	@NotNull
+	public abstract Map<UUID, TownyWorld> loadWorlds();
 	
 	/**
 	 * Loads a {@link TownyWorld} dataset with its identifier.
@@ -144,14 +99,6 @@ public abstract class TownyDatabase {
 	 */
 	public abstract boolean loadTownyWorld(String name);
 	
-	/**
-	 * Deletes a {@link TownyWorld} from the database.
-	 *
-	 * @param world {@link TownyWorld} to delete.
-	 * @return true, if the {@link TownyWorld} was successfully deleted, false if otherwise.
-	 */
-	public abstract boolean deleteWorld(TownyWorld world);
-	
 	// Townblocks
 	
 	/**
@@ -159,7 +106,8 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
-	public abstract List<String> loadTownBlocks();
+	@NotNull
+	public abstract Map<UUID, TownBlock> loadTownBlocks();
 	
 	/**
 	 * Loads a {@link TownBlock} dataset with its identifier.
@@ -170,21 +118,22 @@ public abstract class TownyDatabase {
 	 * @return true, if the {@link TownBlock} was successfully loaded, false if otherwise.
 	 */
 	public abstract boolean loadTownBlock(int x, int z, TownyWorld world);
-
+	
 	/**
 	 * Saves any object conforming to the {@link Saveable} interface.
+	 *
 	 * @param objs The {@link Saveable} object(s) to be saved.
 	 * @return A boolean indicating if the save was successful.
 	 */
 	public abstract boolean save(Saveable... objs);
 	
 	/**
-	 * Deletes a {@link TownBlock} from the database.
-	 *
-	 * @param townBlock {@link TownBlock} to delete.
-	 * @return true, if the {@link TownBlock} was successfully deleted, false if otherwise.
+	 * Deletes any object conforming to the {@link Saveable} interface.
+	 * 
+	 * @param objs The {@link Saveable} object(s) to be deleted.
+	 * @return A boolean indicating if the deletion was successful.
 	 */
-	public abstract boolean deleteWorld(TownBlock townBlock);
+	public abstract boolean delete(Saveable... objs);
 	
 	// Regen
 	public abstract void loadRegenQueue();

@@ -21,22 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-//import java.util.Hashtable;
-//import com.palmergames.bukkit.towny.TownySettings;
-
-/*
- * --- : Loading process : ---
- *
- * Load all the names/keys for each world, nation, town, and resident.
- * Load each world, which loads it's town blocks.
- * Load nations, towns, and residents.
- */
-
-/*
- * Loading Towns:
- * Make sure to load TownBlocks, then HomeBlock, then Spawn.
- */
-
+@Deprecated
 public abstract class TownyDataSource {
 	final Lock lock = new ReentrantLock();
 	protected final Towny plugin;

@@ -9,17 +9,26 @@ import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-public class FlatFileDatabase extends TownyDatabase {
+/**
+ * TownyDatabase-implementing class that deals with storing towny objects,
+ * as text files.
+ *
+ * @author Lukas Mansour (ArticDive)
+ * @author Suneet Tipirneni (Siris)
+ * @see Saveable
+ * @see TownyDatabase
+ */
+public final class TownyFlatFileDatabase extends TownyDatabase {
 	@Override
 	public boolean backup() {
 		return false;
 	}
 	
 	@Override
-	public List<String> loadResidents() {
+	public Map<UUID, Resident> loadResidents() {
 		return null;
 	}
 	
@@ -29,17 +38,7 @@ public class FlatFileDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean renameResident(Resident resident, String newName) {
-		return false;
-	}
-	
-	@Override
-	public boolean deleteResident(Resident resident) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadTowns() {
+	public Map<UUID, Town> loadTowns() {
 		return null;
 	}
 	
@@ -49,17 +48,7 @@ public class FlatFileDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean renameTown(Town town, String newName) {
-		return false;
-	}
-	
-	@Override
-	public boolean deleteTown(Town town) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadNations() {
+	public Map<UUID, Nation> loadNations() {
 		return null;
 	}
 	
@@ -69,17 +58,7 @@ public class FlatFileDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean renameNation(Nation nation, String newName) {
-		return false;
-	}
-	
-	@Override
-	public boolean deleteNation(Nation nation) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadWorlds() {
+	public Map<UUID, TownyWorld> loadWorlds() {
 		return null;
 	}
 	
@@ -89,12 +68,7 @@ public class FlatFileDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean deleteWorld(TownyWorld world) {
-		return false;
-	}
-	
-	@Override
-	public List<String> loadTownBlocks() {
+	public Map<UUID, TownBlock> loadTownBlocks() {
 		return null;
 	}
 	
@@ -102,7 +76,7 @@ public class FlatFileDatabase extends TownyDatabase {
 	public boolean loadTownBlock(int x, int z, TownyWorld world) {
 		return false;
 	}
-
+	
 	@Override
 	public boolean save(Saveable... objs) {
 		
@@ -119,16 +93,16 @@ public class FlatFileDatabase extends TownyDatabase {
 			String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
 			TownyMessaging.sendDebugMsg("Contents = " + contents);
 			File file = new File(filePath);
-
+			
 			// Save file...
 			FileManager.saveFile(file, contents.toString());
 		}
 		
 		return true;
 	}
-
+	
 	@Override
-	public boolean deleteWorld(TownBlock townBlock) {
+	public boolean delete(Saveable... objs) {
 		return false;
 	}
 	

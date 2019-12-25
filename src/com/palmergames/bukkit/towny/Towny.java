@@ -1,8 +1,6 @@
 package com.palmergames.bukkit.towny;
 
 import com.earth2me.essentials.Essentials;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.metrics.Metrics;
 import com.palmergames.bukkit.towny.chat.TNCRegister;
@@ -19,9 +17,6 @@ import com.palmergames.bukkit.towny.command.commandobjects.CancelCommand;
 import com.palmergames.bukkit.towny.command.commandobjects.ConfirmCommand;
 import com.palmergames.bukkit.towny.command.commandobjects.DenyCommand;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
-import com.palmergames.bukkit.towny.database.JSONDatabase;
-import com.palmergames.bukkit.towny.database.io.json.deserializers.TownDeserializer;
-import com.palmergames.bukkit.towny.database.io.json.serializers.TownSerializer;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.huds.HUDManager;
@@ -55,9 +50,7 @@ import com.palmergames.bukkit.towny.war.flagwar.listeners.TownyWarEntityListener
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.JavaUtil;
 import com.palmergames.util.StringMgmt;
-
 import net.milkbowl.vault.permission.Permission;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
@@ -79,7 +72,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 
 /**
@@ -92,7 +84,7 @@ import java.util.concurrent.Callable;
 
 public class Towny extends JavaPlugin {
 	private static final Logger LOGGER = LogManager.getLogger(Towny.class);
-	private String version = "2.0.0";
+	private String version = "";
 
 	private final TownyPlayerListener playerListener = new TownyPlayerListener(this);
 	private final TownyVehicleListener vehicleListener = new TownyVehicleListener(this);
@@ -131,7 +123,19 @@ public class Towny extends JavaPlugin {
 		System.out.println("====================      Towny      ========================");
 
 		version = this.getDescription().getVersion();
-
+		try {
+			TownySettings.loadConfig(getDataFolder() + File.separator + "settings" + File.separator + "config.yml", getVersion());
+			TownySettings.loadLanguage(getDataFolder() + File.separator + "settings", "english.yml");
+			TownyPerms.loadPerms(getDataFolder() + File.separator + "settings", "townyperms.yml");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.error = true;
+			return;
+		}
+		// Init logger
+		TownyLogger.initialize();
+		// Get TownyUniverse
 		townyUniverse = TownyUniverse.getInstance();
 		
 		isSpigot = BukkitTools.isSpigot();
@@ -146,8 +150,32 @@ public class Towny extends JavaPlugin {
 		TownyPerms.initialize(this);
 		InviteHandler.initialize(this);
 		ConfirmationHandler.initialize(this);
-
-		if (load()) {
+		
+		
+		if (!error) {
+			checkPlugins();
+			
+			setWorldFlags();
+			
+			// make sure the timers are stopped for a reset
+			TownyTimerHandler.toggleTownyRepeatingTimer(false);
+			TownyTimerHandler.toggleDailyTimer(false);
+			TownyTimerHandler.toggleMobRemoval(false);
+			TownyTimerHandler.toggleHealthRegen(false);
+			TownyTimerHandler.toggleTeleportWarmup(false);
+			TownyTimerHandler.toggleCooldownTimer(false);
+			TownyTimerHandler.toggleDrawSmokeTask(false);
+			
+			// Start timers
+			TownyTimerHandler.toggleTownyRepeatingTimer(true);
+			TownyTimerHandler.toggleDailyTimer(true);
+			TownyTimerHandler.toggleMobRemoval(true);
+			TownyTimerHandler.toggleHealthRegen(TownySettings.hasHealthRegen());
+			TownyTimerHandler.toggleTeleportWarmup(TownySettings.getTeleportWarmupTime() > 0);
+			TownyTimerHandler.toggleCooldownTimer(TownySettings.getPVPCoolDownTime() > 0 || TownySettings.getSpawnCooldownTime() > 0);
+			TownyTimerHandler.toggleDrawSmokeTask(true);
+			resetCache();
+			
 			// Setup bukkit command interfaces
 			registerSpecialCommands();
 			getCommand("townyadmin").setExecutor(new TownyAdminCommand(this));
@@ -171,42 +199,42 @@ public class Towny extends JavaPlugin {
 			TownyPerms.registerPermissionNodes();
 		}
 		
-		// ---------------------------- Testing Code ----------------------------
-		
-		ArrayList<TownyWorld> testWorlds = new ArrayList<>(TownyUniverse.getInstance().getWorldMap().values());
-		TownyWorld testWorld = testWorlds.get(0);
-		
-		
-		ArrayList<Town> testTowns = new ArrayList<>(TownyUniverse.getInstance().getTownsMap().values());
-		Town testTown = testTowns.get(0);
-		
-		testWorld.setId(UUID.randomUUID());
-		
-		new JSONDatabase().save(testTown);
-		
-
-		GsonBuilder gsonBuilder = new GsonBuilder();
-
-		// Make sure file format is readable.
-		gsonBuilder.setPrettyPrinting();
-
-		// Register custom serializers.
-		gsonBuilder.registerTypeAdapter(Town.class, new TownSerializer());
-		gsonBuilder.registerTypeAdapter(Town.class, new TownDeserializer());
-
-		// Create.
-		Gson gson = gsonBuilder.create();
-		
-		TownyMessaging.sendErrorMsg(gson.toJson(testTown));
-		
-		String jStr = gson.toJson(testTown);
-		
-		Town loadTown = gson.fromJson(jStr, Town.class);
-		
-		TownyMessaging.sendErrorMsg("+++++++++++++++++++");
-		TownyMessaging.sendErrorMsg(loadTown.getWorld().getName());
-
-		// ---------------------------- Testing Code ----------------------------
+//		// ---------------------------- Testing Code ----------------------------
+//		
+//		ArrayList<TownyWorld> testWorlds = new ArrayList<>(TownyUniverse.getInstance().getWorldMap().values());
+//		TownyWorld testWorld = testWorlds.get(0);
+//		
+//		
+//		ArrayList<Town> testTowns = new ArrayList<>(TownyUniverse.getInstance().getTownsMap().values());
+//		Town testTown = testTowns.get(0);
+//		
+//		testWorld.setId(UUID.randomUUID());
+//		
+//		new JSONDatabase().save(testTown);
+//		
+//
+//		GsonBuilder gsonBuilder = new GsonBuilder();
+//
+//		// Make sure file format is readable.
+//		gsonBuilder.setPrettyPrinting();
+//
+//		// Register custom serializers.
+//		gsonBuilder.registerTypeAdapter(Town.class, new TownSerializer());
+//		gsonBuilder.registerTypeAdapter(Town.class, new TownDeserializer());
+//
+//		// Create.
+//		Gson gson = gsonBuilder.create();
+//		
+//		TownyMessaging.sendErrorMsg(gson.toJson(testTown));
+//		
+//		String jStr = gson.toJson(testTown);
+//		
+//		Town loadTown = gson.fromJson(jStr, Town.class);
+//		
+//		TownyMessaging.sendErrorMsg("+++++++++++++++++++");
+//		TownyMessaging.sendErrorMsg(loadTown.getWorld().getName());
+//
+//		// ---------------------------- Testing Code ----------------------------
 
 		registerEvents();
 
@@ -293,50 +321,6 @@ public class Towny extends JavaPlugin {
 
 		System.out.println("[Towny] Version: " + version + " - Mod Disabled");
 		System.out.println("=============================================================");
-	}
-
-	public boolean load() {
-		try {
-			TownySettings.loadConfig(getDataFolder() + File.separator + "settings" + File.separator + "config.yml", getVersion());
-			TownySettings.loadLanguage(getDataFolder() + File.separator + "settings", "english.yml");
-			TownyPerms.loadPerms(getDataFolder() + File.separator + "settings", "townyperms.yml");
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			setError(true);
-			return false;
-		}
-		// Init logger
-		TownyLogger.initialize();
-		if (!townyUniverse.loadSettings()) {
-			setError(true);
-			return false;
-		}
-
-		checkPlugins();
-
-		setWorldFlags();
-
-		// make sure the timers are stopped for a reset
-		TownyTimerHandler.toggleTownyRepeatingTimer(false);
-		TownyTimerHandler.toggleDailyTimer(false);
-		TownyTimerHandler.toggleMobRemoval(false);
-		TownyTimerHandler.toggleHealthRegen(false);
-		TownyTimerHandler.toggleTeleportWarmup(false);
-		TownyTimerHandler.toggleCooldownTimer(false);
-		TownyTimerHandler.toggleDrawSmokeTask(false);
-
-		// Start timers
-		TownyTimerHandler.toggleTownyRepeatingTimer(true);
-		TownyTimerHandler.toggleDailyTimer(true);
-		TownyTimerHandler.toggleMobRemoval(true);
-		TownyTimerHandler.toggleHealthRegen(TownySettings.hasHealthRegen());
-		TownyTimerHandler.toggleTeleportWarmup(TownySettings.getTeleportWarmupTime() > 0);
-		TownyTimerHandler.toggleCooldownTimer(TownySettings.getPVPCoolDownTime() > 0 || TownySettings.getSpawnCooldownTime() > 0);
-		TownyTimerHandler.toggleDrawSmokeTask(true);
-		resetCache();
-
-		return true;
 	}
 
 	private void checkPlugins() {
@@ -504,14 +488,6 @@ public class Towny extends JavaPlugin {
 	public boolean isError() {
 
 		return error;
-	}
-
-	/**
-	 * @param error the error to set
-	 */
-	protected void setError(boolean error) {
-
-		this.error = error;
 	}
 
 	// is Essentials active

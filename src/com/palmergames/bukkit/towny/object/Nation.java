@@ -4,6 +4,7 @@ import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.event.NationAddTownEvent;
 import com.palmergames.bukkit.towny.event.NationRemoveTownEvent;
 import com.palmergames.bukkit.towny.event.NationTagChangeEvent;
@@ -30,9 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-public class Nation extends TownyEconomyObject implements ResidentList, TownyInviteSender, TownyInviteReceiver, TownyAllySender {
+public class Nation extends TownyEconomyObject implements ResidentList, TownyInviteSender, TownyInviteReceiver, TownyAllySender, Saveable {
 
 	private static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getNationAccountPrefix();
 
@@ -721,5 +723,20 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 		super.removeMetaData(md);
 
 		TownyUniverse.getInstance().getDataSource().saveNation(this);
+	}
+	
+	@Override
+	public Map<String, String> getKeyedValues() {
+		return null;
+	}
+	
+	@Override
+	public String getStorableRootFilePath() {
+		return null;
+	}
+	
+	@Override
+	public String getStorableName() {
+		return null;
 	}
 }

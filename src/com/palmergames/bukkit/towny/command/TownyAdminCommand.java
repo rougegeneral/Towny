@@ -10,8 +10,6 @@ import com.palmergames.bukkit.towny.TownyTimerHandler;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationType;
-import com.palmergames.bukkit.towny.db.TownyDataSource;
-import com.palmergames.bukkit.towny.db.TownyFlatFileSource;
 import com.palmergames.bukkit.towny.event.NationPreRenameEvent;
 import com.palmergames.bukkit.towny.event.TownPreRenameEvent;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
@@ -217,14 +215,15 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 				parseAdminDatabaseCommand(StringMgmt.remFirstArg(split));
 				return true;				
 				
-			} else if (split[0].equalsIgnoreCase("mysqldump")) {
-				if (TownySettings.getSaveDatabase().equalsIgnoreCase("mysql") && TownySettings.getLoadDatabase().equalsIgnoreCase("mysql")) {
-					TownyDataSource dataSource = new TownyFlatFileSource(plugin, townyUniverse);
-					dataSource.saveAll();
-					TownyMessaging.sendMsg(getSender(), TownySettings.getLangString("msg_mysql_dump_success"));
-					return true;
-				} else 
-					throw new TownyException(TownySettings.getLangString("msg_err_mysql_not_being_used"));
+			} else if (split[0].equalsIgnoreCase("mysqldump") || split[0].equals("sqldump")) {
+				// TODO: SQL
+//				if (TownySettings.getSaveDatabase().equalsIgnoreCase("mysql") && TownySettings.getLoadDatabase().equalsIgnoreCase("mysql")) {
+//					TownyDataSource dataSource = new TownyFlatFileSource(plugin, townyUniverse);
+//					dataSource.saveAll();
+//					TownyMessaging.sendMsg(getSender(), TownySettings.getLangString("msg_mysql_dump_success"));
+//					return true;
+//				} else 
+//					throw new TownyException(TownySettings.getLangString("msg_err_mysql_not_being_used"));
 
 			} else if (split[0].equalsIgnoreCase("newday")) {
 
@@ -277,8 +276,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			TownyUniverse.getInstance().getDataSource().saveAll();
 			TownyMessaging.sendMsg(getSender(), TownySettings.getLangString("msg_save_success"));
 	
-		} else if (split[0].equalsIgnoreCase("load")) {
-			TownyUniverse.getInstance().clearAll();			
+		} else if (split[0].equalsIgnoreCase("load")) {	
 			TownyUniverse.getInstance().getDataSource().loadAll();
 			TownyMessaging.sendMsg(getSender(), TownySettings.getLangString("msg_load_success"));			
 		}
@@ -1091,7 +1089,8 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 		if (reset) {
 			TownyUniverse.getInstance().getDataSource().deleteFile(plugin.getConfigPath());
 		}
-		if (plugin.load()) {
+		plugin.onEnable();
+		if (!plugin.isError()) {
 			
 			// Register all child permissions for ranks
 			TownyPerms.registerPermissionNodes();
