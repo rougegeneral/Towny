@@ -5,6 +5,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyEconomyObject;
+import com.palmergames.util.FileMgmt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,15 +24,15 @@ import java.nio.charset.StandardCharsets;
  * @author Lukas Mansour (Articdive)
  */
 public class TownyLogger {
-	private static final TownyLogger instance = new TownyLogger();
 	private static final Logger LOGGER_MONEY = LogManager.getLogger("com.palmergames.bukkit.towny.money");
 	
-	private TownyLogger() {
+	public static void initialize() {
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		Configuration config = ctx.getConfiguration();
 		// Get log location.
-		String logFolderName = TownyUniverse.getInstance().getRootFolder() + File.separator + "logs";
-		
+		String logFolderName = Towny.getPlugin().getDataFolder() + File.separator + "logs";
+		// Create log folder
+		FileMgmt.checkOrCreateFolder(logFolderName);
 		Appender townyMainAppender = FileAppender.newBuilder()
 			.withFileName(logFolderName + File.separator + "towny.log")
 			.withName("Towny-Main-Log")
@@ -119,7 +120,7 @@ public class TownyLogger {
 		ctx.updateLoggers();
 	}
 	
-	public void refreshDebugLogger() {
+	public static void refreshDebugLogger() {
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		Configuration config = ctx.getConfiguration();
 		LoggerConfig townyDebugConfig = config.getLoggerConfig("com.palmergames.bukkit.towny.debug");
@@ -127,7 +128,7 @@ public class TownyLogger {
 		ctx.updateLoggers();
 	}
 	
-	public void logMoneyTransaction(TownyEconomyObject a, double amount, TownyEconomyObject b, String reason) {
+	public static void logMoneyTransaction(TownyEconomyObject a, double amount, TownyEconomyObject b, String reason) {
 		if (reason == null) {
 			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", "Unknown Reason", getObjectName(a), amount, getObjectName(b)));
 		} else {
@@ -135,7 +136,7 @@ public class TownyLogger {
 		}
 	}
 	
-	private String getObjectName(TownyEconomyObject obj) {
+	private static String getObjectName(TownyEconomyObject obj) {
 		String type;
 		if (obj == null) {
 			type = "Server";
@@ -149,9 +150,5 @@ public class TownyLogger {
 			type = "?";
 		}
 		return String.format("[%s] %s", type, obj != null ? obj.getName() : "");
-	}
-	
-	public static TownyLogger getInstance() {
-		return instance;
 	}
 }

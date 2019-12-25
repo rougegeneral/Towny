@@ -296,7 +296,17 @@ public class Towny extends JavaPlugin {
 	}
 
 	public boolean load() {
-
+		try {
+			TownySettings.loadConfig(getDataFolder() + File.separator + "settings" + File.separator + "config.yml", getVersion());
+			TownySettings.loadLanguage(getDataFolder() + File.separator + "settings", "english.yml");
+			TownyPerms.loadPerms(getDataFolder() + File.separator + "settings", "townyperms.yml");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		// Init logger
+		TownyLogger.initialize();
 		if (!townyUniverse.loadSettings()) {
 			setError(true);
 			return false;

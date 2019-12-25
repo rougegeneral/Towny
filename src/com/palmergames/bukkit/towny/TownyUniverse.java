@@ -14,11 +14,13 @@ import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.permissions.TownyPermissionSource;
-import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.tasks.OnPlayerLogin;
 import com.palmergames.bukkit.towny.war.eventwar.War;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.FileMgmt;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -28,9 +30,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Towny's class for internal API Methods
@@ -40,6 +42,7 @@ import java.util.HashMap;
  * @author Lukas Mansour (Articdive)
  */
 public class TownyUniverse {
+	private static final Logger LOGGER = LogManager.getLogger(Towny.class);
     private static TownyUniverse instance;
     private final Towny towny;
     
@@ -62,30 +65,18 @@ public class TownyUniverse {
     // TODO: Put loadSettings into the constructor, since it is 1-time-run code.
     boolean loadSettings() {
         
-        try {
-            TownySettings.loadConfig(rootFolder + File.separator + "settings" + File.separator + "config.yml", towny.getVersion());
-            TownySettings.loadLanguage(rootFolder + File.separator + "settings", "english.yml");
-            TownyPerms.loadPerms(rootFolder + File.separator + "settings", "townyperms.yml");
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-		// Init logger
-		TownyLogger.getInstance();
-        
         String saveDbType = TownySettings.getSaveDatabase();
         String loadDbType = TownySettings.getLoadDatabase();
         
         // Setup any defaults before we load the dataSource.
         Coord.setCellSize(TownySettings.getTownBlockSize());
         
-        System.out.println("[Towny] Database: [Load] " + loadDbType + " [Save] " + saveDbType);
+        LOGGER.log(Level.INFO, "[Towny] Database: [Load] " + loadDbType + " [Save] " + saveDbType);
         
         clearAll();
                 
         if (!loadDatabase(loadDbType)) {
-            System.out.println("[Towny] Error: Failed to load!");
+			LOGGER.log(Level.ERROR, "[Towny] Error: Failed to load!");
             return false;
         }
         
@@ -117,7 +108,7 @@ public class TownyUniverse {
                 }
                 
             } catch (IOException e) {
-                System.out.println("[Towny] Error: Could not create backup.");
+				LOGGER.log(Level.ERROR, "[Towny] Error: Could not create backup.");
                 e.printStackTrace();
                 return false;
             }
@@ -131,7 +122,7 @@ public class TownyUniverse {
             }
             
         } catch (UnsupportedOperationException e) {
-            System.out.println("[Towny] Error: Unsupported save format!");
+			LOGGER.log(Level.ERROR, "[Towny] Error: Unsupported save format!");
             return false;
         }
         
