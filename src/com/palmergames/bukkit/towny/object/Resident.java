@@ -1,11 +1,13 @@
 package com.palmergames.bukkit.towny.object;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationType;
 import com.palmergames.bukkit.towny.database.Saveable;
+import com.palmergames.bukkit.towny.database.io.json.serializers.TownFieldSerializer;
 import com.palmergames.bukkit.towny.event.TownAddResidentRankEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentRankEvent;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
@@ -30,11 +32,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver, Saveable {
-	private List<Resident> friends = new ArrayList<>();
+	private transient List<Resident> friends = new ArrayList<>();
 	// private List<Object[][][]> regenUndo = new ArrayList<>(); // Feature is disabled as of MC 1.13, maybe it'll come back.
-	private Town town = null;
+	@JsonAdapter(TownFieldSerializer.class)
+	private transient Town town = null;
 	private long lastOnline;
 	private long registered;
 	private boolean isNPC = false;
@@ -45,14 +49,15 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 	private String title = "";
 	private String surname = "";
 	private long teleportRequestTime = -1;
-	private Location teleportDestination;
+	private transient Location teleportDestination;
 	private double teleportCost = 0.0;
-	private List<String> modes = new ArrayList<>();
+	private transient List<String> modes = new ArrayList<>();
 	private transient ConfirmationType confirmationType;
 	private transient List<Invite> receivedinvites = new ArrayList<>();
-
-	private List<String> townRanks = new ArrayList<>();
-	private List<String> nationRanks = new ArrayList<>();
+	private UUID id; // TODO: - Hook this up to player UUID perhaps?
+ 
+	private transient List<String> townRanks = new ArrayList<>();
+	private transient List<String> nationRanks = new ArrayList<>();
 
 	public Resident(String name) {
 		super(name);
@@ -707,6 +712,14 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 	@Override
 	public String getStorableName() {
 		return null;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 }
 

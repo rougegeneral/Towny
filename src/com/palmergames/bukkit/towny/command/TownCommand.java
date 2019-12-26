@@ -2114,7 +2114,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		townBlock.setType(townBlock.getType());
 
 		town.setSpawn(spawn);
-		town.setUuid(UUID.randomUUID());
+		town.setId(UUID.randomUUID());
 		town.setRegistered(System.currentTimeMillis());
 		// world.addTown(town);
 

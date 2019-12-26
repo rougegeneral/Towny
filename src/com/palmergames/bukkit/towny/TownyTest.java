@@ -1,5 +1,6 @@
 package com.palmergames.bukkit.towny;
 
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
@@ -13,6 +14,7 @@ public abstract class TownyTest {
 	
 	private Town mockTown;
 	private TownyWorld mockWorld;
+	private Resident mockResident;
 	private TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
 	/**
@@ -23,16 +25,22 @@ public abstract class TownyTest {
 		// Instantiate objects.
 		mockTown = new Town("HuntsVille");
 		mockWorld = new TownyWorld("Europa");
+		mockResident = new Resident("Jason");
 		
 		// Add necessary properties.
 		mockWorld.setId(UUID.randomUUID());
-		mockTown.setUuid(UUID.randomUUID());
+		mockTown.setId(UUID.randomUUID());
+		getMockResident().setId(UUID.randomUUID());
 		
 		try {
 			mockWorld.addTown(mockTown);
+			mockTown.addResident(getMockResident());
+			mockTown.setMayor(getMockResident());
 		} catch (Exception ignored) {}
 		
-		townyUniverse.addWorld(mockWorld);
+		getTownyUniverse().addWorld(mockWorld);
+		getTownyUniverse().addTown(mockTown);
+		getTownyUniverse().addResident(getMockResident());
 		
 	}
 
@@ -45,6 +53,8 @@ public abstract class TownyTest {
 		Character symbol = (test) ? '✓' : 'X';
 		Towny.getPlugin().getLogger().info(  symbol + " - " + testName);
 	}
+	
+	public abstract void runTests();
 	
 	public Town getMockTown() {
 		return mockTown;
@@ -60,5 +70,9 @@ public abstract class TownyTest {
 
 	public String getBeginTestMessage() {
 		return "---------- %s ----------";
+	}
+
+	public Resident getMockResident() {
+		return mockResident;
 	}
 }

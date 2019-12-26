@@ -236,6 +236,14 @@ public class TownyUniverse {
     public void addWorld(TownyWorld world) {
 		worlds.put(world.getId(), world);
 	}
+	
+	public void addResident(Resident resident) {
+		residents.put(resident.getId(), resident);
+	}
+	
+	public void addTown(Town town) {
+		towns.put(town.getId(), town);
+	}
     
 	@Deprecated
 	public ConcurrentHashMap<String, TownyWorld> getWorldMap() {
@@ -279,6 +287,15 @@ public class TownyUniverse {
 	@Nullable
 	public TownyWorld getWorld(UUID ID) {
 		return worlds.get(ID);
+	}
+	
+	@Nullable
+	public Town getTown(UUID ID) {
+		return towns.get(ID);
+	}
+	
+	public Resident getResident(UUID ID) {
+		return residents.get(ID);
 	}
 	
 	public List<Nation> getNations() {

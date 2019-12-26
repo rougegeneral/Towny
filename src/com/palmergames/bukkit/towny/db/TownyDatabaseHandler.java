@@ -372,7 +372,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	public Town getTown(UUID uuid) throws NotRegisteredException {
 		String name = null;
 		for (Town town : this.getTowns()) {
-			if (uuid.equals(town.getUuid())) {
+			if (uuid.equals(town.getId())) {
 				name = town.getName();
 			}
 		}
@@ -921,7 +921,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 					
 				} catch (EconomyException ignored) {
 				}
-			UUID oldUUID = town.getUuid();
+			UUID oldUUID = town.getId();
 			long oldregistration = town.getRegistered();
 
 			// Store the nation in case we have to update the capitol
@@ -949,7 +949,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 			if (isCapital) {
 				nation.setCapital(town);
 			}
-			town.setUuid(oldUUID);
+			town.setId(oldUUID);
 			town.setRegistered(oldregistration);
 			if (TownySettings.isUsingEconomy()) {
 				try {

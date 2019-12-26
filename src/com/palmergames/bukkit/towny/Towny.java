@@ -203,7 +203,7 @@ public class Towny extends JavaPlugin {
 		// ---------------------------- Testing Code ----------------------------
 		
 		JSONTest jsonTester = new JSONTest();
-		jsonTester.testTownJSON();
+		jsonTester.runTests();
 		
 		// ---------------------------- Testing Code ----------------------------
 
