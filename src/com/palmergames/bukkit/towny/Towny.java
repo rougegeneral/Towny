@@ -200,42 +200,12 @@ public class Towny extends JavaPlugin {
 			TownyPerms.registerPermissionNodes();
 		}
 		
-//		// ---------------------------- Testing Code ----------------------------
-//		
-//		ArrayList<TownyWorld> testWorlds = new ArrayList<>(TownyUniverse.getInstance().getWorldMap().values());
-//		TownyWorld testWorld = testWorlds.get(0);
-//		
-//		
-//		ArrayList<Town> testTowns = new ArrayList<>(TownyUniverse.getInstance().getTownsMap().values());
-//		Town testTown = testTowns.get(0);
-//		
-//		testWorld.setId(UUID.randomUUID());
-//		
-//		new JSONDatabase().save(testTown);
-//		
-//
-//		GsonBuilder gsonBuilder = new GsonBuilder();
-//
-//		// Make sure file format is readable.
-//		gsonBuilder.setPrettyPrinting();
-//
-//		// Register custom serializers.
-//		gsonBuilder.registerTypeAdapter(Town.class, new TownSerializer());
-//		gsonBuilder.registerTypeAdapter(Town.class, new TownDeserializer());
-//
-//		// Create.
-//		Gson gson = gsonBuilder.create();
-//		
-//		TownyMessaging.sendErrorMsg(gson.toJson(testTown));
-//		
-//		String jStr = gson.toJson(testTown);
-//		
-//		Town loadTown = gson.fromJson(jStr, Town.class);
-//		
-//		TownyMessaging.sendErrorMsg("+++++++++++++++++++");
-//		TownyMessaging.sendErrorMsg(loadTown.getWorld().getName());
-//
-//		// ---------------------------- Testing Code ----------------------------
+		// ---------------------------- Testing Code ----------------------------
+		
+		JSONTest jsonTester = new JSONTest();
+		jsonTester.testTownJSON();
+		
+		// ---------------------------- Testing Code ----------------------------
 
 		registerEvents();
 

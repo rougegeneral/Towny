@@ -7,8 +7,10 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -24,12 +26,14 @@ import java.util.UUID;
 public final class TownyFlatFileDatabase extends TownyDatabase {
 	@Override
 	public boolean backup() {
-		return false;
+		// TODO: - Implement
+		return true;
 	}
 	
 	@Override
 	public Map<UUID, Resident> loadResidents() {
-		return null;
+		// TODO: - Implement
+		return new HashMap<>();
 	}
 	
 	@Override
@@ -37,9 +41,11 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@Override
+	@NotNull
+    @Override
 	public Map<UUID, Town> loadTowns() {
-		return null;
+		// TODO: - Implement
+		return new HashMap<>();
 	}
 	
 	@Override
@@ -49,7 +55,8 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 	
 	@Override
 	public Map<UUID, Nation> loadNations() {
-		return null;
+		// TODO: - Implement
+		return new HashMap<>();
 	}
 	
 	@Override
@@ -57,9 +64,11 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@NotNull
 	@Override
 	public Map<UUID, TownyWorld> loadWorlds() {
-		return null;
+		// TODO: - Implement
+		return new HashMap<>();
 	}
 	
 	@Override
@@ -67,9 +76,11 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@NotNull
 	@Override
 	public Map<UUID, TownBlock> loadTownBlocks() {
-		return null;
+		// TODO: - Implement
+		return new HashMap<>();
 	}
 	
 	@Override

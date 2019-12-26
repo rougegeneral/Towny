@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,14 +92,14 @@ public class TownyUniverse {
 			}
 			default: {
 				LOGGER.log(Level.ERROR, "[Towny] Error: Unsupported load format!");
-				throw new TownyRuntimeException();
+				throw new TownyRuntimeException("Error: Unsupported load format!");
 			}
 		}
 		// Before we load we will backup, just incase something goes wrong
 		// This might just save a server owner's day.
 		if (!database.backup()) {
 			LOGGER.log(Level.ERROR, "[Towny] Error: Failed to backup database before loading!");
-			throw new TownyRuntimeException();
+			throw new TownyRuntimeException("Error: Failed to backup database before loading!");
 		}
 		this.worlds.putAll(database.loadWorlds());
 		this.nations.putAll(database.loadNations());
@@ -128,7 +129,7 @@ public class TownyUniverse {
 			}
 			default: {
 				LOGGER.log(Level.ERROR, "[Towny] Error: Unsupported save format!");
-				throw new TownyRuntimeException();
+				throw new TownyRuntimeException("Error: Unsupported save format!");
 			}
 		}
 		// TODO: Remove after all references are removed from Towny!
@@ -136,7 +137,7 @@ public class TownyUniverse {
 		// Backup save Database aswell
 		if (!database.backup()) {
 			LOGGER.log(Level.ERROR, "[Towny] Error: Failed to backup database after loading!");
-			throw new TownyRuntimeException();
+			throw new TownyRuntimeException("Error: Failed to backup database after loading!");
 		}
 		// TODO: Add deleting unused files.
 		
@@ -231,6 +232,11 @@ public class TownyUniverse {
     public String getRootFolder() {
         return pluginFolder;
     }
+    
+    public void addWorld(TownyWorld world) {
+		worlds.put(world.getId(), world);
+	}
+    
 	@Deprecated
 	public ConcurrentHashMap<String, TownyWorld> getWorldMap() {
 		ConcurrentHashMap<String, TownyWorld> output = new ConcurrentHashMap<>();
@@ -268,6 +274,11 @@ public class TownyUniverse {
 	
 	public List<TownyWorld> getWorlds() {
 		return new ArrayList<>(worlds.values());
+	}
+	
+	@Nullable
+	public TownyWorld getWorld(UUID ID) {
+		return worlds.get(ID);
 	}
 	
 	public List<Nation> getNations() {

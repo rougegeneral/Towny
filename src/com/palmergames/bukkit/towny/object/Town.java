@@ -1,10 +1,12 @@
 package com.palmergames.bukkit.towny.object;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.database.Saveable;
+import com.palmergames.bukkit.towny.database.io.json.serializers.WorldFieldSerializer;
 import com.palmergames.bukkit.towny.event.TownAddResidentEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.event.TownTagChangeEvent;
@@ -59,7 +61,10 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 	private transient String townBoard = "/town set board [msg]";
 	private transient String tag = "";
 	private transient TownBlock homeBlock;
+	
+	@JsonAdapter(WorldFieldSerializer.class)
 	private TownyWorld world;
+	
 	private transient Location spawn;
 	private transient boolean adminDisabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP disabled.
 	private transient boolean adminEnabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP enabled. Overrides the admin disabled too.
