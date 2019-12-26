@@ -92,14 +92,14 @@ public class TownyUniverse {
 			}
 			default: {
 				LOGGER.log(Level.ERROR, "[Towny] Error: Unsupported load format!");
-				throw new TownyRuntimeException("Error: Unsupported load format!");
+				throw new TownyRuntimeException();
 			}
 		}
 		// Before we load we will backup, just incase something goes wrong
 		// This might just save a server owner's day.
 		if (!database.backup()) {
 			LOGGER.log(Level.ERROR, "[Towny] Error: Failed to backup database before loading!");
-			throw new TownyRuntimeException("Error: Failed to backup database before loading!");
+			throw new TownyRuntimeException();
 		}
 		this.worlds.putAll(database.loadWorlds());
 		this.nations.putAll(database.loadNations());
@@ -129,7 +129,7 @@ public class TownyUniverse {
 			}
 			default: {
 				LOGGER.log(Level.ERROR, "[Towny] Error: Unsupported save format!");
-				throw new TownyRuntimeException("Error: Unsupported save format!");
+				throw new TownyRuntimeException();
 			}
 		}
 		// TODO: Remove after all references are removed from Towny!
