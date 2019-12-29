@@ -30,16 +30,14 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable {
-
+public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable {
 	private transient static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
-
+	
 	private transient List<Resident> residents = new ArrayList<>();
 	private transient List<Resident> outlaws = new ArrayList<>();
 	private transient List<Location> outpostSpawns = new ArrayList<>();
@@ -50,7 +48,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 	private int bonusBlocks = 0;
 	private int purchasedBlocks = 0;
 	private double taxes = TownySettings.getTownDefaultTax();
-	private double plotTax= TownySettings.getTownDefaultPlotTax();
+	private double plotTax = TownySettings.getTownDefaultPlotTax();
 	private double commercialPlotTax = TownySettings.getTownDefaultShopTax();
 	private double plotPrice = 0.0;
 	private double embassyPlotTax = TownySettings.getTownDefaultEmbassyTax();
@@ -70,15 +68,14 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 	private transient Location spawn;
 	private transient boolean adminDisabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP disabled.
 	private transient boolean adminEnabledPVP = false; // This is a special setting to make a town ignore All PVP settings and keep PVP enabled. Overrides the admin disabled too.
-	private UUID id;
 	private long registered;
 	private transient List<Invite> receivedinvites = new ArrayList<>();
 	private transient List<Invite> sentinvites = new ArrayList<>();
 	private boolean isConquered = false;
 	private int conqueredDays;
 
-	public Town(String name) {
-		super(name);
+	public Town(UUID identifier) {
+		super(identifier);
 		permissions.loadDefault(this);
 	}
 
@@ -1018,31 +1015,6 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 
 	}
 
-	@Override
-	public List<String> getTreeString(int depth) {
-
-		List<String> out = new ArrayList<>();
-		out.add(getTreeDepth(depth) + "Town (" + getName() + ")");
-		out.add(getTreeDepth(depth + 1) + "Mayor: " + (hasMayor() ? getMayor().getName() : "None"));
-		out.add(getTreeDepth(depth + 1) + "Home: " + homeBlock);
-		out.add(getTreeDepth(depth + 1) + "Bonus: " + bonusBlocks);
-		out.add(getTreeDepth(depth + 1) + "TownBlocks (" + getTownBlocks().size() + "): " /*
-																						 * +
-																						 * getTownBlocks
-																						 * (
-																						 * )
-																						 */);
-		List<Resident> assistants = getAssistants();
-		
-		if (assistants.size() > 0)
-			out.add(getTreeDepth(depth + 1) + "Assistants (" + assistants.size() + "): " + Arrays.toString(assistants.toArray(new Resident[0])));
-		
-		out.add(getTreeDepth(depth + 1) + "Residents (" + getResidents().size() + "):");
-		for (Resident resident : getResidents())
-			out.addAll(resident.getTreeString(depth + 2));
-		return out;
-	}
-
 	public void setPublic(boolean isPublic) {
 
 		this.isPublic = isPublic;
@@ -1054,11 +1026,11 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 	}
 
     @Override
-    protected World getBukkitWorld() {
+	public World getBukkitWorld() {
         if (hasWorld()) {
-            return Bukkit.getWorld(getWorld().getName());
+            return Bukkit.getWorld(getWorld().getIdentifier());
         } else {
-            return super.getBukkitWorld();
+            return Bukkit.getWorlds().get(0);
         }
     }
 
@@ -1195,22 +1167,6 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 			outlaws.remove(resident);			
 	}
 
-	public UUID getId() {
-		return id;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
-	public boolean hasValidUUID() {
-		if (id != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	public void setRegistered(long registered) {
 		this.registered = registered;
 	}
@@ -1242,7 +1198,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 			return false;
 		}
 	}
-
+	
 	@Override
 	public List<Invite> getReceivedInvites() {
 		return receivedinvites;

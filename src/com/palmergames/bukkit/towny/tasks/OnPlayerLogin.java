@@ -7,6 +7,7 @@ import com.palmergames.bukkit.towny.TownyEconomyHandler;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.database.TownyDatabaseHelper;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
@@ -45,57 +46,44 @@ public class OnPlayerLogin implements Runnable {
 	@Override
 	public void run() {
 		
-		Resident resident = null;
-
-		if (!universe.getDataSource().hasResident(player.getName())) {
+		Resident resident = universe.getResident(player.getUniqueId());
+		
+		if (resident == null) {
 			/*
 			 * No record of this resident exists
 			 * So create a fresh set of data.
 			 */
-			try {
-				universe.getDataSource().newResident(player.getName());
-				resident = universe.getDataSource().getResident(player.getName());
-				
-				if (TownySettings.isShowingRegistrationMessage())				
-					TownyMessaging.sendMessage(player, TownySettings.getRegistrationMsg(player.getName()));
-				resident.setRegistered(System.currentTimeMillis());
-				if (!TownySettings.getDefaultTownName().equals("")) {
-					try {
-						Town town = TownyUniverse.getInstance().getDataSource().getTown(TownySettings.getDefaultTownName());
-						town.addResident(resident);
-						universe.getDataSource().saveTown(town);
-					} catch (NotRegisteredException | AlreadyRegisteredException ignored) {
-					}
-				}
-				
-				universe.getDataSource().saveResident(resident);
-				universe.getDataSource().saveResidentList();
-				
-			} catch (AlreadyRegisteredException | NotRegisteredException ex) {
-				// Should never happen
-			}
+			TownyDatabaseHelper.newResident(player.getUniqueId(), player.getName());
+			resident = universe.getResident(player.getUniqueId());
 			
+			if (TownySettings.isShowingRegistrationMessage())
+				TownyMessaging.sendMessage(player, TownySettings.getRegistrationMsg(player.getName()));
+			resident.setRegistered(System.currentTimeMillis());
+			if (!TownySettings.getDefaultTownName().equals("")) {
+				try {
+					Town town = TownyUniverse.getInstance().getDataSource().getTown(TownySettings.getDefaultTownName());
+					town.addResident(resident);
+					TownyUniverse.getInstance().save(town);
+				} catch (NotRegisteredException | AlreadyRegisteredException ignored) {
+				}
+			}
+			TownyUniverse.getInstance().save(resident);
 		} else {
 			/*
 			 * This resident is known so fetch the data and update it.
 			 */
-			try {
-				resident = universe.getDataSource().getResident(player.getName());
-				if (TownySettings.isUsingEssentials()) {
-					Essentials ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-					/*
-					 * Don't update last online for a player who is vanished.
-					 */
-					if (!ess.getUser(player).isVanished())
-						resident.setLastOnline(System.currentTimeMillis());
-				} else
+			resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+			if (TownySettings.isUsingEssentials()) {
+				Essentials ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+				/*
+				 * Don't update last online for a player who is vanished.
+				 */
+				if (!ess.getUser(player).isVanished())
 					resident.setLastOnline(System.currentTimeMillis());
-				
-				universe.getDataSource().saveResident(resident);
-				
-			} catch (NotRegisteredException ex) {
-				// Should never happen
-			}
+			} else
+				resident.setLastOnline(System.currentTimeMillis());
+			
+			TownyUniverse.getInstance().save(resident);
 		}
 
 		if (resident != null)

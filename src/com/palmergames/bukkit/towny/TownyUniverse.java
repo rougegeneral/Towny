@@ -1,10 +1,10 @@
 package com.palmergames.bukkit.towny;
 
+import com.palmergames.bukkit.towny.database.Saveable;
+import com.palmergames.bukkit.towny.database.TownyDatabase;
 import com.palmergames.bukkit.towny.database.TownyFlatFileDatabase;
 import com.palmergames.bukkit.towny.database.TownyJSONDatabase;
 import com.palmergames.bukkit.towny.database.TownySQLDatabase;
-import com.palmergames.bukkit.towny.database.Saveable;
-import com.palmergames.bukkit.towny.database.TownyDatabase;
 import com.palmergames.bukkit.towny.db.TownyDataSource;
 import com.palmergames.bukkit.towny.db.TownyDatabaseHandler;
 import com.palmergames.bukkit.towny.exceptions.KeyAlreadyRegisteredException;
@@ -25,20 +25,17 @@ import com.palmergames.bukkit.util.BukkitTools;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 /**
  * Towny's class for internal API Methods
@@ -234,15 +231,15 @@ public class TownyUniverse {
     }
     
     public void addWorld(TownyWorld world) {
-		worlds.put(world.getId(), world);
+		worlds.put(world.getIdentifier(), world);
 	}
 	
 	public void addResident(Resident resident) {
-		residents.put(resident.getId(), resident);
+		residents.put(resident.getIdentifier(), resident);
 	}
 	
 	public void addTown(Town town) {
-		towns.put(town.getId(), town);
+		towns.put(town.getIdentifier(), town);
 	}
     
 	@Deprecated
@@ -317,7 +314,20 @@ public class TownyUniverse {
 	public List<Resident> getJailedResidentMap() {
 		return jailedResidents;
 	}
+	
+	public List<Town> getTownsWithoutNation() {
+		return towns.values().stream().filter(town -> !town.hasNation()).collect(Collectors.toList());
+	}
+	
+	public List<Resident> getResidentsWithoutTown() {
+		return residents.values().stream().filter(resident -> !resident.hasTown()).collect(Collectors.toList());
+	}
+	
+	public List<Resident> getResidentsWithoutNation() {
+		return residents.values().stream().filter(resident -> !resident.hasNation()).collect(Collectors.toList());
+	}
     
+	@Deprecated
     public TownyDataSource getDataSource() {
         return dataSource;
     }
@@ -327,52 +337,51 @@ public class TownyUniverse {
 	}
     
     public List<String> getTreeString(int depth) {
-        
         List<String> out = new ArrayList<>();
-        out.add(getTreeDepth(depth) + "Universe (1)");
-        if (Towny.getPlugin() != null) {
-            out.add(getTreeDepth(depth + 1) + "Server (" + Bukkit.getServer().getName() + ")");
-            out.add(getTreeDepth(depth + 2) + "Version: " + Bukkit.getServer().getVersion());
-            //out.add(getTreeDepth(depth + 2) + "Players: " + BukkitTools.getOnlinePlayers().length + "/" + BukkitTools.getServer().getMaxPlayers());
-            out.add(getTreeDepth(depth + 2) + "Worlds (" + Bukkit.getWorlds().size() + "): " + Arrays.toString(Bukkit.getWorlds().toArray(new World[0])));
-        }
-        out.add(getTreeDepth(depth + 1) + "Worlds (" + worlds.size() + "):");
-        for (TownyWorld world : worlds.values()) {
-            out.addAll(world.getTreeString(depth + 2));
-        }
-        
-        out.add(getTreeDepth(depth + 1) + "Nations (" + nations.size() + "):");
-        for (Nation nation : nations.values()) {
-            out.addAll(nation.getTreeString(depth + 2));
-        }
-        
-        Collection<Town> townsWithoutNation = dataSource.getTownsWithoutNation();
-        out.add(getTreeDepth(depth + 1) + "Towns (" + townsWithoutNation.size() + "):");
-        for (Town town : townsWithoutNation) {
-            out.addAll(town.getTreeString(depth + 2));
-        }
-        
-        Collection<Resident> residentsWithoutTown = dataSource.getResidentsWithoutTown();
-        out.add(getTreeDepth(depth + 1) + "Residents (" + residentsWithoutTown.size() + "):");
-        for (Resident resident : residentsWithoutTown) {
-            out.addAll(resident.getTreeString(depth + 2));
-        }
+        // TODO: Redo tree string.
+//        out.add(getTreeDepth(depth) + "Universe (1)");
+//        if (Towny.getPlugin() != null) {
+//            out.add(getTreeDepth(depth + 1) + "Server (" + Bukkit.getServer().getName() + ")");
+//            out.add(getTreeDepth(depth + 2) + "Version: " + Bukkit.getServer().getVersion());
+//            //out.add(getTreeDepth(depth + 2) + "Players: " + BukkitTools.getOnlinePlayers().length + "/" + BukkitTools.getServer().getMaxPlayers());
+//            out.add(getTreeDepth(depth + 2) + "Worlds (" + Bukkit.getWorlds().size() + "): " + Arrays.toString(Bukkit.getWorlds().toArray(new World[0])));
+//        }
+//        out.add(getTreeDepth(depth + 1) + "Worlds (" + worlds.size() + "):");
+//        for (TownyWorld world : worlds.values()) {
+////            out.addAll(world.getTreeString(depth + 2));
+//        }
+//        
+//        out.add(getTreeDepth(depth + 1) + "Nations (" + nations.size() + "):");
+//        for (Nation nation : nations.values()) {
+////            out.addAll(nation.getTreeString(depth + 2));
+//        }
+//        
+//        Collection<Town> townsWithoutNation = dataSource.getTownsWithoutNation();
+//        out.add(getTreeDepth(depth + 1) + "Towns (" + townsWithoutNation.size() + "):");
+//        for (Town town : townsWithoutNation) {
+////            out.addAll(town.getTreeString(depth + 2));
+//        }
+//        
+//        Collection<Resident> residentsWithoutTown = dataSource.getResidentsWithoutTown();
+//        out.add(getTreeDepth(depth + 1) + "Residents (" + residentsWithoutTown.size() + "):");
+//        for (Resident resident : residentsWithoutTown) {
+////            out.addAll(resident.getTreeString(depth + 2));
+//        }
         return out;
     }
-    
-    private String getTreeDepth(int depth) {
-        
-        char[] fill = new char[depth * 4];
-        Arrays.fill(fill, ' ');
-        if (depth > 0) {
-            fill[0] = '|';
-            int offset = (depth - 1) * 4;
-            fill[offset] = '+';
-            fill[offset + 1] = '-';
-            fill[offset + 2] = '-';
-        }
-        return new String(fill);
-    }
+//    private String getTreeDepth(int depth) {
+//        
+//        char[] fill = new char[depth * 4];
+//        Arrays.fill(fill, ' ');
+//        if (depth > 0) {
+//            fill[0] = '|';
+//            int offset = (depth - 1) * 4;
+//            fill[offset] = '+';
+//            fill[offset + 1] = '-';
+//            fill[offset + 2] = '-';
+//        }
+//        return new String(fill);
+//    }
     
     /**
      * Pretty much this method checks if a townblock is contained within a list of locations.

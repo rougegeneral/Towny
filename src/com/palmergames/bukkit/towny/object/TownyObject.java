@@ -3,51 +3,18 @@ package com.palmergames.bukkit.towny.object;
 import com.palmergames.bukkit.towny.TownyFormatter;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
+import java.util.UUID;
 
 public abstract class TownyObject {
+	private final UUID identifier;
 	private String name;
-
+	
 	private HashSet<CustomDataField> metadata = null;
 	
-	protected TownyObject(String name) {
-		this.name = name;
-	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public List<String> getTreeString(int depth) {
-
-		return new ArrayList<>();
-	}
-
-	public String getTreeDepth(int depth) {
-
-		char[] fill = new char[depth * 4];
-		Arrays.fill(fill, ' ');
-		if (depth > 0) {
-			fill[0] = '|';
-			int offset = (depth - 1) * 4;
-			fill[offset] = '+';
-			fill[offset + 1] = '-';
-			fill[offset + 2] = '-';
-		}
-		return new String(fill);
-	}
-
-	@Override
-	public String toString() {
-
-		return getName();
+	protected TownyObject(UUID identifier) {
+		this.identifier = identifier;
 	}
 
 	public String getFormattedName() {
@@ -81,7 +48,6 @@ public abstract class TownyObject {
 	}
 
 	public void setMetadata(String str) {
-
 		if (metadata == null)
 			metadata = new HashSet<>();
 
@@ -91,4 +57,15 @@ public abstract class TownyObject {
 		}
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public UUID getIdentifier() {
+		return identifier;
+	}
 }

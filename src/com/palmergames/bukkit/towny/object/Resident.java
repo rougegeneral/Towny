@@ -29,12 +29,11 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver, Saveable {
+public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver, Saveable, Econable {
 	private transient List<Resident> friends = new ArrayList<>();
 	// private List<Object[][][]> regenUndo = new ArrayList<>(); // Feature is disabled as of MC 1.13, maybe it'll come back.
 	@JsonAdapter(TownFieldSerializer.class)
@@ -54,13 +53,14 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 	private transient List<String> modes = new ArrayList<>();
 	private transient ConfirmationType confirmationType;
 	private transient List<Invite> receivedinvites = new ArrayList<>();
-	private UUID id; // TODO: - Hook this up to player UUID perhaps?
+	private String name;
+	private UUID identifier; // TODO: - Hook this up to player UUID perhaps?
  
 	private transient List<String> townRanks = new ArrayList<>();
 	private transient List<String> nationRanks = new ArrayList<>();
 
-	public Resident(String name) {
-		super(name);
+	public Resident(UUID identifier) {
+		super(identifier);
 		permissions.loadDefault(this);
 	}
 
@@ -394,18 +394,6 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 		return registered;
 	}
 
-	@Override
-	public List<String> getTreeString(int depth) {
-
-		List<String> out = new ArrayList<>();
-		out.add(getTreeDepth(depth) + "Resident (" + getName() + ")");
-		out.add(getTreeDepth(depth + 1) + "Registered: " + getRegistered());
-		out.add(getTreeDepth(depth + 1) + "Last Online: " + getLastOnline());
-		if (getFriends().size() > 0)
-			out.add(getTreeDepth(depth + 1) + "Friends (" + getFriends().size() + "): " + Arrays.toString(getFriends().toArray(new Resident[0])));
-		return out;
-	}
-
 	public void clearTeleportRequest() {
 
 		teleportRequestTime = -1;
@@ -631,15 +619,20 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 	}
 
 	@Override
-	protected World getBukkitWorld() {
+	public World getBukkitWorld() {
 		Player player = BukkitTools.getPlayer(getName());
 		if (player != null) {
 			return player.getWorld();
 		} else {
-			return super.getBukkitWorld();
+			return Bukkit.getWorlds().get(0);
 		}
 	}
-
+	
+	@Override
+	public String getEconomyName() {
+		return getName();
+	}
+	
 	public boolean isAlliedWith(Resident otherresident) {
 		if (this.hasNation() && this.hasTown() && otherresident.hasTown() && otherresident.hasNation()) {
 			try {
@@ -656,7 +649,12 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 			return false;
 		}
 	}
-
+	
+	@Override
+	public String getName() {
+		return name;
+	}
+	
 	@Override
 	public List<Invite> getReceivedInvites() {
 		return receivedinvites;
@@ -714,12 +712,12 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 		return null;
 	}
 
-	public UUID getId() {
-		return id;
+	public UUID getIdentifier() {
+		return identifier;
 	}
 
-	public void setId(UUID id) {
-		this.id = id;
+	public void setIdentifier(UUID identifier) {
+		this.identifier = identifier;
 	}
 }
 

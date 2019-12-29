@@ -28,17 +28,14 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Nation extends TownyEconomyObject implements ResidentList, TownyInviteSender, TownyInviteReceiver, TownyAllySender, Saveable {
-
+public class Nation extends TownyObject implements ResidentList, TownyInviteSender, TownyInviteReceiver, TownyAllySender, Saveable, Nameable, Econable {
 	private static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getNationAccountPrefix();
-
-	//private List<Resident> assistants = new ArrayList<Resident>();
+	public UUID identifier;
 	private List<Town> towns = new ArrayList<>();
 	private List<Nation> allies = new ArrayList<>();
 	private List<Nation> enemies = new ArrayList<>();
@@ -47,7 +44,6 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 	private boolean neutral = false;
 	private String nationBoard = "/nation set board [msg]";
 	private String tag = "";
-	public UUID uuid;
 	private long registered;
 	private Location nationSpawn;
 	private boolean isPublic = TownySettings.getNationDefaultPublic();
@@ -56,8 +52,8 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 	private transient List<Invite> sentinvites = new ArrayList<>();
 	private transient List<Invite> sentallyinvites = new ArrayList<>();
 
-	public Nation(String name) {
-		super(name);
+	public Nation(UUID identifier) {
+		super(identifier);
 	}
 
 	public void setTag(String text) throws TownyException {
@@ -532,27 +528,6 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 	}
 
 	@Override
-	public List<String> getTreeString(int depth) {
-
-		List<String> out = new ArrayList<>();
-		out.add(getTreeDepth(depth) + "Nation (" + getName() + ")");
-		out.add(getTreeDepth(depth + 1) + "Capital: " + getCapital().getName());
-		
-		List<Resident> assistants = getAssistants();
-		
-		if (assistants.size() > 0)
-			out.add(getTreeDepth(depth + 1) + "Assistants (" + assistants.size() + "): " + Arrays.toString(assistants.toArray(new Resident[0])));
-		if (getAllies().size() > 0)
-			out.add(getTreeDepth(depth + 1) + "Allies (" + getAllies().size() + "): " + Arrays.toString(getAllies().toArray(new Nation[0])));
-		if (getEnemies().size() > 0)
-			out.add(getTreeDepth(depth + 1) + "Enemies (" + getEnemies().size() + "): " + Arrays.toString(getEnemies().toArray(new Nation[0])));
-		out.add(getTreeDepth(depth + 1) + "Towns (" + getTowns().size() + "):");
-		for (Town town : getTowns())
-			out.addAll(town.getTreeString(depth + 2));
-		return out;
-	}
-
-	@Override
 	public boolean hasResident(String name) {
 
 		for (Town town : getTowns())
@@ -562,11 +537,11 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 	}
 
     @Override
-    protected World getBukkitWorld() {
+	public World getBukkitWorld() {
         if (hasCapital() && getCapital().hasWorld()) {
             return Bukkit.getWorld(getCapital().getWorld().getName());
         } else {
-            return super.getBukkitWorld();
+            return Bukkit.getWorlds().get(0);
         }
     }
 
@@ -585,16 +560,12 @@ public class Nation extends TownyEconomyObject implements ResidentList, TownyInv
 		return out;
 	}
 
-	public UUID getUuid() {
-		return uuid;
+	public UUID getIdentifier() {
+		return identifier;
 	}
 
-	public void setUuid(UUID uuid) {
-		this.uuid = uuid;
-	}
-
-	public boolean hasValidUUID() {
-		return uuid != null;
+	public void setIdentifier(UUID identifier) {
+		this.identifier = identifier;
 	}
 
 	public long getRegistered() {

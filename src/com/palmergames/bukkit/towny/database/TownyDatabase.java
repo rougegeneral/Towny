@@ -11,8 +11,8 @@ import com.palmergames.util.FileMgmt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +26,7 @@ import java.util.UUID;
  */
 public abstract class TownyDatabase {
 	protected static final Logger DATABASE_LOGGER = LogManager.getLogger(TownyDatabase.class);
+	
 	protected TownyDatabase() {
 		// Make sure we move the data around correctly
 		// After the database update we store stuff in
@@ -67,7 +68,7 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
-	
+	@Nonnull
 	public abstract Map<UUID, Resident> loadResidents();
 	
 	/**
@@ -85,7 +86,7 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
-	@NotNull
+	@Nonnull
 	public abstract Map<UUID, Town> loadTowns();
 	
 	/**
@@ -103,6 +104,7 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
+	@Nonnull
 	public abstract Map<UUID, Nation> loadNations();
 	
 	/**
@@ -120,7 +122,7 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} of Strings that correspond to dataset identifiers.
 	 */
-	@NotNull
+	@Nonnull
 	public abstract Map<UUID, TownyWorld> loadWorlds();
 	
 	/**
@@ -138,7 +140,7 @@ public abstract class TownyDatabase {
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
-	@NotNull
+	@Nonnull
 	public abstract Map<UUID, TownBlock> loadTownBlocks();
 	
 	/**
@@ -161,7 +163,7 @@ public abstract class TownyDatabase {
 	
 	/**
 	 * Deletes any object conforming to the {@link Saveable} interface.
-	 * 
+	 *
 	 * @param objs The {@link Saveable} object(s) to be deleted.
 	 * @return A boolean indicating if the deletion was successful.
 	 */

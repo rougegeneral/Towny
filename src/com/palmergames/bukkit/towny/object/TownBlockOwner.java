@@ -2,17 +2,18 @@ package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class TownBlockOwner extends TownyEconomyObject {
-
+public abstract class TownBlockOwner extends TownyObject implements Econable{
 	protected transient List<TownBlock> townBlocks = new ArrayList<>();
 	protected TownyPermission permissions = new TownyPermission();
 	
-	protected TownBlockOwner(String name) {
-		super(name);
+	protected TownBlockOwner(UUID identifier) {
+		super(identifier);
 	}
 	
 	public void setTownblocks(List<TownBlock> townblocks) {
@@ -56,4 +57,10 @@ public class TownBlockOwner extends TownyEconomyObject {
 
 		return permissions;
 	}
+	
+	@Override
+	public abstract World getBukkitWorld();
+	
+	@Override
+	public abstract String getEconomyName();
 }

@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
-public class TownBlock implements Saveable {
+public class TownBlock extends TownyObject implements Saveable {
 
 	// TODO: Admin only or possibly a group check
 	// private List<Group> groups;
@@ -31,13 +31,13 @@ public class TownBlock implements Saveable {
 	private boolean locked = false;
 	private boolean outpost = false;
 	private HashSet<CustomDataField> metadata = null;
-	private UUID id;
 
 	//Plot level permissions
 	protected TownyPermission permissions = new TownyPermission();
 	protected boolean isChanged = false;
 	
-	public TownBlock(int x, int z, TownyWorld world) {
+	public TownBlock(UUID identifier, int x, int z, TownyWorld world) {
+		super(identifier);
 		this.x = x;
 		this.z = z;
 		this.setWorld(world);
@@ -335,7 +335,7 @@ public class TownBlock implements Saveable {
 			cost = 0;
 		}
 		
-		if (cost > 0 && TownySettings.isUsingEconomy() && !resident.payTo(cost, TownyEconomyObject.SERVER_ACCOUNT, String.format("Plot set to %s", type)))
+		if (cost > 0 && TownySettings.isUsingEconomy() && !resident.payTo(cost, Econable.SERVER_ACCOUNT, String.format("Plot set to %s", type)))
 			throw new EconomyException(String.format(TownySettings.getLangString("msg_err_cannot_afford_plot_set_type_cost"), type, TownyEconomyHandler.getFormattedBalance(cost)));
 		
 		if (cost > 0)
@@ -497,14 +497,6 @@ public class TownBlock implements Saveable {
 		for (int i = 0; i < objects.length; i++) {
 			metadata.add(CustomDataField.load(objects[i]));
 		}
-	}
-
-	public UUID getId() {
-		return id;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
 	}
 	
 	@Override

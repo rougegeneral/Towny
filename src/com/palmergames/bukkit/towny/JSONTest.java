@@ -42,7 +42,7 @@ public class JSONTest extends TownyTest {
 		Town loadedTown = loadTownFromJSON();
 		
 		// Make sure ID's are equal.
-		boolean test = getMockTown().getWorld().getId().equals(loadedTown.getWorld().getId());
+		boolean test = getMockTown().getWorld().getIdentifier().equals(loadedTown.getWorld().getIdentifier());
 		checkOff("TOWN ID's ARE IDENTICAL", test);
 	}
 	
@@ -50,7 +50,7 @@ public class JSONTest extends TownyTest {
 		Town loadedTown = loadTownFromJSON();
 
 		// Make sure ID's are equal.
-		boolean test = getMockTown().getMayor().getId().equals(loadedTown.getMayor().getId());
+		boolean test = getMockTown().getMayor().getIdentifier().equals(loadedTown.getMayor().getIdentifier());
 		checkOff("TOWN MAYORS ARE IDENTICAL", test);
 	}
 
@@ -59,7 +59,7 @@ public class JSONTest extends TownyTest {
 		Town loadedTown = loadTownFromJSON();
 
 		// Make sure ID's are equal.
-		boolean test = getMockTown().getWorld().getId().equals(loadedTown.getWorld().getId());
+		boolean test = getMockTown().getWorld().getIdentifier().equals(loadedTown.getWorld().getIdentifier());
 		checkOff("TOWN WORLDS ARE IDENTICAL", test);
 	}
 	

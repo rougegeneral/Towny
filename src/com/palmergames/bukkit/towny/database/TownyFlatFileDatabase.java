@@ -1,14 +1,16 @@
 package com.palmergames.bukkit.towny.database;
 
-import com.palmergames.bukkit.towny.TownyMessaging;
+import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.database.io.FileManager;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
-import org.jetbrains.annotations.NotNull;
+import com.palmergames.util.FileMgmt;
+import org.apache.logging.log4j.Level;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,12 +26,26 @@ import java.util.UUID;
  * @see TownyDatabase
  */
 public final class TownyFlatFileDatabase extends TownyDatabase {
+	private final String databaseFilePath;
+	
+	public TownyFlatFileDatabase() {
+		databaseFilePath = Towny.getPlugin().getDataFolder() + File.separator + "database" + File.separator + "flatfile" + File.separator;
+		FileMgmt.checkOrCreateFolders(
+			databaseFilePath,
+			databaseFilePath + File.separator + "worlds",
+			databaseFilePath + File.separator + "nations",
+			databaseFilePath + File.separator + "towns",
+			databaseFilePath + File.separator + "residents",
+			databaseFilePath + File.separator + "townblocks");
+	}
+	
 	@Override
 	public boolean backup() {
 		// TODO: - Implement
 		return true;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, Resident> loadResidents() {
 		// TODO: - Implement
@@ -41,8 +57,8 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@NotNull
-    @Override
+	@Nonnull
+	@Override
 	public Map<UUID, Town> loadTowns() {
 		// TODO: - Implement
 		return new HashMap<>();
@@ -53,6 +69,7 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, Nation> loadNations() {
 		// TODO: - Implement
@@ -64,7 +81,7 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@NotNull
+	@Nonnull
 	@Override
 	public Map<UUID, TownyWorld> loadWorlds() {
 		// TODO: - Implement
@@ -76,7 +93,7 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@NotNull
+	@Nonnull
 	@Override
 	public Map<UUID, TownBlock> loadTownBlocks() {
 		// TODO: - Implement
@@ -102,7 +119,7 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 			// Get file properties
 			String fileName = obj.getStorableName() + ".txt";
 			String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
-			TownyMessaging.sendDebugMsg("Contents = " + contents);
+			DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
 			File file = new File(filePath);
 			
 			// Save file...

@@ -1,12 +1,5 @@
 package com.palmergames.bukkit.towny.utils;
 
-import java.util.List;
-
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-
 import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.User;
 import com.palmergames.bukkit.towny.Towny;
@@ -18,6 +11,7 @@ import com.palmergames.bukkit.towny.TownyTimerHandler;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Econable;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.NationSpawnLevel;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -25,11 +19,16 @@ import com.palmergames.bukkit.towny.object.SpawnType;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownSpawnLevel;
-import com.palmergames.bukkit.towny.object.TownyEconomyObject;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask.CooldownType;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+
+import java.util.List;
 
 public class SpawnUtil {
 
@@ -278,7 +277,7 @@ public class SpawnUtil {
 
 		double travelCost = 0.0;
 		String spawnPermission = null;
-		TownyEconomyObject payee = null;
+		Econable payee = null;
 		// Figure out costs, payee and spawnPermmission slug for money.csv log.
 		switch (spawnType) {
 		case RESIDENT:
@@ -335,7 +334,7 @@ public class SpawnUtil {
 		if (!townyUniverse.getPermissionSource().has(player,
 				PermissionNodes.TOWNY_COMMAND_TOWNYADMIN_TOWN_SPAWN_FREECHARGE.getNode())) {
 			if (!TownySettings.isTownSpawnPaidToTown())
-				payee = TownyEconomyObject.SERVER_ACCOUNT;
+				payee = Econable.SERVER_ACCOUNT;
 			// Show message if we are using an Economy and are charging for spawn travel.
 			try {
 				if (travelCost > 0 && TownySettings.isUsingEconomy()

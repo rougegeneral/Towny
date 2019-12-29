@@ -23,15 +23,14 @@ public abstract class TownyTest {
 	 */
 	public TownyTest() {
 		// Instantiate objects.
-		mockTown = new Town("HuntsVille");
-		mockWorld = new TownyWorld("Europa");
-		mockResident = new Resident("Jason");
+		mockTown = new Town(UUID.randomUUID());
+		mockTown.setName("HuntsVille");
+		mockWorld = new TownyWorld(UUID.randomUUID());
+		mockWorld.setName("Europa");
+		mockResident = new Resident(UUID.randomUUID());
+		mockResident.setName("Jason");
 		
 		// Add necessary properties.
-		mockWorld.setId(UUID.randomUUID());
-		mockTown.setId(UUID.randomUUID());
-		getMockResident().setId(UUID.randomUUID());
-		
 		try {
 			mockWorld.addTown(mockTown);
 			mockTown.addResident(getMockResident());

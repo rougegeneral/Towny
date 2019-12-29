@@ -2114,7 +2114,6 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		townBlock.setType(townBlock.getType());
 
 		town.setSpawn(spawn);
-		town.setId(UUID.randomUUID());
 		town.setRegistered(System.currentTimeMillis());
 		// world.addTown(town);
 
@@ -2142,13 +2141,10 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 			}
 		}
 		
-		townyUniverse.getDataSource().saveResident(resident);
-		townyUniverse.getDataSource().saveTownBlock(townBlock);
-		townyUniverse.getDataSource().saveTown(town);
-		townyUniverse.getDataSource().saveWorld(world);
-		
-		townyUniverse.getDataSource().saveTownList();
-		townyUniverse.getDataSource().saveTownBlockList();
+		TownyUniverse.getInstance().save(resident);
+		TownyUniverse.getInstance().save(townBlock);
+		TownyUniverse.getInstance().save(town);
+		TownyUniverse.getInstance().save(world);
 
 		// Reset cache permissions for anyone in this TownBlock
 		plugin.updateCache(townBlock.getWorldCoord());
@@ -3023,7 +3019,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 
 				for(WorldCoord coord : selection){
 					//Use the user's current world
-					TownPreClaimEvent preClaimEvent = new TownPreClaimEvent(town, new TownBlock(coord.getX(), coord.getZ(), world), player);
+					TownPreClaimEvent preClaimEvent = new TownPreClaimEvent(town, new TownBlock(UUID.randomUUID(),coord.getX(), coord.getZ(), world), player);
 					Bukkit.getPluginManager().callEvent(preClaimEvent);
 					if(preClaimEvent.isCancelled())
 						blockedClaims++;

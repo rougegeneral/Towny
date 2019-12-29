@@ -6,6 +6,7 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,6 +24,7 @@ public final class TownySQLDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, Resident> loadResidents() {
 		return null;
@@ -33,6 +35,7 @@ public final class TownySQLDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, Town> loadTowns() {
 		return null;
@@ -43,6 +46,7 @@ public final class TownySQLDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, Nation> loadNations() {
 		return null;
@@ -53,7 +57,8 @@ public final class TownySQLDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@Override
+	@Nonnull
+    @Override
 	public Map<UUID, TownyWorld> loadWorlds() {
 		return null;
 	}
@@ -63,6 +68,7 @@ public final class TownySQLDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, TownBlock> loadTownBlocks() {
 		return null;

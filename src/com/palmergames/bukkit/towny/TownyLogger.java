@@ -1,10 +1,10 @@
 package com.palmergames.bukkit.towny;
 
 import com.palmergames.bukkit.towny.database.TownyDatabase;
+import com.palmergames.bukkit.towny.object.Econable;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownyEconomyObject;
 import com.palmergames.util.FileMgmt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -128,7 +128,7 @@ public class TownyLogger {
 		ctx.updateLoggers();
 	}
 	
-	public static void logMoneyTransaction(TownyEconomyObject a, double amount, TownyEconomyObject b, String reason) {
+	public static void logMoneyTransaction(Econable a, double amount, Econable b, String reason) {
 		if (reason == null) {
 			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", "Unknown Reason", getObjectName(a), amount, getObjectName(b)));
 		} else {
@@ -136,7 +136,7 @@ public class TownyLogger {
 		}
 	}
 	
-	private static String getObjectName(TownyEconomyObject obj) {
+	private static String getObjectName(Econable obj) {
 		String type;
 		if (obj == null) {
 			type = "Server";
@@ -149,6 +149,6 @@ public class TownyLogger {
 		} else {
 			type = "?";
 		}
-		return String.format("[%s] %s", type, obj != null ? obj.getName() : "");
+		return String.format("[%s] %s", type, obj != null ? obj.getEconomyName() : "");
 	}
 }

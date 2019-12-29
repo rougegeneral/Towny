@@ -24,7 +24,7 @@ public class TownFieldSerializer implements JsonSerializer<Town>, JsonDeserializ
 
 	@Override
 	public JsonElement serialize(Town src, Type typeOfSrc, JsonSerializationContext context) {
-		return new JsonPrimitive(src.getId().toString());
+		return new JsonPrimitive(src.getIdentifier().toString());
 	}
 
 	@Override
@@ -32,8 +32,7 @@ public class TownFieldSerializer implements JsonSerializer<Town>, JsonDeserializ
 		Gson gson = new Gson();
 
 		// Convert String into UUID object
-		String idStr = json.getAsString();
-		UUID ID = UUID.fromString(idStr);
+		UUID ID = UUID.fromString(json.getAsString());
 
 		// Get Town from ID
 		Town town = TownyUniverse.getInstance().getTown(ID);

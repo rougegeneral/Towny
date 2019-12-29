@@ -8,7 +8,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Resident;
 
@@ -25,7 +24,7 @@ public class ResidentFieldSerializer implements JsonSerializer<Resident>, JsonDe
 
 	@Override
 	public JsonElement serialize(Resident src, Type typeOfSrc, JsonSerializationContext context) {
-		return new JsonPrimitive(src.getId().toString());
+		return new JsonPrimitive(src.getIdentifier().toString());
 	}
 
 	@Override
@@ -33,8 +32,7 @@ public class ResidentFieldSerializer implements JsonSerializer<Resident>, JsonDe
 		Gson gson = new Gson();
 
 		// Convert String into UUID object
-		String idStr = json.getAsString();
-		UUID ID = UUID.fromString(idStr);
+		UUID ID = UUID.fromString(json.getAsString());
 
 		// Get Resident from ID
 		Resident resident = TownyUniverse.getInstance().getResident(ID);

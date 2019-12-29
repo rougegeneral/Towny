@@ -25,7 +25,7 @@ public class WorldFieldSerializer implements JsonSerializer<TownyWorld>, JsonDes
 	@Override
 	public JsonElement serialize(TownyWorld src, Type typeOfSrc, JsonSerializationContext context) {
 		// Store the parent ID as a singular primitive json String.
-		return new JsonPrimitive(src.getId().toString());
+		return new JsonPrimitive(src.getIdentifier().toString());
 	}
 	
 	@Override
@@ -34,8 +34,7 @@ public class WorldFieldSerializer implements JsonSerializer<TownyWorld>, JsonDes
 		Gson gson = new Gson();
 		
 		// Convert String into UUID object
-		String idStr = json.getAsString();
-		UUID ID = UUID.fromString(idStr);
+		UUID ID = UUID.fromString(json.getAsString());
 		
 		// Get World from ID
 		TownyWorld world = TownyUniverse.getInstance().getWorld(ID);

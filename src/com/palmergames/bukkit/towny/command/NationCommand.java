@@ -1059,7 +1059,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 		Nation nation = townyUniverse.getDataSource().getNation(name);
 		nation.addTown(town);
 		nation.setCapital(town);
-		nation.setUuid(UUID.randomUUID());
+		nation.setIdentifier(UUID.randomUUID());
 		nation.setRegistered(System.currentTimeMillis());
 		if (TownySettings.isUsingEconomy()) {
 			try {

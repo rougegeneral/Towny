@@ -12,12 +12,12 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Econable;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.ResidentList;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlockOwner;
-import com.palmergames.bukkit.towny.object.TownyEconomyObject;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.war.eventwar.War;
@@ -428,22 +428,22 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 		return output;
 	}
 
-	public List<String> getTopBankBalance(List<TownyEconomyObject> list, int maxListing) throws EconomyException {
+	public List<String> getTopBankBalance(List<Econable> list, int maxListing) throws EconomyException {
 
 		List<String> output = new ArrayList<>();
-		KeyValueTable<TownyEconomyObject, Double> kvTable = new KeyValueTable<>();
-		for (TownyEconomyObject obj : list) {
+		KeyValueTable<Econable, Double> kvTable = new KeyValueTable<>();
+		for (Econable obj : list) {
 			kvTable.put(obj, obj.getHoldingBalance());
 		}
 		kvTable.sortByValue();
 		kvTable.reverse();
 		int n = 0;
-		for (KeyValue<TownyEconomyObject, Double> kv : kvTable.getKeyValues()) {
+		for (KeyValue<Econable, Double> kv : kvTable.getKeyValues()) {
 			n++;
 			if (maxListing != -1 && n > maxListing)
 				break;
-			TownyEconomyObject town = kv.key;
-			output.add(String.format(Colors.LightGray + "%-20s " + Colors.Gold + "|" + Colors.Blue + " %s", TownyFormatter.getFormattedName(town), TownyEconomyHandler.getFormattedBalance(kv.value)));
+			Econable town = kv.key;
+			output.add(String.format(Colors.LightGray + "%-20s " + Colors.Gold + "|" + Colors.Blue + " %s", TownyFormatter.getFormattedName((TownyObject) town), TownyEconomyHandler.getFormattedBalance(kv.value)));
 		}
 		return output;
 	}

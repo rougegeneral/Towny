@@ -36,7 +36,7 @@ public class AllyType extends ChatType {
 			Collection<Player> newRecipients = new HashSet<>();
 
 			for(Player p : recipients) {
-				if (!townyUniverse.getDataSource().getResident(p.getName()).getTown().getNation().getUuid().equals(nation.getUuid())
+				if (!townyUniverse.getDataSource().getResident(p.getName()).getTown().getNation().getIdentifier().equals(nation.getIdentifier())
 						&& !townyUniverse.getDataSource().getResident(p.getName()).getTown().getNation().hasAlly(nation)) {
 					continue;
 				}

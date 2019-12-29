@@ -11,18 +11,17 @@ import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.List;
 
 public class TownyWorld extends TownyObject implements Saveable {
-
+	
 	private transient List<Town> towns = new ArrayList<>();
-	private UUID id;
+	private UUID identifier;
 	private boolean isClaimable = true;
 	private boolean isUsingPlotManagementDelete = TownySettings.isUsingPlotManagementDelete();
 	private boolean isUsingPlotManagementMayorDelete = TownySettings.isUsingPlotManagementMayorDelete();
@@ -35,7 +34,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 	private List<String> plotManagementMayorDelete = null;
 	private List<String> plotManagementIgnoreIds = null;
 	private Boolean unclaimedZoneBuild = null, unclaimedZoneDestroy = null,
-			unclaimedZoneSwitch = null, unclaimedZoneItemUse = null;
+		unclaimedZoneSwitch = null, unclaimedZoneItemUse = null;
 	private String unclaimedZoneName = null;
 	private transient ConcurrentHashMap<Coord, TownBlock> townBlocks = new ConcurrentHashMap<>();
 	private List<Coord> warZones = new ArrayList<>();
@@ -59,8 +58,8 @@ public class TownyWorld extends TownyObject implements Saveable {
 	// TODO: private List<TownBlock> adminTownBlocks = new
 	// ArrayList<TownBlock>();
 
-	public TownyWorld(String name) {
-		super(name);
+	public TownyWorld(UUID identifier) {
+		super(identifier);
 	}
 
 	public List<Town> getTowns() {
@@ -114,7 +113,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 
 		if (hasTownBlock(key))
 			throw new AlreadyRegisteredException();
-		townBlocks.put(new Coord(key.getX(), key.getZ()), new TownBlock(key.getX(), key.getZ(), this));
+		townBlocks.put(new Coord(key.getX(), key.getZ()), new TownBlock(UUID.randomUUID(), key.getX(), key.getZ(), this));
 		return townBlocks.get(new Coord(key.getX(), key.getZ()));
 	}
 
@@ -185,20 +184,6 @@ public class TownyWorld extends TownyObject implements Saveable {
 	public void removeTownBlock(Coord coord) {
 
 		townBlocks.remove(coord);
-	}
-
-	@Override
-	public List<String> getTreeString(int depth) {
-
-		List<String> out = new ArrayList<>();
-		out.add(getTreeDepth(depth) + "World (" + getName() + ")");
-		out.add(getTreeDepth(depth + 1) + "TownBlocks (" + getTownBlocks().size() + "): " /*
-																						 * +
-																						 * getTownBlocks
-																						 * (
-																						 * )
-																						 */);
-		return out;
 	}
 
 	public void setWarAllowed(boolean isWarAllowed) {
@@ -789,12 +774,12 @@ public class TownyWorld extends TownyObject implements Saveable {
 		TownyUniverse.getInstance().getDataSource().saveWorld(this);
 	}
 
-	public UUID getId() {
-		return id;
+	public UUID getIdentifier() {
+		return identifier;
 	}
 
-	public void setId(UUID id) {
-		this.id = id;
+	public void setIdentifier(UUID identifier) {
+		this.identifier = identifier;
 	}
 
 	@Override
@@ -804,7 +789,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 
 	@Override
 	public String getStorableRootFilePath() {
-		return "worlds" + File.separator;
+		return "worlds";
 	}
 
 	@Override

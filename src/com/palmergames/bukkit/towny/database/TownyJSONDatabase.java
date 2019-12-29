@@ -3,7 +3,6 @@ package com.palmergames.bukkit.towny.database;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.database.io.FileManager;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -11,8 +10,9 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.util.FileMgmt;
-import org.jetbrains.annotations.NotNull;
+import org.apache.logging.log4j.Level;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public final class TownyJSONDatabase extends TownyDatabase {
 	private Gson gson;
-	private String rootFilePath;
+	private String databaseFilePath;
 	
 	public TownyJSONDatabase() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -41,8 +41,14 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		gson = gsonBuilder.create();
 		
 		// Make sure directories are in place.
-		rootFilePath = Towny.getPlugin().getDataFolder() + File.separator + "data" + File.separator + "json" + File.separator;
-		FileMgmt.checkOrCreateFolders(rootFilePath, rootFilePath + File.separator + "worlds");
+		databaseFilePath = Towny.getPlugin().getDataFolder() + File.separator + "database" + File.separator + "json" + File.separator;
+		FileMgmt.checkOrCreateFolders(
+			databaseFilePath, 
+			databaseFilePath + File.separator + "worlds",
+			databaseFilePath + File.separator + "nations",
+			databaseFilePath + File.separator + "towns",
+			databaseFilePath + File.separator + "residents",
+			databaseFilePath + File.separator + "townblocks");
 	}
 	
 	@Override
@@ -51,6 +57,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		return true;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, Resident> loadResidents() {
 		// TODO: - Implement
@@ -62,7 +69,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@NotNull
+	@Nonnull
     @Override
 	public Map<UUID, Town> loadTowns() {
 		// TODO: - Implement
@@ -74,6 +81,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		return false;
 	}
 	
+	@Nonnull
 	@Override
 	public Map<UUID, Nation> loadNations() {
 		// TODO: - Implement
@@ -85,7 +93,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@NotNull
+	@Nonnull
 	@Override
 	public Map<UUID, TownyWorld> loadWorlds() {
 		// TODO: - Implement
@@ -97,7 +105,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		return false;
 	}
 	
-	@NotNull
+	@Nonnull
 	@Override
 	public Map<UUID, TownBlock> loadTownBlocks() {
 		return null;
@@ -117,8 +125,8 @@ public final class TownyJSONDatabase extends TownyDatabase {
 			
 			// Get file properties
 			String fileName = obj.getStorableName() + ".json";
-			String filePath = rootFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
-			TownyMessaging.sendDebugMsg("Contents = " + contents); // TODO: Debug Message.
+			String filePath = databaseFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
+			DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
 			File file = new File(filePath);
 			
 			// Save file...
