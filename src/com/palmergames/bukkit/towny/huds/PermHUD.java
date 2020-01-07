@@ -4,9 +4,9 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.object.TownyPermission.ActionType;
 import com.palmergames.bukkit.towny.object.TownyWorld;
@@ -42,8 +42,8 @@ public class PermHUD {
 		}
 		try {
 			TownBlock townBlock = worldCoord.getTownBlock();
-			TownBlockOwnerObject owner = townBlock.hasResident() ? townBlock.getResident() : townBlock.getTown();
-			TownObject town = townBlock.getTown();
+			TownyBlockOwnerObject owner = townBlock.hasResident() ? townBlock.getResident() : townBlock.getTown();
+			Town town = townBlock.getTown();
 			TownyWorld world = townBlock.getWorld();
 			TownyPermission tp = townBlock.getPermissions();
 			String v = (owner instanceof Resident) ? "f" : "r";

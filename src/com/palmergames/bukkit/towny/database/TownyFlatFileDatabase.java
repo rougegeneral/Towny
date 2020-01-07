@@ -4,7 +4,7 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.database.io.FileManager;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.util.FileMgmt;
@@ -59,7 +59,7 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 	
 	@Nonnull
 	@Override
-	public Map<UUID, TownObject> loadTowns() {
+	public Map<UUID, Town> loadTowns() {
 		// TODO: - Implement
 		return new HashMap<>();
 	}

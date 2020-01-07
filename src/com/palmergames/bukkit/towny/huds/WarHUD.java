@@ -4,7 +4,7 @@ import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Coord;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.war.eventwar.War;
@@ -96,8 +96,8 @@ public class WarHUD {
 	public static void updateScore(Player p, War war) {
 		String score;
 		try {
-			TownObject home = TownyUniverse.getInstance().getDataSource().getResident(p.getName()).getTown();
-			Hashtable<TownObject, Integer> scores = war.getTownScores();
+			Town home = TownyUniverse.getInstance().getDataSource().getResident(p.getName()).getTown();
+			Hashtable<Town, Integer> scores = war.getTownScores();
 			if (scores.containsKey(home))
 				score = scores.get(home) + "";
 			else
@@ -212,7 +212,7 @@ public class WarHUD {
 
 	public static boolean isOnEdgeOfTown(WorldCoord worldCoord, War war) {
 
-		TownObject currentTown;
+		Town currentTown;
 		
 		//Checks to make sure the worldCoord is actually in war
 		try {

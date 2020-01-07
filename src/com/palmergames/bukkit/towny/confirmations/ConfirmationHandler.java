@@ -10,9 +10,9 @@ import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
@@ -35,8 +35,8 @@ public class ConfirmationHandler {
 		ConfirmationHandler.plugin = plugin;
 	}
 
-	private static HashMap<Resident, TownObject> towndeleteconfirmations = new HashMap<>();
-	private static HashMap<Resident, TownObject> townunclaimallconfirmations = new HashMap<>();
+	private static HashMap<Resident, Town> towndeleteconfirmations = new HashMap<>();
+	private static HashMap<Resident, Town> townunclaimallconfirmations = new HashMap<>();
 	private static HashMap<Resident, Nation> nationdeleteconfirmations = new HashMap<>();
 	private static HashMap<Resident, String> townypurgeconfirmations = new HashMap<>();
 	private static HashMap<Resident, Nation> nationmergeconfirmations = new HashMap<>();
@@ -319,25 +319,25 @@ public class ConfirmationHandler {
 				
 				// Test the waters
 				TownBlock tb = confirmation.getGroup().getTownBlocks().get(0);
-				TownBlockOwnerObject townBlockOwnerObject = confirmation.getTownBlockOwner();				
+				TownyBlockOwnerObject townyBlockOwnerObject = confirmation.getTownBlockOwner();				
 				
 				// setTownBlockPermissions returns true if the town block permissions were successfully changed
-				if (PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townBlockOwnerObject, tb, confirmation.getArgs())) {
+				if (PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townyBlockOwnerObject, tb, confirmation.getArgs())) {
 					
 					// A simple index loop starting from the second element
 					for (int i = 1; i < confirmation.getGroup().getTownBlocks().size(); ++i) {
 						tb = confirmation.getGroup().getTownBlocks().get(i);
 						
 						// TODO Redesign how townblock perms are handled to allow better caching and setting of multiple townblock perms
-						PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townBlockOwnerObject, tb, confirmation.getArgs());
+						PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townyBlockOwnerObject, tb, confirmation.getArgs());
 					}
 
 					Player player = confirmation.getPlayer();
 					
 					TownyPermission perm = confirmation.getGroup().getTownBlocks().get(0).getPermissions();
 					TownyMessaging.sendMsg(player, TownySettings.getLangString("msg_set_perms"));
-					TownyMessaging.sendMessage(player, (Colors.Green + " Perm: " + ((townBlockOwnerObject instanceof Resident) ? perm.getColourString().replace("n", "t") : perm.getColourString().replace("f", "r"))));
-					TownyMessaging.sendMessage(player, (Colors.Green + " Perm: " + ((townBlockOwnerObject instanceof Resident) ? perm.getColourString2().replace("n", "t") : perm.getColourString2().replace("f", "r"))));
+					TownyMessaging.sendMessage(player, (Colors.Green + " Perm: " + ((townyBlockOwnerObject instanceof Resident) ? perm.getColourString().replace("n", "t") : perm.getColourString().replace("f", "r"))));
+					TownyMessaging.sendMessage(player, (Colors.Green + " Perm: " + ((townyBlockOwnerObject instanceof Resident) ? perm.getColourString2().replace("n", "t") : perm.getColourString2().replace("f", "r"))));
 					TownyMessaging.sendMessage(player, Colors.Green + "PvP: " + ((!perm.pvp) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Explosions: " + ((perm.explosion) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Firespread: " + ((perm.fire) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Mob Spawns: " + ((perm.mobs) ? Colors.Red + "ON" : Colors.LightGreen + "OFF"));
 				}
 				
@@ -423,7 +423,7 @@ public class ConfirmationHandler {
 	public static void handleConfirmation(ConfirmationType type) throws TownyException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		if (type == ConfirmationType.TOWN_DELETE) {
-			TownObject town = (TownObject) consoleExtra;
+			Town town = (Town) consoleExtra;
 			TownyMessaging.sendGlobalMessage(TownySettings.getDelTownMsg(town));
 			townyUniverse.getDataSource().removeTown(town);
 			removeConfirmation(type, true);

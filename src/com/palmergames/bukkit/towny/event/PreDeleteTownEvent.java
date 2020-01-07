@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -15,7 +15,7 @@ public class PreDeleteTownEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
 
 	private String townName;
-	private TownObject town;
+	private Town town;
 	private boolean isCancelled = false;
 	private String cancelMessage = "Sorry this event was cancelled";
 
@@ -30,7 +30,7 @@ public class PreDeleteTownEvent extends Event implements Cancellable {
 		return handlers;
 	}
 
-	public PreDeleteTownEvent(TownObject town) {
+	public PreDeleteTownEvent(Town town) {
 		super(!Bukkit.getServer().isPrimaryThread());
 		this.townName = town.getName();
 		this.town = town;
@@ -46,7 +46,7 @@ public class PreDeleteTownEvent extends Event implements Cancellable {
 	/**
 	 * @return the deleted town object.
 	 */
-	public TownObject getTown() {
+	public Town getTown() {
 		return town;
 	}
 

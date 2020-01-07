@@ -12,7 +12,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlayerCache;
 import com.palmergames.bukkit.towny.object.PlayerCache.TownBlockStatus;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyPermission;
@@ -243,7 +243,7 @@ public class PlayerCacheUtil {
 
 		//TownyUniverse universe = plugin.getTownyUniverse();
 		TownBlock townBlock;
-		TownObject town;
+		Town town;
 		try {
 			townBlock = worldCoord.getTownBlock();
 			town = townBlock.getTown();
@@ -264,7 +264,7 @@ public class PlayerCacheUtil {
 			if (TownySettings.getNationZonesEnabled()) {
 				// This nation zone system can be disabled during wartime.
 				if (!(TownySettings.getNationZonesWarDisables() && TownyAPI.getInstance().isWarTime())) {
-					TownObject nearestTown = null;
+					Town nearestTown = null;
 					int distance;
 					try {
 						nearestTown = worldCoord.getTownyWorld().getClosestTownFromCoord(worldCoord.getCoord(), nearestTown);
@@ -420,8 +420,8 @@ public class PlayerCacheUtil {
 		}
 
 		TownBlock townBlock = null;
-		TownObject playersTown = null;
-		TownObject targetTown = null;
+		Town playersTown = null;
+		Town targetTown = null;
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
 		try {
@@ -454,7 +454,7 @@ public class PlayerCacheUtil {
 						} else {
 						
 							Nation playersNation;
-							TownObject nearestTown = null; 
+							Town nearestTown = null; 
 							nearestTown = pos.getTownyWorld().getClosestTownWithNationFromCoord(pos.getCoord(), nearestTown);
 							Nation nearestNation = nearestTown.getNation();
 			

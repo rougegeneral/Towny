@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class TownBlockOwnerObject extends TownyObject implements Economical {
+public abstract class TownyBlockOwnerObject extends TownyObject implements Economical {
 	protected transient List<TownBlock> townBlocks = new ArrayList<>();
 	protected TownyPermission permissions = new TownyPermission();
 	
-	protected TownBlockOwnerObject(UUID identifier) {
+	protected TownyBlockOwnerObject(UUID identifier) {
 		super(identifier);
 	}
 	

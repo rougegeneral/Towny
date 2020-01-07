@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class TownObject extends TownBlockOwnerObject implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable, ObjectGroupManageable<PlotObjectGroup> {
+public class Town extends TownyBlockOwnerObject implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable, ObjectGroupManageable<PlotObjectGroup> {
 	private transient static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
 	
 	private transient List<Resident> residents = new ArrayList<>();
@@ -76,7 +76,7 @@ public class TownObject extends TownBlockOwnerObject implements ResidentList, To
 	private boolean isConquered = false;
 	private int conqueredDays;
 
-	public TownObject(UUID identifier) {
+	public Town(UUID identifier) {
 		super(identifier);
 		permissions.loadDefault(this);
 	}
@@ -1043,7 +1043,7 @@ public class TownObject extends TownBlockOwnerObject implements ResidentList, To
 
 	@Override
 	public String getEconomyName() {
-		return StringMgmt.trimMaxLength(TownObject.ECONOMY_ACCOUNT_PREFIX + getName(), 32);
+		return StringMgmt.trimMaxLength(Town.ECONOMY_ACCOUNT_PREFIX + getName(), 32);
 	}
 
 	public List<Location> getJailSpawns() {
@@ -1186,7 +1186,7 @@ public class TownObject extends TownBlockOwnerObject implements ResidentList, To
 		this.outpostSpawns = outpostSpawns;
 	}
 
-	public boolean isAlliedWith(TownObject othertown) {
+	public boolean isAlliedWith(Town othertown) {
 		if (this.hasNation() && othertown.hasNation()) {
 			try {
 				if (this.getNation().hasAlly(othertown.getNation())) {

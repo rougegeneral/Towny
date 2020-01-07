@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.confirmations;
 
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
-import com.palmergames.bukkit.towny.object.TownBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 
 import org.bukkit.entity.Player;
 
@@ -11,7 +11,7 @@ public class GroupConfirmation {
 	private PlotObjectGroup group;
 	private Player player;
 	private String[] args;
-	private TownBlockOwnerObject owner;
+	private TownyBlockOwnerObject owner;
 	
 	public GroupConfirmation(PlotObjectGroup group, Player player) {
 		this.group = group;
@@ -35,11 +35,11 @@ public class GroupConfirmation {
 		this.args = args;
 	}
 	
-	public TownBlockOwnerObject getTownBlockOwner() {
+	public TownyBlockOwnerObject getTownBlockOwner() {
 		return owner;
 	}
 
-	public void setTownBlockOwner(TownBlockOwnerObject owner) {
+	public void setTownBlockOwner(TownyBlockOwnerObject owner) {
 		this.owner = owner;
 	}
 	

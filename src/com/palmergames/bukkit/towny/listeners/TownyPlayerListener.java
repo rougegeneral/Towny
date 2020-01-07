@@ -16,7 +16,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlayerCache;
 import com.palmergames.bukkit.towny.object.PlayerCache.TownBlockStatus;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyPermission;
@@ -163,7 +163,7 @@ public class TownyPlayerListener implements Listener {
 			Resident resident = townyUniverse.getDataSource().getResident(event.getPlayer().getName());
 			// If player is jailed send them to their jailspawn.
 			if (resident.isJailed()) {
-				TownObject respawnTown = townyUniverse.getDataSource().getTown(resident.getJailTown());
+				Town respawnTown = townyUniverse.getDataSource().getTown(resident.getJailTown());
 				respawn = respawnTown.getJailSpawn(resident.getJailSpawn());
 				event.setRespawnLocation(respawn);
 			}
@@ -837,7 +837,7 @@ public class TownyPlayerListener implements Listener {
 				to.getTownBlock();
 				if (to.getTownBlock().hasTown()) { 
 					try {
-						TownObject fromTown = from.getTownBlock().getTown();
+						Town fromTown = from.getTownBlock().getTown();
 						if (!to.getTownBlock().getTown().equals(fromTown)){
 							Bukkit.getPluginManager().callEvent(new PlayerEnterTownEvent(player,to,from,to.getTownBlock().getTown(), pme)); // From Town into different Town.
 							Bukkit.getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from,from.getTownBlock().getTown(), pme));//
@@ -963,7 +963,7 @@ public class TownyPlayerListener implements Listener {
 		if (TownySettings.isNotificationUsingTitles()) {
 			try {
 				@SuppressWarnings("unused")
-                TownObject toTown = to.getTownBlock().getTown();
+				Town toTown = to.getTownBlock().getTown();
 			} catch (NotRegisteredException e) { // No town being entered so this is a move into the wilderness.
 				String title = ChatColor.translateAlternateColorCodes('&', TownySettings.getNotificationTitlesWildTitle());
 				String subtitle = ChatColor.translateAlternateColorCodes('&', TownySettings.getNotificationTitlesWildSubtitle());

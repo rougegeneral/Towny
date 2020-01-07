@@ -11,7 +11,7 @@ import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlayerCache;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyPermission;
@@ -426,7 +426,7 @@ public class CombatUtil {
 	 * @param b - Town B in comparison
 	 * @return true if they are allies.
 	 */
-	public static boolean isAlly(TownObject a, TownObject b) {
+	public static boolean isAlly(Town a, Town b) {
 
 		try {
 			if (a == b)
@@ -448,7 +448,7 @@ public class CombatUtil {
 	 * @param b - Town B in comparison
 	 * @return true if they are allies.
 	 */
-	public static boolean isSameNation(TownObject a, TownObject b) {
+	public static boolean isSameNation(Town a, Town b) {
 
 		try {
 			if (a == b)
@@ -468,7 +468,7 @@ public class CombatUtil {
 	 * @param b - Town B in comparison
 	 * @return true if they are allies.
 	 */
-	public static boolean isSameTown(TownObject a, TownObject b) {
+	public static boolean isSameTown(Town a, Town b) {
 
 		if (a == b)
 			return true;
@@ -555,7 +555,7 @@ public class CombatUtil {
 	 * @param b - Town B in comparison
 	 * @return true if b is an enemy.
 	 */
-	public static boolean isEnemy(TownObject a, TownObject b) {
+	public static boolean isEnemy(Town a, Town b) {
 
 		try {
 			if (a == b)

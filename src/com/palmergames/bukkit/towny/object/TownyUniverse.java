@@ -43,7 +43,7 @@ public class TownyUniverse {
 		return TownyAPI.getInstance().getOnlinePlayers(residentList);
 	}
 
-	public static List<Player> getOnlinePlayers(TownObject town) {
+	public static List<Player> getOnlinePlayers(Town town) {
 		return TownyAPI.getInstance().getOnlinePlayers(town);
 	}
 
@@ -95,7 +95,7 @@ public class TownyUniverse {
 		return new Hashtable<>(com.palmergames.bukkit.towny.TownyUniverse.getInstance().getResidentMap());
 	}
 
-	public Hashtable<String, TownObject> getTownsMap() {
+	public Hashtable<String, Town> getTownsMap() {
 		return new Hashtable<>(com.palmergames.bukkit.towny.TownyUniverse.getInstance().getTownsMap());
 	}
 

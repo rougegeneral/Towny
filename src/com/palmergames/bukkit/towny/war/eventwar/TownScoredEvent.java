@@ -1,9 +1,10 @@
 package com.palmergames.bukkit.towny.war.eventwar;
 
-import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.palmergames.bukkit.towny.object.Town;
 
 public class TownScoredEvent extends Event {
 
@@ -20,17 +21,17 @@ public class TownScoredEvent extends Event {
 		return handlers;
 	}
 	
-	private TownObject town;
+	private Town town;
 	private int score;
 	
-	public TownScoredEvent (TownObject town, int score)
+	public TownScoredEvent (Town town, int score)
 	{
 		super(!Bukkit.getServer().isPrimaryThread());
 		this.town = town;
 		this.score = score;
 	}
 	
-	public TownObject getTown()
+	public Town getTown()
 	{
 		return town;
 	}

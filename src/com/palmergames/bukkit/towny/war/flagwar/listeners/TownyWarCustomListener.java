@@ -11,7 +11,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.tasks.TownClaim;
@@ -136,14 +136,14 @@ public class TownyWarCustomListener implements Listener {
 		TownyUniverse universe = TownyUniverse.getInstance();
 		try {
 			Resident attackingResident = universe.getDataSource().getResident(cell.getNameOfFlagOwner());
-			TownObject attackingTown = attackingResident.getTown();
+			Town attackingTown = attackingResident.getTown();
 			Nation attackingNation = attackingTown.getNation();
 
 			WorldCoord worldCoord = TownyWar.cellToWorldCoord(cell);
 			universe.removeWarZone(worldCoord);
 
 			TownBlock townBlock = worldCoord.getTownBlock();
-			TownObject defendingTown = townBlock.getTown();
+			Town defendingTown = townBlock.getTown();
 
 			TownyWar.townFlagged(defendingTown);
 

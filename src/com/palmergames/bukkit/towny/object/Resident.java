@@ -33,11 +33,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Resident extends TownBlockOwnerObject implements ResidentModes, TownyInviteReceiver, Saveable, Economical {
+public class Resident extends TownyBlockOwnerObject implements ResidentModes, TownyInviteReceiver, Saveable, Economical {
 	private transient List<Resident> friends = new ArrayList<>();
 	// private List<Object[][][]> regenUndo = new ArrayList<>(); // Feature is disabled as of MC 1.13, maybe it'll come back.
 	@JsonAdapter(TownFieldSerializer.class)
-	private transient TownObject town = null;
+	private transient Town town = null;
 	private long lastOnline;
 	private long registered;
 	private boolean isNPC = false;
@@ -93,7 +93,7 @@ public class Resident extends TownBlockOwnerObject implements ResidentModes, Tow
 			TownyUniverse.getInstance().getJailedResidentMap().remove(this);
 	}
 	
-	public void sendToJail(Player player, Integer index, TownObject town) {
+	public void sendToJail(Player player, Integer index, Town town) {
 		this.setJailed(true);
 		this.setJailSpawn(index);
 		this.setJailTown(town.getName());
@@ -115,7 +115,7 @@ public class Resident extends TownBlockOwnerObject implements ResidentModes, Tow
 			} catch (NotRegisteredException ignored) {}
 	}
 
-	public void setJailedByMayor(Player player, Integer index, TownObject town, Integer days) {
+	public void setJailedByMayor(Player player, Integer index, Town town, Integer days) {
 
 		if (this.isJailed) {
 			try {
@@ -150,7 +150,7 @@ public class Resident extends TownBlockOwnerObject implements ResidentModes, Tow
 		TownyUniverse.getInstance().getDataSource().saveResident(this);
 	}
 
-	public void setJailed(Resident resident, Integer index, TownObject town) {
+	public void setJailed(Resident resident, Integer index, Town town) {
 		Player player = null;
 		if (BukkitTools.isOnline(resident.getName()))
 			player = BukkitTools.getPlayer(resident.getName());
@@ -288,7 +288,7 @@ public class Resident extends TownBlockOwnerObject implements ResidentModes, Tow
 		return hasTown() && town.hasNation();
 	}
 
-	public TownObject getTown() throws NotRegisteredException {
+	public Town getTown() throws NotRegisteredException {
 
 		if (hasTown())
 			return town;
@@ -296,7 +296,7 @@ public class Resident extends TownBlockOwnerObject implements ResidentModes, Tow
 			throw new NotRegisteredException(TownySettings.getLangString("msg_err_resident_doesnt_belong_to_any_town"));
 	}
 
-	public void setTown(TownObject town) throws AlreadyRegisteredException {
+	public void setTown(Town town) throws AlreadyRegisteredException {
 
 		if (town == null) {
 			this.town = null;

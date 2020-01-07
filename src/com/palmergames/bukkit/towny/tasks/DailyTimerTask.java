@@ -13,7 +13,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
@@ -88,7 +88,7 @@ public class DailyTimerTask extends TownyTimerTask {
 
 				            @Override
 				            public void run() {				            	
-				            	TownObject jailTown = null;
+				            	Town jailTown = null;
 								try {
 									jailTown = townyUniverse.getDataSource().getTown(resident.getJailTown());
 								} catch (NotRegisteredException ignored) {
@@ -107,7 +107,7 @@ public class DailyTimerTask extends TownyTimerTask {
 		}
 		
 		// Reduce conquered towns' conqueredDays
-		for (TownObject towns : TownyUniverse.getInstance().getDataSource().getTowns()) {
+		for (Town towns : TownyUniverse.getInstance().getDataSource().getTowns()) {
 			if (towns.isConquered()) {
 				if (towns.getConqueredDays() == 1) {
 					towns.setConquered(false);
@@ -178,9 +178,9 @@ public class DailyTimerTask extends TownyTimerTask {
 	protected void collectNationTaxes(Nation nation) throws EconomyException {
 		if (nation.getTaxes() > 0) {
 
-			List<TownObject> towns = new ArrayList<>(nation.getTowns());
-			ListIterator<TownObject> townItr = towns.listIterator();
-			TownObject town;
+			List<Town> towns = new ArrayList<>(nation.getTowns());
+			ListIterator<Town> townItr = towns.listIterator();
+			Town town;
 			TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
 			while (townItr.hasNext()) {
@@ -226,9 +226,9 @@ public class DailyTimerTask extends TownyTimerTask {
 	public void collectTownTaxes() throws EconomyException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
-		List<TownObject> towns = new ArrayList<>(townyUniverse.getDataSource().getTowns());
-		ListIterator<TownObject> townItr = towns.listIterator();
-		TownObject town;
+		List<Town> towns = new ArrayList<>(townyUniverse.getDataSource().getTowns());
+		ListIterator<Town> townItr = towns.listIterator();
+		Town town;
 
 		while (townItr.hasNext()) {
 			town = townItr.next();
@@ -248,7 +248,7 @@ public class DailyTimerTask extends TownyTimerTask {
 	 * @param town - Town to collect taxes from
 	 * @throws EconomyException - EconomyException
 	 */
-	protected void collectTownTaxes(TownObject town) throws EconomyException {
+	protected void collectTownTaxes(Town town) throws EconomyException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		// Resident Tax
 		if (town.getTaxes() > 0) {
@@ -368,9 +368,9 @@ public class DailyTimerTask extends TownyTimerTask {
 	 */
 	public void collectTownCosts() throws EconomyException, TownyException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
-		List<TownObject> towns = new ArrayList<>(townyUniverse.getDataSource().getTowns());
-		ListIterator<TownObject> townItr = towns.listIterator();
-		TownObject town;
+		List<Town> towns = new ArrayList<>(townyUniverse.getDataSource().getTowns());
+		ListIterator<Town> townItr = towns.listIterator();
+		Town town;
 
 		while (townItr.hasNext()) {
 			town = townItr.next();

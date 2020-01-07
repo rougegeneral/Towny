@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -17,7 +17,7 @@ public class TownAddResidentEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     
     private Resident resident;
-    private TownObject town;
+    private Town town;
 
     @Override
     public HandlerList getHandlers() {
@@ -30,7 +30,7 @@ public class TownAddResidentEvent extends Event {
 		return handlers;
 	}
 
-    public TownAddResidentEvent(Resident resident, TownObject town) {
+    public TownAddResidentEvent(Resident resident, Town town) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.resident = resident;
         this.town = town;
@@ -48,7 +48,7 @@ public class TownAddResidentEvent extends Event {
      *
      * @return the town the resident has just joined.
      */
-    public TownObject getTown() {
+    public Town getTown() {
         return town;
     }
 

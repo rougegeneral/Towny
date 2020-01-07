@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.ResidentList;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
@@ -52,7 +52,7 @@ public class TownyAPI {
     public Location getTownSpawnLocation(Player player) {
         try {
             Resident resident = townyUniverse.getDataSource().getResident(player.getName());
-            TownObject town = resident.getTown();
+            Town town = resident.getTown();
             return town.getSpawn();
         } catch (TownyException x) {
             return null;
@@ -131,12 +131,12 @@ public class TownyAPI {
     }
     
     /**
-     * Gets all online {@link Player}s for a specific {@link TownObject}.
+     * Gets all online {@link Player}s for a specific {@link Town}.
      *
-     * @param town {@link TownObject} of which you want all the online {@link Player}s.
-     * @return {@link List} of all online {@link Player}s in the specified {@link TownObject}.
+     * @param town {@link Town} of which you want all the online {@link Player}s.
+     * @return {@link List} of all online {@link Player}s in the specified {@link Town}.
      */
-    public List<Player> getOnlinePlayers(TownObject town) {
+    public List<Player> getOnlinePlayers(Town town) {
         ArrayList<Player> players = new ArrayList<>();
         
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -158,7 +158,7 @@ public class TownyAPI {
     public List<Player> getOnlinePlayers(Nation nation) {
         ArrayList<Player> players = new ArrayList<>();
         
-        for (TownObject town : nation.getTowns()) {
+        for (Town town : nation.getTowns()) {
             players.addAll(getOnlinePlayers(town));
         }
         return players;
@@ -248,10 +248,10 @@ public class TownyAPI {
     }
     
     /**
-     * Get the name of a {@link TownObject} at a specific {@link Location}.
+     * Get the name of a {@link Town} at a specific {@link Location}.
      *
-     * @param location {@link Location} to get {@link TownObject} name for.
-     * @return {@link String} containg the name of the {@link TownObject} at this location, or null for none.
+     * @param location {@link Location} to get {@link Town} name for.
+     * @return {@link String} containg the name of the {@link Town} at this location, or null for none.
      */
     public String getTownName(Location location) {
         try {
@@ -265,10 +265,10 @@ public class TownyAPI {
     
     
     /**
-     * Get the {@link UUID} of a {@link TownObject} at the specified {@link Location}.
+     * Get the {@link UUID} of a {@link Town} at the specified {@link Location}.
      *
-     * @param location {@link Location} to get {@link TownObject} {@link UUID} for.
-     * @return {@link UUID} of any {@link TownObject} at this {@link Location}, or null for none.
+     * @param location {@link Location} to get {@link Town} {@link UUID} for.
+     * @return {@link UUID} of any {@link Town} at this {@link Location}, or null for none.
      */
     public UUID getTownUUID(Location location) {
         try {

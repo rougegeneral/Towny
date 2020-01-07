@@ -6,7 +6,7 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.FileMgmt;
@@ -202,7 +202,7 @@ public class TownyPerms {
 	 * 
 	 * @param town - Town to target
 	 */
-	public static void updateTownPerms(TownObject town) {
+	public static void updateTownPerms(Town town) {
 		
 		for (Resident resident: town.getResidents()) {
 			assignPermissions(resident, null);
@@ -217,7 +217,7 @@ public class TownyPerms {
 	 */
 	public static void updateNationPerms(Nation nation) {
 		
-		for (TownObject town: nation.getTowns()) {
+		for (Town town: nation.getTowns()) {
 			updateTownPerms(town);
 		}
 		
@@ -377,7 +377,7 @@ public class TownyPerms {
 	 * @param town - Town to target
 	 * @return a list of permissions
 	 */
-	public static List<String> getTownDefault(TownObject town) {
+	public static List<String> getTownDefault(Town town) {
 
 		List<String> permsList = getList("towns.default");
 		if ((permsList == null)) {

@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.Transaction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
@@ -9,13 +9,13 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class TownPreTransactionEvent extends Event implements Cancellable {
-	private TownObject town;
+	private Town town;
 	private static final HandlerList handlers = new HandlerList();
 	private Transaction transaction;
 	private String cancelMessage = "Sorry this event was cancelled.";
 	private boolean isCancelled = false;
 
-	public TownPreTransactionEvent(TownObject town, Transaction transaction) {
+	public TownPreTransactionEvent(Town town, Transaction transaction) {
 		super(!Bukkit.getServer().isPrimaryThread());
 		this.town = town;
 		this.transaction = transaction;
@@ -31,7 +31,7 @@ public class TownPreTransactionEvent extends Event implements Cancellable {
 		return handlers;
 	}
 
-	public TownObject getTown() {
+	public Town getTown() {
 		return town;
 	}
 

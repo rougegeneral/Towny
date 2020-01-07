@@ -36,10 +36,10 @@ import java.util.UUID;
 public class Nation extends TownyObject implements ResidentList, TownyInviteSender, TownyInviteReceiver, TownyAllySender, Saveable, Nameable, Economical {
 	private static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getNationAccountPrefix();
 	public UUID identifier;
-	private List<TownObject> towns = new ArrayList<>();
+	private List<Town> towns = new ArrayList<>();
 	private List<Nation> allies = new ArrayList<>();
 	private List<Nation> enemies = new ArrayList<>();
-	private TownObject capital;
+	private Town capital;
 	private double taxes, spawnCost;
 	private boolean neutral = false;
 	private String nationBoard = "/nation set board [msg]";
@@ -155,7 +155,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 		return getEnemies().contains(nation);
 	}
 
-	public List<TownObject> getTowns() {
+	public List<Town> getTowns() {
 
 		return towns;
 	}
@@ -175,25 +175,25 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 		return getAssistants().contains(resident);
 	}
 
-	public boolean isCapital(TownObject town) {
+	public boolean isCapital(Town town) {
 
 		return town == getCapital();
 	}
 
 	public boolean hasTown(String name) {
 
-		for (TownObject town : towns)
+		for (Town town : towns)
 			if (town.getName().equalsIgnoreCase(name))
 				return true;
 		return false;
 	}
 
-	public boolean hasTown(TownObject town) {
+	public boolean hasTown(Town town) {
 
 		return towns.contains(town);
 	}
 
-	public void addTown(TownObject town) throws AlreadyRegisteredException {
+	public void addTown(Town town) throws AlreadyRegisteredException {
 
 		if (hasTown(town))
 			throw new AlreadyRegisteredException();
@@ -207,7 +207,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 		}
 	}
 
-	public void setCapital(TownObject capital) {
+	public void setCapital(Town capital) {
 
 		this.capital = capital;
 		try {
@@ -218,7 +218,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 		}
 	}
 
-	public TownObject getCapital() {
+	public Town getCapital() {
 
 		return capital;
 	}
@@ -302,7 +302,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 
 		List<Resident> assistants = new ArrayList<>();
 		
-		for (TownObject town: towns)
+		for (Town town: towns)
 		for (Resident assistant: town.getResidents()) {
 			if (assistant.hasNationRank("assistant"))
 				assistants.add(assistant);
@@ -338,12 +338,12 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	public int getNumResidents() {
 
 		int numResidents = 0;
-		for (TownObject town : getTowns())
+		for (Town town : getTowns())
 			numResidents += town.getNumResidents();
 		return numResidents;
 	}
 
-	public void removeTown(TownObject town) throws EmptyNationException, NotRegisteredException {
+	public void removeTown(Town town) throws EmptyNationException, NotRegisteredException {
 
 		if (!hasTown(town))
 			throw new NotRegisteredException();
@@ -356,8 +356,8 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 				throw new EmptyNationException(this);
 			} else if (isCapital) {
 				int numResidents = 0;
-				TownObject tempCapital = null;
-				for (TownObject newCapital : getTowns())
+				Town tempCapital = null;
+				for (Town newCapital : getTowns())
 					if (newCapital.getNumResidents() > numResidents) {
 						tempCapital = newCapital;
 						numResidents = newCapital.getNumResidents();
@@ -371,7 +371,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 		}
 	}
 
-	private void remove(TownObject town) {
+	private void remove(Town town) {
 
 		//removeAssistantsIn(town);
 		try {
@@ -400,7 +400,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 
 	private void removeAllTowns() {
 
-		for (TownObject town : new ArrayList<>(towns))
+		for (Town town : new ArrayList<>(towns))
 			remove(town);
 	}
 
@@ -435,9 +435,9 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 		if(capital != null) {
 			if (TownySettings.getNationRequiresProximity() > 0) {
 				final Coord capitalCoord = capital.getHomeBlock().getCoord();
-				Iterator<TownObject> it = towns.iterator();
+				Iterator<Town> it = towns.iterator();
 				while(it.hasNext()) {
-					TownObject town = (TownObject) it.next();
+					Town town = (Town) it.next();
 					Coord townCoord = town.getHomeBlock().getCoord();
 					if (!capital.getHomeBlock().getWorld().getName().equals(town.getHomeBlock().getWorld().getName())) {
 						it.remove();
@@ -484,7 +484,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 
 	public boolean hasResident(Resident resident) {
 
-		for (TownObject town : getTowns())
+		for (Town town : getTowns())
 			if (town.hasResident(resident))
 				return true;
 		return false;
@@ -522,7 +522,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	public List<Resident> getResidents() {
 
 		List<Resident> out = new ArrayList<>();
-		for (TownObject town : getTowns())
+		for (Town town : getTowns())
 			out.addAll(town.getResidents());
 		return out;
 	}
@@ -530,7 +530,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	@Override
 	public boolean hasResident(String name) {
 
-		for (TownObject town : getTowns())
+		for (Town town : getTowns())
 			if (town.hasResident(name))
 				return true;
 		return false;
@@ -555,7 +555,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	public List<Resident> getOutlaws() {
 
 		List<Resident> out = new ArrayList<>();
-		for (TownObject town : getTowns())
+		for (Town town : getTowns())
 			out.addAll(town.getOutlaws());
 		return out;
 	}
@@ -674,7 +674,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	
 	public int getNumTownblocks() {
 		int townBlocksClaimed = 0;
-		for (TownObject towns : this.getTowns()) {
+		for (Town towns : this.getTowns()) {
 			townBlocksClaimed = townBlocksClaimed + towns.getTownBlocks().size();
 		}
 		return townBlocksClaimed;

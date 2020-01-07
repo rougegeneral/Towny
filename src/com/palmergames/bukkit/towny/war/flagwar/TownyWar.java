@@ -11,7 +11,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.AreaSelectionUtil;
@@ -33,7 +33,7 @@ public class TownyWar {
 
 	private static Map<Cell, CellUnderAttack> cellsUnderAttack;
 	private static Map<String, List<CellUnderAttack>> cellsUnderAttackByPlayer;
-	private static Map<TownObject, Long> lastFlag;
+	private static Map<Town, Long> lastFlag;
 
 	public static void onEnable() {
 
@@ -100,11 +100,11 @@ public class TownyWar {
 	 * @param town the town to get cells under attack
 	 * @return the cells under attack
 	 */
-	public static List<CellUnderAttack> getCellsUnderAttack(TownObject town) {
+	public static List<CellUnderAttack> getCellsUnderAttack(Town town) {
 		List<CellUnderAttack> cells = new ArrayList<>();
 		for(CellUnderAttack cua : cellsUnderAttack.values()) {
 			try {
-				TownObject townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
+				Town townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
 				if (townUnderAttack == null) {
 					continue;
 				}
@@ -118,10 +118,10 @@ public class TownyWar {
 		return cells;
 	}
 	
-	public static boolean isUnderAttack(TownObject town) {
+	public static boolean isUnderAttack(Town town) {
 		for(CellUnderAttack cua : cellsUnderAttack.values()) {
 			try {
-				TownObject townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
+				Town townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
 				if (townUnderAttack == null) {
 					continue;
 				}
@@ -238,7 +238,7 @@ public class TownyWar {
 
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		Resident attackingResident;
-		TownObject landOwnerTown, attackingTown;
+		Town landOwnerTown, attackingTown;
 		Nation landOwnerNation, attackingNation;
 		TownBlock townBlock;
 
@@ -372,7 +372,7 @@ public class TownyWar {
 		return true;
 	}
 
-	public static void checkIfTownHasMinOnlineForWar(TownObject town) throws TownyException {
+	public static void checkIfTownHasMinOnlineForWar(Town town) throws TownyException {
 
 		int requiredOnline = TownyWarConfig.getMinPlayersOnlineInTownForWar();
 		int onlinePlayerCount = TownyAPI.getInstance().getOnlinePlayers(town).size();
@@ -393,14 +393,14 @@ public class TownyWar {
 		return new WorldCoord(cell.getWorldName(), cell.getX(), cell.getZ());
 	}
 
-	public static long lastFlagged(TownObject town) {
+	public static long lastFlagged(Town town) {
 		if (lastFlag.containsKey(town))
 			return lastFlag.get(town);
 		else
 			return 0;
 	}
 
-	public static void townFlagged(TownObject town) {
+	public static void townFlagged(Town town) {
 		if (lastFlag.containsKey(town))
 			lastFlag.replace(town, System.currentTimeMillis());
 		else

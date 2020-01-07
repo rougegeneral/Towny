@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
@@ -79,7 +79,7 @@ public abstract class TownyDataSource {
 
 	abstract public boolean loadResident(Resident resident);
 
-	abstract public boolean loadTown(TownObject town);
+	abstract public boolean loadTown(Town town);
 
 	abstract public boolean loadNation(Nation nation);
 
@@ -107,7 +107,7 @@ public abstract class TownyDataSource {
 
 	abstract public boolean saveResident(Resident resident);
 
-	abstract public boolean saveTown(TownObject town);
+	abstract public boolean saveTown(Town town);
 	
 	abstract public boolean savePlotGroup(PlotObjectGroup group);
 
@@ -129,7 +129,7 @@ public abstract class TownyDataSource {
 
 	abstract public void deleteResident(Resident resident);
 
-	abstract public void deleteTown(TownObject town);
+	abstract public void deleteTown(Town town);
 
 	abstract public void deleteNation(Nation nation);
 
@@ -172,7 +172,7 @@ public abstract class TownyDataSource {
 	public boolean loadTowns() {
 
 		TownyMessaging.sendDebugMsg("Loading Towns");
-		for (TownObject town : getTowns())
+		for (Town town : getTowns())
 			if (!loadTown(town)) {
 				System.out.println("[Towny] Loading Error: Could not read town data " + town.getName() + "'.");
 				return false;
@@ -219,7 +219,7 @@ public abstract class TownyDataSource {
 	public boolean saveTowns() {
 
 		TownyMessaging.sendDebugMsg("Saving Towns");
-		for (TownObject town : getTowns())
+		for (Town town : getTowns())
 			saveTown(town);
 		return true;
 	}
@@ -259,13 +259,13 @@ public abstract class TownyDataSource {
 
 	abstract public boolean hasNation(String name);
 
-	abstract public List<TownObject> getTowns(String[] names);
+	abstract public List<Town> getTowns(String[] names);
 
-	abstract public List<TownObject> getTowns();
+	abstract public List<Town> getTowns();
 
-	abstract public TownObject getTown(String name) throws NotRegisteredException;
+	abstract public Town getTown(String name) throws NotRegisteredException;
 
-	abstract public TownObject getTown(UUID uuid) throws NotRegisteredException;
+	abstract public Town getTown(UUID uuid) throws NotRegisteredException;
 
 	abstract public List<Nation> getNations(String[] names);
 
@@ -285,7 +285,7 @@ public abstract class TownyDataSource {
 
 	abstract public void removeTownBlock(TownBlock townBlock);
 
-	abstract public void removeTownBlocks(TownObject town);
+	abstract public void removeTownBlocks(Town town);
 
 	abstract public List<TownBlock> getAllTownBlocks();
 
@@ -297,7 +297,7 @@ public abstract class TownyDataSource {
 
 	abstract public void newWorld(String name) throws AlreadyRegisteredException;
 
-	abstract public void removeTown(TownObject town);
+	abstract public void removeTown(Town town);
 
 	abstract public void removeWorld(TownyWorld world) throws UnsupportedOperationException;
 
@@ -307,11 +307,11 @@ public abstract class TownyDataSource {
 
 	abstract public Set<String> getNationsKeys();
 
-	abstract public List<TownObject> getTownsWithoutNation();
+	abstract public List<Town> getTownsWithoutNation();
 
 	abstract public List<Resident> getResidentsWithoutTown();
 
-	abstract public void renameTown(TownObject town, String newName) throws AlreadyRegisteredException, NotRegisteredException;
+	abstract public void renameTown(Town town, String newName) throws AlreadyRegisteredException, NotRegisteredException;
 
 	abstract public void renameNation(Nation nation, String newName) throws AlreadyRegisteredException, NotRegisteredException;
 	

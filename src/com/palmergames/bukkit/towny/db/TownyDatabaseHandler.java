@@ -17,7 +17,7 @@ import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
@@ -116,7 +116,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 	
 	@Override
-	public boolean loadTown(TownObject town) {
+	public boolean loadTown(Town town) {
 		return true;
 	}
 	
@@ -186,7 +186,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 	
 	@Override
-	public boolean saveTown(TownObject town) {
+	public boolean saveTown(Town town) {
 		return TownyUniverse.getInstance().save(town);
 	}
 
@@ -250,7 +250,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 	
 	@Override
-	public void deleteTown(TownObject town) {
+	public void deleteTown(Town town) {
 		TownyUniverse.getInstance().unsafeDelete(town);
 	}
 	
@@ -344,9 +344,9 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public List<TownObject> getTowns(String[] names) {
+	public List<Town> getTowns(String[] names) {
 
-		List<TownObject> matches = new ArrayList<>();
+		List<Town> matches = new ArrayList<>();
 		for (String name : names)
 			try {
 				matches.add(getTown(name));
@@ -356,13 +356,13 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public List<TownObject> getTowns() {
+	public List<Town> getTowns() {
 
 		return new ArrayList<>(universe.getTownsMap().values());
 	}
 
 	@Override
-	public TownObject getTown(String name) throws NotRegisteredException {
+	public Town getTown(String name) throws NotRegisteredException {
 
 		try {
 			name = NameValidation.checkAndFilterName(name).toLowerCase();
@@ -376,9 +376,9 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public TownObject getTown(UUID uuid) throws NotRegisteredException {
+	public Town getTown(UUID uuid) throws NotRegisteredException {
 		String name = null;
-		for (TownObject town : this.getTowns()) {
+		for (Town town : this.getTowns()) {
 			if (uuid.equals(town.getIdentifier())) {
 				name = town.getName();
 			}
@@ -490,7 +490,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	@Override
 	public void removeResident(Resident resident) {
 
-		TownObject town = null;
+		Town town = null;
 
 		if (resident.hasTown())
 			try {
@@ -518,7 +518,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		}
 		
 		try {
-			for (TownObject townOutlaw : getTowns()) {
+			for (Town townOutlaw : getTowns()) {
 				if (townOutlaw.hasOutlaw(resident)) {
 					townOutlaw.removeOutlaw(resident);
 					saveTown(townOutlaw);
@@ -531,7 +531,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		Bukkit.getPluginManager().callEvent(new DeletePlayerEvent(resident.getName()));
 	}
 
-	public void removeOneOfManyTownBlocks(TownBlock townBlock, TownObject town) {
+	public void removeOneOfManyTownBlocks(TownBlock townBlock, Town town) {
 
 		Resident resident = null;
 		try {
@@ -566,7 +566,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	@Override
 	public void removeTownBlock(TownBlock townBlock) {
 
-		TownObject town = null;
+		Town town = null;
 //		Resident resident = null;                   - Removed in 0.95.2.5
 //		try {
 //			resident = townBlock.getResident();
@@ -606,13 +606,13 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public void removeTownBlocks(TownObject town) {
+	public void removeTownBlocks(Town town) {
 
 		for (TownBlock townBlock : new ArrayList<>(town.getTownBlocks()))
 			removeTownBlock(townBlock);
 	}
 	
-	public void removeManyTownBlocks(TownObject town) {
+	public void removeManyTownBlocks(Town town) {
 
 		for (TownBlock townBlock : new ArrayList<>(town.getTownBlocks()))
 			removeOneOfManyTownBlocks(townBlock, town);
@@ -718,7 +718,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	public void removeResidentList(Resident resident) {}
 
 	@Override
-	public void removeTown(TownObject town) {
+	public void removeTown(Town town) {
 		
 //		PreDeleteTownEvent preEvent = new PreDeleteTownEvent(town);
 //		Bukkit.getPluginManager().callEvent(preEvent);
@@ -879,7 +879,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public List<TownObject> getTownsWithoutNation() {
+	public List<Town> getTownsWithoutNation() {
 		return universe.getTownsWithoutNation();
 	}
 
@@ -889,7 +889,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public void renameTown(TownObject town, String newName) throws AlreadyRegisteredException, NotRegisteredException {
+	public void renameTown(Town town, String newName) throws AlreadyRegisteredException, NotRegisteredException {
 
 //		lock.lock();
 //		
@@ -1264,11 +1264,11 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	public void mergeNation(Nation succumbingNation, Nation prevailingNation) throws NotRegisteredException, AlreadyRegisteredException {
 		
 		lock.lock();
-		List<TownObject> towns = new ArrayList<>(succumbingNation.getTowns());
-		TownObject lastTown = null;
+		List<Town> towns = new ArrayList<>(succumbingNation.getTowns());
+		Town lastTown = null;
 		try {
 			succumbingNation.payTo(succumbingNation.getHoldingBalance(), prevailingNation, "Nation merge bank accounts.");
-			for (TownObject town : towns) {			
+			for (Town town : towns) {			
 				lastTown = town;
 				for (Resident res : town.getResidents()) {
 					if (res.hasTitle() || res.hasSurname()) {

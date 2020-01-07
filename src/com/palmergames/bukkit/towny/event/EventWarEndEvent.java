@@ -3,18 +3,18 @@ package com.palmergames.bukkit.towny.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Town;
 
 public class EventWarEndEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
-	private List<TownObject> warringTowns = new ArrayList<>();
+	private List<Town> warringTowns = new ArrayList<>();
 	private List<Nation> warringNations = new ArrayList<>();
-	private TownObject winningTown;
+	private Town winningTown;
 	private double townWinnings, nationWinnings;
 
 	@Override
@@ -26,7 +26,7 @@ public class EventWarEndEvent extends Event {
 		return handlers;
 	}
 	
-	public EventWarEndEvent(List<TownObject> warringTowns, TownObject winningTown, double townWinnings, List<Nation> warringNations, double nationWinnings) {
+	public EventWarEndEvent(List<Town> warringTowns, Town winningTown, double townWinnings, List<Nation> warringNations, double nationWinnings) {
 		super(!Bukkit.getServer().isPrimaryThread());
 		this.warringNations = warringNations;
 		this.warringTowns = warringTowns;
@@ -49,7 +49,7 @@ public class EventWarEndEvent extends Event {
 	 * 
 	 * @return List&lt;Town&gt; - The list of towns who survived the war event.
 	 */
-	public List<TownObject> getWarringTowns() {
+	public List<Town> getWarringTowns() {
 		return this.warringTowns;
 	}
 	
@@ -58,7 +58,7 @@ public class EventWarEndEvent extends Event {
 	 * 
 	 * @return Town - the Town with the highest score.
 	 */
-	public TownObject getWinningTown() {
+	public Town getWinningTown() {
 		return this.winningTown;
 	}
 	

@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
 import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -11,7 +11,7 @@ public class NationAddTownEvent extends Event  {
 
     private static final HandlerList handlers = new HandlerList();
     
-    private TownObject town;
+    private Town town;
     private Nation nation;
 
     @Override
@@ -25,7 +25,7 @@ public class NationAddTownEvent extends Event  {
 		return handlers;
 	}
 
-    public NationAddTownEvent(TownObject town, Nation nation) {
+    public NationAddTownEvent(Town town, Nation nation) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.town = town;
         this.nation = nation;
@@ -35,7 +35,7 @@ public class NationAddTownEvent extends Event  {
      *
      * @return the town who has joined a nation.
      */
-    public TownObject getTown() {
+    public Town getTown() {
         return town;
     }
 

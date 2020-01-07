@@ -4,7 +4,7 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.util.FileMgmt;
@@ -82,18 +82,18 @@ public abstract class TownyDatabase {
 	// Towns
 	
 	/**
-	 * Finds all {@link TownObject} datasets identifiers.
+	 * Finds all {@link Town} datasets identifiers.
 	 *
 	 * @return {@link List} dataset identifiers.
 	 */
 	@Nonnull
-	public abstract Map<UUID, TownObject> loadTowns();
+	public abstract Map<UUID, Town> loadTowns();
 	
 	/**
-	 * Loads a {@link TownObject} dataset with its identifier.
+	 * Loads a {@link Town} dataset with its identifier.
 	 *
-	 * @param name {@link TownObject} name
-	 * @return true, if the {@link TownObject} was successfully loaded, false if otherwise.
+	 * @param name {@link Town} name
+	 * @return true, if the {@link Town} was successfully loaded, false if otherwise.
 	 */
 	public abstract boolean loadTown(String name);
 	

@@ -5,7 +5,7 @@ import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
 public class OutpostUtil {
@@ -26,7 +26,7 @@ public class OutpostUtil {
 	 * @return - Returns true if all required tests for outposts are met.
 	 * @throws TownyException if a condition is not met.
 	 */
-	public static boolean OutpostTests(TownObject town, Resident resident, TownyWorld world, Coord key, boolean isAdmin, boolean isPlotSetOutpost) throws TownyException {
+	public static boolean OutpostTests(Town town, Resident resident, TownyWorld world, Coord key, boolean isAdmin, boolean isPlotSetOutpost) throws TownyException {
 
 		// The config can be set up to dole out numbers of outposts to towns based on resident counts/belonging to a nation.
 		if (TownySettings.isOutpostsLimitedByLevels() && (town.getMaxOutpostSpawn() >= town.getOutpostLimit()))

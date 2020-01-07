@@ -15,7 +15,7 @@ import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
@@ -32,11 +32,14 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -49,7 +52,7 @@ public class TownyUniverse {
 	private static final Logger LOGGER = LogManager.getLogger(Towny.class);
     private static TownyUniverse instance;
     private final ConcurrentMap<UUID, Resident> residents = new ConcurrentHashMap<>();
-    private final ConcurrentMap<UUID, TownObject> towns = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, Town> towns = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, Nation> nations = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, TownyWorld> worlds = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, TownBlock> townBlocks = new ConcurrentHashMap<>();
@@ -241,7 +244,7 @@ public class TownyUniverse {
 		residents.put(resident.getIdentifier(), resident);
 	}
 	
-	public void addTown(TownObject town) {
+	public void addTown(Town town) {
 		towns.put(town.getIdentifier(), town);
 	}
     
@@ -263,9 +266,9 @@ public class TownyUniverse {
         return output;
     }
 	@Deprecated
-	public ConcurrentHashMap<String, TownObject> getTownsMap() {
-		ConcurrentHashMap<String, TownObject> output = new ConcurrentHashMap<>();
-		for (TownObject town : towns.values()) {
+	public ConcurrentHashMap<String, Town> getTownsMap() {
+		ConcurrentHashMap<String, Town> output = new ConcurrentHashMap<>();
+		for (Town town : towns.values()) {
 			output.put(town.getName(), town);
 		}
 		return output;
@@ -290,7 +293,7 @@ public class TownyUniverse {
 	}
 	
 	@Nullable
-	public TownObject getTown(UUID ID) {
+	public Town getTown(UUID ID) {
 		return towns.get(ID);
 	}
 	
@@ -302,7 +305,7 @@ public class TownyUniverse {
 		return new ArrayList<>(nations.values());
 	}
 	
-	public List<TownObject> getTowns() {
+	public List<Town> getTowns() {
 		return new ArrayList<>(towns.values());
 	}
 	
@@ -318,7 +321,7 @@ public class TownyUniverse {
 		return jailedResidents;
 	}
 	
-	public List<TownObject> getTownsWithoutNation() {
+	public List<Town> getTownsWithoutNation() {
 		return towns.values().stream().filter(town -> !town.hasNation()).collect(Collectors.toList());
 	}
 	
@@ -436,7 +439,7 @@ public class TownyUniverse {
     }
 
 	public boolean hasGroup(String townName, UUID groupID) {
-		TownObject t = towns.get(townName);
+		Town t = towns.get(townName);
 		
 		if (t != null) {
 			return t.getObjectGroupFromID(groupID) != null;
@@ -446,7 +449,7 @@ public class TownyUniverse {
 	}
 
 	public boolean hasGroup(String townName, String groupName) {
-		TownObject t = towns.get(townName);
+		Town t = towns.get(townName);
 
 		if (t != null) {
 			return t.hasObjectGroupName(groupName);
@@ -464,7 +467,7 @@ public class TownyUniverse {
 	public Collection<PlotObjectGroup> getGroups() {
     	List<PlotObjectGroup> groups = new ArrayList<>();
     	
-		for (TownObject town : towns.values()) {
+		for (Town town : towns.values()) {
 			if (town.hasObjectGroups()) {
 				groups.addAll(town.getPlotObjectGroups());
 			}
@@ -482,7 +485,7 @@ public class TownyUniverse {
 	 * @return PlotGroup if found, null if none found.
 	 */
 	public PlotObjectGroup getGroup(String townName, UUID groupID) {
-		TownObject t = towns.get(townName);
+		Town t = towns.get(townName);
 		
 		if (t != null) {
 			return t.getObjectGroupFromID(groupID);
@@ -499,7 +502,7 @@ public class TownyUniverse {
 	 * @return the plot group if found, otherwise null
 	 */
 	public PlotObjectGroup getGroup(String townName, String groupName) {
-		TownObject t = towns.get(townName);
+		Town t = towns.get(townName);
 
 		if (t != null) {
 			return t.getPlotObjectGroupFromName(groupName);
@@ -512,7 +515,7 @@ public class TownyUniverse {
 		return getRegisteredMetadata();
 	}
 
-	public PlotObjectGroup newGroup(TownObject town, String name, UUID id) throws AlreadyRegisteredException {
+	public PlotObjectGroup newGroup(Town town, String name, UUID id) throws AlreadyRegisteredException {
     	
     	// Create new plot group.
 		PlotObjectGroup newGroup = new PlotObjectGroup(id, name, town);

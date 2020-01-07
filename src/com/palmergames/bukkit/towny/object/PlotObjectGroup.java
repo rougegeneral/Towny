@@ -14,7 +14,7 @@ public class PlotObjectGroup extends ObjectGroup {
 	private Resident resident = null;
 	private List<TownBlock> townBlocks;
 	private double price = -1;
-	private TownObject town;
+	private Town town;
 	private TownyPermission permissions;
 
 	/**
@@ -22,7 +22,7 @@ public class PlotObjectGroup extends ObjectGroup {
 	 * @param name An alias for the id used for player in-game interaction via commands.
 	 * @param town The town that this group is owned by.   
 	 */
-	public PlotObjectGroup(UUID id, String name, TownObject town) {
+	public PlotObjectGroup(UUID id, String name, Town town) {
 		super(id, name);
 		this.town = town;
 	}
@@ -52,7 +52,7 @@ public class PlotObjectGroup extends ObjectGroup {
 		}
 	}
 	
-	public void setTown(TownObject town) {
+	public void setTown(Town town) {
 		this.town = town;
 		
 		try {
@@ -62,7 +62,7 @@ public class PlotObjectGroup extends ObjectGroup {
 		}
 	}
 	
-	public TownObject getTown() {
+	public Town getTown() {
 		return town;
 	}
 
