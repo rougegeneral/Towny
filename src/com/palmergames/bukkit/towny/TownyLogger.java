@@ -1,10 +1,10 @@
 package com.palmergames.bukkit.towny;
 
 import com.palmergames.bukkit.towny.database.TownyDatabase;
-import com.palmergames.bukkit.towny.object.Economical;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.economy.Economical;
+import com.palmergames.bukkit.towny.object.nation.Nation;
+import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.town.Town;
 import com.palmergames.util.FileMgmt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

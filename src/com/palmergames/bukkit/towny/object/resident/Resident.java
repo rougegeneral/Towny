@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object;
+package com.palmergames.bukkit.towny.object.resident;
 
 import com.google.gson.annotations.JsonAdapter;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -18,6 +18,8 @@ import com.palmergames.bukkit.towny.invites.Invite;
 import com.palmergames.bukkit.towny.invites.InviteHandler;
 import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
+import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.tasks.SetDefaultModes;
@@ -33,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Resident extends TownyBlockOwnerObject implements ResidentModes, TownyInviteReceiver, Saveable, Economical {
+public class Resident extends TownyBlockOwnerObject implements ResidentModes, TownyInviteReceiver, Saveable {
 	private transient List<Resident> friends = new ArrayList<>();
 	// private List<Object[][][]> regenUndo = new ArrayList<>(); // Feature is disabled as of MC 1.13, maybe it'll come back.
 	@JsonAdapter(TownFieldSerializer.class)

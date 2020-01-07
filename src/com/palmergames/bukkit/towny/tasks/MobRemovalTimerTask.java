@@ -6,7 +6,10 @@ import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.event.MobRemovalEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.*;
+import com.palmergames.bukkit.towny.object.coordinate.Coord;
+import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.utils.EntityTypeUtil;
 
 import net.citizensnpcs.api.CitizensAPI;

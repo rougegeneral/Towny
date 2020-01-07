@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.utils;
 
-import com.palmergames.bukkit.towny.object.CellBorder;
-import com.palmergames.bukkit.towny.object.WorldCoord;
+import com.palmergames.bukkit.towny.object.coordinate.CellBorder;
+import com.palmergames.bukkit.towny.object.world.WorldCoord;
 
 import java.util.ArrayList;
 import java.util.List;

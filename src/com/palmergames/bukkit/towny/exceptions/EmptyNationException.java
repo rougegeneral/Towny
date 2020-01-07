@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.exceptions;
 
-import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.nation.Nation;
 
 public class EmptyNationException extends Exception {
 

@@ -6,7 +6,7 @@ import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.resident.Resident;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask.CooldownType;
 
 import org.bukkit.Chunk;

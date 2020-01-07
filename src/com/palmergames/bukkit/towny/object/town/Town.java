@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object;
+package com.palmergames.bukkit.towny.object.town;
 
 import com.google.gson.annotations.JsonAdapter;
 import com.palmergames.bukkit.towny.Towny;
@@ -22,7 +22,17 @@ import com.palmergames.bukkit.towny.invites.InviteHandler;
 import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.TownyInviteSender;
 import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
+import com.palmergames.bukkit.towny.object.coordinate.Coord;
+import com.palmergames.bukkit.towny.object.group.ObjectGroupManageable;
+import com.palmergames.bukkit.towny.object.group.PlotObjectGroup;
+import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.townblock.TownBlockType;
+import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
+import com.palmergames.bukkit.towny.object.nation.Nation;
+import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.resident.ResidentList;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.util.StringMgmt;
 import org.bukkit.Bukkit;
@@ -36,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Town extends TownyBlockOwnerObject implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable, ObjectGroupManageable<PlotObjectGroup> {
+public class Town extends TownyBlockOwnerObject implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, ObjectGroupManageable<PlotObjectGroup> {
 	private transient static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
 	
 	private transient List<Resident> residents = new ArrayList<>();

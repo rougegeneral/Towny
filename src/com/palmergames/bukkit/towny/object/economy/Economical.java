@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object;
+package com.palmergames.bukkit.towny.object.economy;
 
 import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.towny.TownyEconomyHandler;

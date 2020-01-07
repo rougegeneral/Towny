@@ -3,7 +3,7 @@ package com.palmergames.bukkit.towny.permissions;
 import org.bukkit.entity.Player;
 
 import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.resident.Resident;
 
 public class NullPermSource extends TownyPermissionSource {
 

@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.object.Coord;
+import com.palmergames.bukkit.towny.object.coordinate.Coord;
 
 public class CellUnderAttack extends Cell {
 

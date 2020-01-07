@@ -1,11 +1,11 @@
 package com.palmergames.bukkit.towny.database;
 
 import com.palmergames.bukkit.towny.database.results.CreateResult;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownyWorld;
+import com.palmergames.bukkit.towny.object.nation.Nation;
+import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.world.TownyWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

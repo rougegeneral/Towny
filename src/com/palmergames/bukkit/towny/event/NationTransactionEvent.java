@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Transaction;
+import com.palmergames.bukkit.towny.object.nation.Nation;
+import com.palmergames.bukkit.towny.object.economy.Transaction;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.Bukkit;

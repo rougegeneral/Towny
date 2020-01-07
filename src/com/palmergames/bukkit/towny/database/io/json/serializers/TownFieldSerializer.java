@@ -9,7 +9,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.town.Town;
 
 import java.lang.reflect.Type;
 import java.util.UUID;

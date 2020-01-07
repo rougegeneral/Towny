@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.resident.Resident;
 import com.palmergames.bukkit.util.BukkitTools;
 
 public class BukkitPermSource extends TownyPermissionSource {

@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny.permissions;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownySettings;
-import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.resident.Resident;
 import com.palmergames.bukkit.util.BukkitTools;
 import net.milkbowl.vault.chat.Chat;
 

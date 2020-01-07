@@ -3,7 +3,7 @@ package com.palmergames.bukkit.towny;
 import org.bukkit.entity.Player;
 
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.resident.Resident;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 

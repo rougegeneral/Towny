@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny.war.flagwar;
 
 import org.bukkit.Location;
 
-import com.palmergames.bukkit.towny.object.Coord;
+import com.palmergames.bukkit.towny.object.coordinate.Coord;
 
 public class Cell {
 

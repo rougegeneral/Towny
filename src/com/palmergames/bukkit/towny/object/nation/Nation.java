@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object;
+package com.palmergames.bukkit.towny.object.nation;
 
 import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.towny.TownyMessaging;
@@ -19,7 +19,14 @@ import com.palmergames.bukkit.towny.invites.TownyAllySender;
 import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.TownyInviteSender;
 import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
+import com.palmergames.bukkit.towny.object.coordinate.Coord;
+import com.palmergames.bukkit.towny.object.economy.Economical;
+import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
+import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.resident.ResidentList;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.war.flagwar.TownyWar;
 import com.palmergames.util.StringMgmt;
@@ -33,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Nation extends TownyObject implements ResidentList, TownyInviteSender, TownyInviteReceiver, TownyAllySender, Saveable, Nameable, Economical {
+public class Nation extends TownyObject implements ResidentList, TownyInviteSender, TownyInviteReceiver, TownyAllySender, Saveable, Economical {
 	private static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getNationAccountPrefix();
 	public UUID identifier;
 	private List<Town> towns = new ArrayList<>();

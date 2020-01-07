@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object;
+package com.palmergames.bukkit.towny.object.townblock;
 
 import com.palmergames.bukkit.towny.TownyEconomyHandler;
 import com.palmergames.bukkit.towny.TownyMessaging;
@@ -11,7 +11,17 @@ import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.coordinate.Coord;
+import com.palmergames.bukkit.towny.object.economy.Economical;
+import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.TownyObject;
+import com.palmergames.bukkit.towny.permissions.TownyPermission;
+import com.palmergames.bukkit.towny.object.world.TownyWorld;
+import com.palmergames.bukkit.towny.object.world.WorldCoord;
+import com.palmergames.bukkit.towny.object.group.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
+import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.town.Town;
 import org.bukkit.Bukkit;
 import java.util.HashSet;
 import java.util.Map;
