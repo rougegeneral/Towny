@@ -53,7 +53,7 @@ public abstract class TownyObject {
 
 		String[] objects = str.split(";");
 		for (int i = 0; i < objects.length; i++) {
-			metadata.add(CustomDataField.load(objects[i]));
+			//metadata.add(CustomDataField.load(objects[i]));
 		}
 	}
 	

@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable {
+public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable, ObjectGroupManageable<PlotObjectGroup> {
 	private transient static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
 	
 	private transient List<Resident> residents = new ArrayList<>();

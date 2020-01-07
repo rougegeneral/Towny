@@ -760,6 +760,7 @@ public class TownyFormatter {
 	}
 	
 	public static List<String> getExtraFields(TownyObject to) {
+		/*
 		if (!to.hasMeta())
 			return new ArrayList<>();
 		
@@ -801,11 +802,12 @@ public class TownyFormatter {
 		}
 		
 		extraFields.add(field);
-		
-		return extraFields;
+		*/
+		return null;
 	}
 
 	public static List<String> getExtraFields(TownBlock tb) {
+		/*
 		if (!tb.hasMeta())
 			return new ArrayList<>();
 
@@ -847,7 +849,9 @@ public class TownyFormatter {
 		}
 
 		extraFields.add(field);
+		
+		 */
 
-		return extraFields;
+		return null;
 	}
 }

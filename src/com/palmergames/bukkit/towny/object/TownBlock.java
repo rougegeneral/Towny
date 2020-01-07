@@ -496,7 +496,7 @@ public class TownBlock extends TownyObject implements Saveable {
 		
 		String[] objects = str.split(";");
 		for (String object : objects) {
-			metadata.add(CustomDataField.load(object));
+			//metadata.add(CustomDataField.load(object));
 		}
 	}
 	

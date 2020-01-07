@@ -357,7 +357,7 @@ public class TownyEconomyHandler {
 				if(!reserveEconomy.createAccountDetail(accountName).success()) return false;
 			}
 
-			BukkitTools.getPluginManager().callEvent(event);
+			Bukkit.getPluginManager().callEvent(event);
 			return reserveEconomy.addHoldingsDetail(accountName, new BigDecimal(amount), world.getName()).success();
 
 		case VAULT:

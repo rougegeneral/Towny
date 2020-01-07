@@ -129,7 +129,17 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	public boolean loadWorld(TownyWorld world) {
 		return true;
 	}
-	
+
+	@Override
+	public boolean loadPlotGroupList() {
+		return false;
+	}
+
+	@Override
+	public boolean loadPlotGroups() {
+		return false;
+	}
+
 	@Override
 	public boolean saveTownBlockList() {
 		return true;
@@ -144,7 +154,12 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	public boolean saveTownList() {
 		return true;
 	}
-	
+
+	@Override
+	public boolean saveGroupList() {
+		return false;
+	}
+
 	@Override
 	public boolean saveNationList() {
 		return true;
@@ -174,7 +189,12 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	public boolean saveTown(Town town) {
 		return TownyUniverse.getInstance().save(town);
 	}
-	
+
+	@Override
+	public boolean savePlotGroup(PlotObjectGroup group) {
+		return false;
+	}
+
 	@Override
 	public boolean saveNation(Nation nation) {
 		return TownyUniverse.getInstance().save(nation);
@@ -251,7 +271,12 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	
 	@Override
 	public void deleteFile(String file) { }
-	
+
+	@Override
+	public void deleteGroup(PlotObjectGroup group) {
+
+	}
+
 	@Override
 	public boolean hasResident(String name) {
 		try {

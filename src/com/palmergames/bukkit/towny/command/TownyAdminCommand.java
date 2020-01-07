@@ -1303,7 +1303,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			if (town.hasMeta()) {
 				player.sendMessage(ChatTools.formatTitle("Custom Meta Data"));
 				for (CustomDataField field : town.getMetadata()) {
-					player.sendMessage(field.getName() + " = " + field.getValue());
+					//player.sendMessage(field.getName() + " = " + field.getValue());
 				}
 			} else {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_this_town_doesnt_have_any_associated_metadata"));
@@ -1328,6 +1328,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 				TownyMessaging.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_the_metadata_for_key_is_not_registered"), mdKey));
 				return;
 			} else if (split[2].equalsIgnoreCase("set")) {
+				/*
 				CustomDataField md = townyUniverse.getRegisteredMetadataMap().get(mdKey);
 				if (town.hasMeta()) {
 					for (CustomDataField cdf: town.getMetadata()) {
@@ -1335,14 +1336,14 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 							// Check if the given value is valid for this field.
 							try {
-								cdf.isValidType(val);
+								//cdf.isValidType(val);
 							} catch (InvalidMetadataTypeException e) {
 								TownyMessaging.sendErrorMsg(player, e.getMessage());
 								return;
 							}
 							
 							// Change state TODO: Add type casting..
-							cdf.setValue(val);
+							//cdf.setValue(val);
 
 							// Let user know that it was successful.
 							TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_key_x_was_successfully_updated_to_x"), mdKey, cdf.getValue()));
@@ -1354,7 +1355,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 						}
 					}
 				}
-
+				*/
 				TownyMessaging.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_key_x_is_not_part_of_this_town"), mdKey));
 
 			}
@@ -1380,7 +1381,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			TownyMessaging.sendMsg(player, TownySettings.getLangString("msg_custom_data_was_successfully_added_to_town"));
 			
 			
-			town.addMetaData(md.newCopy());
+			//town.addMetaData(md.newCopy());
 			
 		} else if (split[2].equalsIgnoreCase("remove")) {
 			String mdKey = split[3];
@@ -1426,7 +1427,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			if (townBlock.hasMeta()) {
 				player.sendMessage(ChatTools.formatTitle("Custom Meta Data"));
 				for (CustomDataField field : townBlock.getMetadata()) {
-					player.sendMessage(field.getName() + " = " + field.getValue());
+					//player.sendMessage(field.getName() + " = " + field.getValue());
 				}
 			} else {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_this_plot_doesnt_have_any_associated_metadata"));
@@ -1460,17 +1461,17 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 						if (cdf.equals(md)) {
 
 							// Change state
-							try {
-								cdf.isValidType(val);
-							} catch (InvalidMetadataTypeException e) {
-								TownyMessaging.sendErrorMsg(player, e.getMessage());
-								return false;
-							}
+							//try {
+								//cdf.isValidType(val);
+							//} catch (InvalidMetadataTypeException e) {
+								//TownyMessaging.sendErrorMsg(player, e.getMessage());
+								//return false;
+							//}
 
-							cdf.setValue(val);
+							//cdf.setValue(val);
 
 							// Let user know that it was successful.
-							TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_key_x_was_successfully_updated_to_x"), mdKey, cdf.getValue()));
+							//TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_key_x_was_successfully_updated_to_x"), mdKey, cdf.getValue()));
 
 							// Save changes.
 							townyUniverse.getDataSource().saveTownBlock(townBlock);
@@ -1505,7 +1506,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 			TownyMessaging.sendMsg(player, TownySettings.getLangString("msg_custom_data_was_successfully_added_to_townblock"));
 
-			townBlock.addMetaData(md.newCopy());
+			//townBlock.addMetaData(md.newCopy());
 			
 		} else if (split[1].equalsIgnoreCase("remove")) {
 			String mdKey = split[2];

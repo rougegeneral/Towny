@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
@@ -413,10 +414,6 @@ public class TownyUniverse {
     		throw new KeyAlreadyRegisteredException();
     	
     	this.getRegisteredMetadataMap().put(cdf.getName(), cdf);
-	}
-	
-	public HashMap<String, CustomDataField> getRegisteredMetadataMap() {
-		return registeredMetadata;
 	}
 	
 	public boolean unsafeDelete(Saveable saveable) {
