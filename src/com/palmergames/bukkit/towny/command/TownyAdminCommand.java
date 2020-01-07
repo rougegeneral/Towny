@@ -1305,7 +1305,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			if (town.hasMeta()) {
 				player.sendMessage(ChatTools.formatTitle("Custom Meta Data"));
 				for (CustomDataField field : town.getMetadata()) {
-					player.sendMessage(field.getKey() + " = " + field.getValue());
+					player.sendMessage(field.getName() + " = " + field.getValue());
 				}
 			} else {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_this_town_doesnt_have_any_associated_metadata"));
@@ -1428,7 +1428,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			if (townBlock.hasMeta()) {
 				player.sendMessage(ChatTools.formatTitle("Custom Meta Data"));
 				for (CustomDataField field : townBlock.getMetadata()) {
-					player.sendMessage(field.getKey() + " = " + field.getValue());
+					player.sendMessage(field.getName() + " = " + field.getValue());
 				}
 			} else {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_this_plot_doesnt_have_any_associated_metadata"));

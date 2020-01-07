@@ -348,10 +348,10 @@ public class TownyUniverse {
     
     public void addCustomCustomDataField(CustomDataField cdf) throws KeyAlreadyRegisteredException {
     	
-    	if (this.getRegisteredMetadataMap().containsKey(cdf.getKey()))
+    	if (this.getRegisteredMetadataMap().containsKey(cdf.getName()))
     		throw new KeyAlreadyRegisteredException();
     	
-    	this.getRegisteredMetadataMap().put(cdf.getKey(), cdf);
+    	this.getRegisteredMetadataMap().put(cdf.getName(), cdf);
 	}
     
     public static TownyUniverse getInstance() {
