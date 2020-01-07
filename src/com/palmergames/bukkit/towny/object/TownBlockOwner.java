@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class TownBlockOwner extends TownyObject implements Econable{
+public abstract class TownBlockOwner extends TownyObject implements Economical {
 	protected transient List<TownBlock> townBlocks = new ArrayList<>();
 	protected TownyPermission permissions = new TownyPermission();
 	

@@ -1,10 +1,10 @@
 package com.palmergames.bukkit.towny.war.eventwar;
 
-import com.palmergames.bukkit.towny.object.Econable;
+import com.palmergames.bukkit.towny.object.Economical;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-public class WarSpoils implements Econable {
+public class WarSpoils implements Economical {
 	
 	@Override
 	public World getBukkitWorld() {

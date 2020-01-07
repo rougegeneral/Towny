@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver, Saveable, Econable {
+public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver, Saveable, Economical {
 	private transient List<Resident> friends = new ArrayList<>();
 	// private List<Object[][][]> regenUndo = new ArrayList<>(); // Feature is disabled as of MC 1.13, maybe it'll come back.
 	@JsonAdapter(TownFieldSerializer.class)

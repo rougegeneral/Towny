@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny;
 
 import com.palmergames.bukkit.towny.database.TownyDatabase;
-import com.palmergames.bukkit.towny.object.Econable;
+import com.palmergames.bukkit.towny.object.Economical;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -128,7 +128,7 @@ public class TownyLogger {
 		ctx.updateLoggers();
 	}
 	
-	public static void logMoneyTransaction(Econable a, double amount, Econable b, String reason) {
+	public static void logMoneyTransaction(Economical a, double amount, Economical b, String reason) {
 		if (reason == null) {
 			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", "Unknown Reason", getObjectName(a), amount, getObjectName(b)));
 		} else {
@@ -136,7 +136,7 @@ public class TownyLogger {
 		}
 	}
 	
-	private static String getObjectName(Econable obj) {
+	private static String getObjectName(Economical obj) {
 		String type;
 		if (obj == null) {
 			type = "Server";

@@ -11,7 +11,7 @@ import com.palmergames.bukkit.towny.TownyTimerHandler;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Econable;
+import com.palmergames.bukkit.towny.object.Economical;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.NationSpawnLevel;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -277,7 +277,7 @@ public class SpawnUtil {
 
 		double travelCost = 0.0;
 		String spawnPermission = null;
-		Econable payee = null;
+		Economical payee = null;
 		// Figure out costs, payee and spawnPermmission slug for money.csv log.
 		switch (spawnType) {
 		case RESIDENT:
@@ -334,7 +334,7 @@ public class SpawnUtil {
 		if (!townyUniverse.getPermissionSource().has(player,
 				PermissionNodes.TOWNY_COMMAND_TOWNYADMIN_TOWN_SPAWN_FREECHARGE.getNode())) {
 			if (!TownySettings.isTownSpawnPaidToTown())
-				payee = Econable.SERVER_ACCOUNT;
+				payee = Economical.SERVER_ACCOUNT;
 			// Show message if we are using an Economy and are charging for spawn travel.
 			try {
 				if (travelCost > 0 && TownySettings.isUsingEconomy()

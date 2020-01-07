@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-public interface Econable {
+public interface Economical {
 	TownyServerAccount SERVER_ACCOUNT = new TownyServerAccount();
 	
 	/**
@@ -74,14 +74,14 @@ public interface Econable {
 	 * @return true if successfully payed amount to collector.
 	 * @throws EconomyException if transaction fails
 	 */
-	default boolean payTo(double amount, Econable collector, String reason) throws EconomyException {
+	default boolean payTo(double amount, Economical collector, String reason) throws EconomyException {
 		boolean payed = _payTo(amount, collector);
 		if (payed)
 			TownyLogger.logMoneyTransaction(this, amount, collector, reason);
 		return payed;
 	}
 	
-	default boolean _payTo(double amount, Econable collector) throws EconomyException {
+	default boolean _payTo(double amount, Economical collector) throws EconomyException {
 		if (_pay(amount)) {
 			if (!collector._collect(amount)) {
 				_collect(amount); //Transaction failed. Refunding amount.
@@ -108,7 +108,7 @@ public interface Econable {
 	 */
 	String getEconomyName();
 	
-	final class TownyServerAccount implements Econable {
+	final class TownyServerAccount implements Economical {
 		private String name = TownySettings.getString(ConfigNodes.ECO_CLOSED_ECONOMY_SERVER_ACCOUNT);
 		TownyServerAccount() {
 			super();

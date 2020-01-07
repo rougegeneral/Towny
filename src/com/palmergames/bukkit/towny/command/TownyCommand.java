@@ -12,7 +12,7 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Econable;
+import com.palmergames.bukkit.towny.object.Economical;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.ResidentList;
@@ -428,21 +428,21 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 		return output;
 	}
 
-	public List<String> getTopBankBalance(List<Econable> list, int maxListing) throws EconomyException {
+	public List<String> getTopBankBalance(List<Economical> list, int maxListing) throws EconomyException {
 
 		List<String> output = new ArrayList<>();
-		KeyValueTable<Econable, Double> kvTable = new KeyValueTable<>();
-		for (Econable obj : list) {
+		KeyValueTable<Economical, Double> kvTable = new KeyValueTable<>();
+		for (Economical obj : list) {
 			kvTable.put(obj, obj.getHoldingBalance());
 		}
 		kvTable.sortByValue();
 		kvTable.reverse();
 		int n = 0;
-		for (KeyValue<Econable, Double> kv : kvTable.getKeyValues()) {
+		for (KeyValue<Economical, Double> kv : kvTable.getKeyValues()) {
 			n++;
 			if (maxListing != -1 && n > maxListing)
 				break;
-			Econable town = kv.key;
+			Economical town = kv.key;
 			output.add(String.format(Colors.LightGray + "%-20s " + Colors.Gold + "|" + Colors.Blue + " %s", TownyFormatter.getFormattedName((TownyObject) town), TownyEconomyHandler.getFormattedBalance(kv.value)));
 		}
 		return output;
