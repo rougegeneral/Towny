@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny;
 
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
 import java.util.UUID;
@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public abstract class TownyTest {
 	
-	private Town mockTown;
+	private TownObject mockTown;
 	private TownyWorld mockWorld;
 	private Resident mockResident;
 	private TownyUniverse townyUniverse = TownyUniverse.getInstance();
@@ -23,7 +23,7 @@ public abstract class TownyTest {
 	 */
 	public TownyTest() {
 		// Instantiate objects.
-		mockTown = new Town(UUID.randomUUID());
+		mockTown = new TownObject(UUID.randomUUID());
 		mockTown.setName("HuntsVille");
 		mockWorld = new TownyWorld(UUID.randomUUID());
 		mockWorld.setName("Europa");
@@ -55,7 +55,7 @@ public abstract class TownyTest {
 	
 	public abstract void runTests();
 	
-	public Town getMockTown() {
+	public TownObject getMockTown() {
 		return mockTown;
 	}
 

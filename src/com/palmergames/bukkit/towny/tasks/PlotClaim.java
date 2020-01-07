@@ -10,7 +10,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyWorld;
@@ -167,7 +167,7 @@ public class PlotClaim extends Thread {
 			
 			try {
 				TownBlock townBlock = worldCoord.getTownBlock();
-				Town town = townBlock.getTown();
+				TownObject town = townBlock.getTown();
 				PlotObjectGroup group = townBlock.getPlotObjectGroup();
 
 				if ((resident.hasTown() && (resident.getTown() != town) && (!townBlock.getType().equals(TownBlockType.EMBASSY))) || ((!resident.hasTown()) && (!townBlock.getType().equals(TownBlockType.EMBASSY))))
@@ -270,7 +270,7 @@ public class PlotClaim extends Thread {
 
 		try {
 			TownBlock townBlock = worldCoord.getTownBlock();
-			Town town = townBlock.getTown();
+			TownObject town = townBlock.getTown();
 			if ((resident.hasTown() && (resident.getTown() != town) && (!townBlock.getType().equals(TownBlockType.EMBASSY))) || ((!resident.hasTown()) && (!townBlock.getType().equals(TownBlockType.EMBASSY))))
 				throw new TownyException(TownySettings.getLangString("msg_err_not_part_town"));
 			TownyUniverse townyUniverse = TownyUniverse.getInstance();
@@ -407,7 +407,7 @@ public class PlotClaim extends Thread {
 		try {
 			TownBlock townBlock = worldCoord.getTownBlock();
 			@SuppressWarnings("unused") // Used to make sure a plot/town is here.
-			Town town = townBlock.getTown();
+                    TownObject town = townBlock.getTown();
 			TownyUniverse townyUniverse = TownyUniverse.getInstance();
 			
 			townBlock.setPlotPrice(-1);

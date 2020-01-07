@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
+import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -11,7 +12,6 @@ import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.PlayerCache.TownBlockStatus;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyWorld;
@@ -20,11 +20,6 @@ import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.Colors;
 import com.palmergames.util.StringMgmt;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChunkNotification {
 
@@ -74,7 +69,7 @@ public class ChunkNotification {
 	boolean fromWild = false, toWild = false, toForSale = false,
 			toHomeBlock = false, toOutpostBlock = false, toPlotGroupBlock = false;
 	TownBlock fromTownBlock, toTownBlock = null;
-	Town fromTown = null, toTown = null;
+	TownObject fromTown = null, toTown = null;
 	Resident fromResident = null, toResident = null;
 	TownBlockType fromPlotType = null, toPlotType = null;
 	PlotObjectGroup fromPlotGroup = null, toPlotGroup = null;
@@ -193,7 +188,7 @@ public class ChunkNotification {
 						TownyWorld toWorld = this.to.getTownyWorld();
 						try {
 							if (PlayerCacheUtil.getTownBlockStatus(player, this.to).equals(TownBlockStatus.NATION_ZONE)) {
-								Town nearestTown = null; 
+								TownObject nearestTown = null; 
 								nearestTown = toWorld.getClosestTownWithNationFromCoord(this.to.getCoord(), nearestTown);
 								return String.format(areaWildernessNotificationFormat, String.format(TownySettings.getLangString("nation_zone_this_area_under_protection_of"), toWorld.getUnclaimedZoneName(), nearestTown.getNation().getName()));
 							}
@@ -218,7 +213,7 @@ public class ChunkNotification {
 					TownyWorld toWorld = this.to.getTownyWorld();
 					try {
 						if (PlayerCacheUtil.getTownBlockStatus(player, this.to).equals(TownBlockStatus.NATION_ZONE) && PlayerCacheUtil.getTownBlockStatus(player, this.from).equals(TownBlockStatus.UNCLAIMED_ZONE)) {
-							Town nearestTown = null; 
+							TownObject nearestTown = null; 
 							nearestTown = toWorld.getClosestTownWithNationFromCoord(this.to.getCoord(), nearestTown);
 							return String.format(areaWildernessNotificationFormat, String.format(TownySettings.getLangString("nation_zone_this_area_under_protection_of"), toWorld.getUnclaimedZoneName(), nearestTown.getNation().getName()));
 						} else if (PlayerCacheUtil.getTownBlockStatus(player, this.to).equals(TownBlockStatus.UNCLAIMED_ZONE) && PlayerCacheUtil.getTownBlockStatus(player, this.from).equals(TownBlockStatus.NATION_ZONE)) {

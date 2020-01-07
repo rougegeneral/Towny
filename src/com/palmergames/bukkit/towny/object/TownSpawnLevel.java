@@ -68,7 +68,7 @@ public enum TownSpawnLevel {
 		this.permissionNode = permissionNode;
 	}
 
-	public void checkIfAllowed(Towny plugin, Player player, Town town) throws TownyException {
+	public void checkIfAllowed(Towny plugin, Player player, TownObject town) throws TownyException {
 
 		if (!(isAllowed(town) && hasPermissionNode(plugin, player, town))) {
 			boolean war = TownyAPI.getInstance().isWarTime() || TownyWar.isUnderAttack(town);
@@ -83,17 +83,17 @@ public enum TownSpawnLevel {
 		}
 	}
 
-	public boolean isAllowed(Town town) {
+	public boolean isAllowed(TownObject town) {
 
 		return this == TownSpawnLevel.ADMIN || isAllowedTown(town);
 	}
 
-	public boolean hasPermissionNode(Towny plugin, Player player, Town town) {
+	public boolean hasPermissionNode(Towny plugin, Player player, TownObject town) {
 
 		return this == TownSpawnLevel.ADMIN || (TownyUniverse.getInstance().getPermissionSource().has(player, this.permissionNode)) && (isAllowedTown(town));
 	}
 
-	private boolean isAllowedTown(Town town)
+	private boolean isAllowedTown(TownObject town)
 	{
 		boolean war = TownyAPI.getInstance().isWarTime() || TownyWar.isUnderAttack(town);
 		SpawnLevel level = TownySettings.getSpawnLevel(this.isAllowingConfigNode);
@@ -105,7 +105,7 @@ public enum TownSpawnLevel {
 		return this == TownSpawnLevel.ADMIN ? 0 : TownySettings.getDouble(ecoPriceConfigNode);
 	}
 	
-	public double getCost(Town town) {
+	public double getCost(TownObject town) {
 
 		return this == TownSpawnLevel.ADMIN ? 0 : town.getSpawnCost();
 	}

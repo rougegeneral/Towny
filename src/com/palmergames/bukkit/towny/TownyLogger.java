@@ -4,7 +4,7 @@ import com.palmergames.bukkit.towny.database.TownyDatabase;
 import com.palmergames.bukkit.towny.object.Economical;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.util.FileMgmt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -142,7 +142,7 @@ public class TownyLogger {
 			type = "Server";
 		} else if (obj instanceof Resident) {
 			type = "Resident";
-		} else if (obj instanceof Town) {
+		} else if (obj instanceof TownObject) {
 			type = "Town";
 		} else if (obj instanceof Nation) {
 			type = "Nation";

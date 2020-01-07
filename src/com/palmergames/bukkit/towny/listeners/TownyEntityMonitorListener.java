@@ -12,7 +12,7 @@ import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
@@ -153,7 +153,7 @@ public class TownyEntityMonitorListener implements Listener {
 		try {
 
 			Nation defenderNation = defenderResident.getTown().getNation();
-			Town defenderTown = defenderResident.getTown();
+			TownObject defenderTown = defenderResident.getTown();
 			if (warEvent.isWarringNation(defenderNation) && defenderResident.isKing()){
 				TownyMessaging.sendGlobalMessage(TownySettings.getWarTimeKingKilled(defenderNation));
 				if (attackerResident != null)
@@ -293,7 +293,7 @@ public class TownyEntityMonitorListener implements Listener {
 
 				// Resident doesn't have enough funds.
 				if (townPrice > 0) {
-					Town town = defenderResident.getTown();
+					TownObject town = defenderResident.getTown();
 					if (!town.canPayFromHoldings(townPrice)) {
 						// Town doesn't have enough funds.
 						townPrice = town.getHoldingBalance();
@@ -453,7 +453,7 @@ public class TownyEntityMonitorListener implements Listener {
 
 			// Try outlaw jailing first.
 			if (TownySettings.isJailingAttackingOutlaws()) {
-				Town attackerTown = null;
+				TownObject attackerTown = null;
 				try {					
 					attackerTown = attackerResident.getTown();
 				} catch (NotRegisteredException e1) {				
@@ -507,7 +507,7 @@ public class TownyEntityMonitorListener implements Listener {
 			}
 			
 			// Try enemy jailing second
-			Town town = null;
+			TownObject town = null;
 			try {					
 				town = attackerResident.getTown();
 			} catch (NotRegisteredException e1) {

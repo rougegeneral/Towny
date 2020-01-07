@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
 import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -11,7 +11,7 @@ public class NationRemoveTownEvent extends Event  {
 
     private static final HandlerList handlers = new HandlerList();
     
-    private Town town;
+    private TownObject town;
     private Nation nation;
 
     @Override
@@ -25,7 +25,7 @@ public class NationRemoveTownEvent extends Event  {
 		return handlers;
 	}
 
-    public NationRemoveTownEvent(Town town, Nation nation) {
+    public NationRemoveTownEvent(TownObject town, Nation nation) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.town = town;
         this.nation = nation;
@@ -35,7 +35,7 @@ public class NationRemoveTownEvent extends Event  {
      *
      * @return the town who has left a nation.
      */
-    public Town getTown() {
+    public TownObject getTown() {
         return town;
     }
 

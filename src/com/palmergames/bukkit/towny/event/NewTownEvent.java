@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -10,7 +10,7 @@ public class NewTownEvent extends Event  {
 
     private static final HandlerList handlers = new HandlerList();
     
-    private Town town;
+    private TownObject town;
 
     @Override
     public HandlerList getHandlers() {
@@ -23,7 +23,7 @@ public class NewTownEvent extends Event  {
 		return handlers;
 	}
 
-    public NewTownEvent(Town town) {
+    public NewTownEvent(TownObject town) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.town = town;
     }
@@ -32,7 +32,7 @@ public class NewTownEvent extends Event  {
      *
      * @return the new town.
      */
-    public Town getTown() {
+    public TownObject getTown() {
         return town;
     }
     

@@ -3,7 +3,7 @@ package com.palmergames.bukkit.towny.war.eventwar;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -12,13 +12,13 @@ public class WarZoneData {
 
 	private HashSet<Player> attackers;
 	private HashSet<Player> defenders;
-	private HashSet<Town> attackerTowns;
+	private HashSet<TownObject> attackerTowns;
 	private HashSet<Player> allPlayers;
 	
 	public WarZoneData () {
 		attackers = new HashSet<Player>();
 		defenders = new HashSet<Player>();
-		attackerTowns = new HashSet<Town>();
+		attackerTowns = new HashSet<TownObject>();
 		allPlayers = new HashSet<Player>();
 	}
 
@@ -59,7 +59,7 @@ public class WarZoneData {
 		return defenders;
 	}
 	
-	public HashSet<Town> getAttackerTowns() {
+	public HashSet<TownObject> getAttackerTowns() {
 		return attackerTowns;
 	}
 	

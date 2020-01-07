@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.invites.Invite;
 import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.TownyInviteSender;
 import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +42,8 @@ public class TownJoinNationInvite implements Invite {
 
 	@Override
 	public void accept() throws TownyException {
-		Town town = (Town) getReceiver();
-		List<Town> towns = new ArrayList<>();
+		TownObject town = (TownObject) getReceiver();
+		List<TownObject> towns = new ArrayList<>();
 		towns.add(town);
 		Nation nation = (Nation) getSender();
 		NationCommand.nationAdd(nation, towns);
@@ -54,7 +54,7 @@ public class TownJoinNationInvite implements Invite {
 
 	@Override
 	public void decline(boolean fromSender) {
-		Town town = (Town) getReceiver();
+		TownObject town = (TownObject) getReceiver();
 		Nation nation = (Nation) getSender();
 		town.deleteReceivedInvite(this);
 		nation.deleteSentInvite(this);

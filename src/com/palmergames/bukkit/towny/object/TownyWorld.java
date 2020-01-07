@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TownyWorld extends TownyObject implements Saveable {
 	
-	private transient List<Town> towns = new ArrayList<>();
+	private transient List<TownObject> towns = new ArrayList<>();
 	private UUID identifier;
 	private boolean isClaimable = true;
 	private boolean isUsingPlotManagementDelete = TownySettings.isUsingPlotManagementDelete();
@@ -62,7 +62,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 		super(identifier);
 	}
 
-	public List<Town> getTowns() {
+	public List<TownObject> getTowns() {
 
 		return towns;
 	}
@@ -74,18 +74,18 @@ public class TownyWorld extends TownyObject implements Saveable {
 
 	public boolean hasTown(String name) {
 
-		for (Town town : towns)
+		for (TownObject town : towns)
 			if (town.getName().equalsIgnoreCase(name))
 				return true;
 		return false;
 	}
 
-	public boolean hasTown(Town town) {
+	public boolean hasTown(TownObject town) {
 
 		return towns.contains(town);
 	}
 
-	public void addTown(Town town) throws AlreadyRegisteredException {
+	public void addTown(TownObject town) throws AlreadyRegisteredException {
 
 		if (hasTown(town))
 			throw new AlreadyRegisteredException();
@@ -127,7 +127,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 		return getTownBlock(new Coord(x, z));
 	}
 
-	public List<TownBlock> getTownBlocks(Town town) {
+	public List<TownBlock> getTownBlocks(TownObject town) {
 
 		List<TownBlock> out = new ArrayList<>();
 		for (TownBlock townBlock : town.getTownBlocks())
@@ -141,7 +141,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 		return townBlocks.values();
 	}
 
-	public void removeTown(Town town) throws NotRegisteredException {
+	public void removeTown(TownObject town) throws NotRegisteredException {
 
 		if (!hasTown(town))
 			throw new NotRegisteredException();
@@ -632,10 +632,10 @@ public class TownyWorld extends TownyObject implements Saveable {
 	 * @param homeTown Players town
 	 * @return the closest distance to another towns homeblock.
 	 */
-	public int getMinDistanceFromOtherTowns(Coord key, Town homeTown) {
+	public int getMinDistanceFromOtherTowns(Coord key, TownObject homeTown) {
 
 		double min = Integer.MAX_VALUE;
-		for (Town town : getTowns())
+		for (TownObject town : getTowns())
 			try {
 				Coord townCoord = town.getHomeBlock().getCoord();
 				if (homeTown != null)
@@ -671,10 +671,10 @@ public class TownyWorld extends TownyObject implements Saveable {
 	 * @param homeTown Players town
 	 * @return the closest distance to another towns nearest plot.
 	 */
-	public int getMinDistanceFromOtherTownsPlots(Coord key, Town homeTown) {
+	public int getMinDistanceFromOtherTownsPlots(Coord key, TownObject homeTown) {
 
 		double min = Integer.MAX_VALUE;
-		for (Town town : getTowns())
+		for (TownObject town : getTowns())
 			try {
 				if (homeTown != null)
 					if (homeTown.getHomeBlock().equals(town.getHomeBlock()))
@@ -702,10 +702,10 @@ public class TownyWorld extends TownyObject implements Saveable {
 	 * @param nearestTown - Closest town to the given coord.
 	 * @return the nearestTown
 	 */
-	public Town getClosestTownFromCoord(Coord key, Town nearestTown) {
+	public TownObject getClosestTownFromCoord(Coord key, TownObject nearestTown) {
 		
 		double min = Integer.MAX_VALUE;
-		for (Town town : getTowns()) {
+		for (TownObject town : getTowns()) {
 			for (TownBlock b : town.getTownBlocks()) {
 				if (!b.getWorld().equals(this)) continue;
 				
@@ -727,10 +727,10 @@ public class TownyWorld extends TownyObject implements Saveable {
 	 * @param nearestTown - Closest town to given coord.
 	 * @return the nearest town belonging to a nation.   
 	 */
-	public Town getClosestTownWithNationFromCoord(Coord key, Town nearestTown) {
+	public TownObject getClosestTownWithNationFromCoord(Coord key, TownObject nearestTown) {
 		
 		double min = Integer.MAX_VALUE;
-		for (Town town : getTowns()) {
+		for (TownObject town : getTowns()) {
 			if (!town.hasNation()) continue;
 			for (TownBlock b : town.getTownBlocks()) {
 				if (!b.getWorld().equals(this)) continue;

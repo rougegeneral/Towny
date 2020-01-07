@@ -30,14 +30,13 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Town extends TownBlockOwner implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable, ObjectGroupManageable<PlotObjectGroup> {
+public class TownObject extends TownBlockOwnerObject implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, Nameable, ObjectGroupManageable<PlotObjectGroup> {
 	private transient static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
 	
 	private transient List<Resident> residents = new ArrayList<>();
@@ -77,7 +76,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 	private boolean isConquered = false;
 	private int conqueredDays;
 
-	public Town(UUID identifier) {
+	public TownObject(UUID identifier) {
 		super(identifier);
 		permissions.loadDefault(this);
 	}
@@ -1044,7 +1043,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 
 	@Override
 	public String getEconomyName() {
-		return StringMgmt.trimMaxLength(Town.ECONOMY_ACCOUNT_PREFIX + getName(), 32);
+		return StringMgmt.trimMaxLength(TownObject.ECONOMY_ACCOUNT_PREFIX + getName(), 32);
 	}
 
 	public List<Location> getJailSpawns() {
@@ -1187,7 +1186,7 @@ public class Town extends TownBlockOwner implements ResidentList, TownyInviteRec
 		this.outpostSpawns = outpostSpawns;
 	}
 
-	public boolean isAlliedWith(Town othertown) {
+	public boolean isAlliedWith(TownObject othertown) {
 		if (this.hasNation() && othertown.hasNation()) {
 			try {
 				if (this.getNation().hasAlly(othertown.getNation())) {

@@ -6,9 +6,9 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.NationSpawnLevel.NSpawnLevel;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownBlockOwner;
+import com.palmergames.bukkit.towny.object.TownBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.TownSpawnLevel.SpawnLevel;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.object.TownyPermission.ActionType;
@@ -176,7 +176,7 @@ public class TownySettings {
 		return configNationLevel.get(numResidents);
 	}
 
-	public static Map<TownySettings.TownLevel, Object> getTownLevel(Town town) {
+	public static Map<TownySettings.TownLevel, Object> getTownLevel(TownObject town) {
 
 		return getTownLevel(calcTownLevel(town));
 	}
@@ -186,7 +186,7 @@ public class TownySettings {
 		return getNationLevel(calcNationLevel(nation));
 	}
 
-	public static int calcTownLevel(Town town) {
+	public static int calcTownLevel(TownObject town) {
 //Creatorfromhell's PR for replacing SortedMap town and nation levels.
 //		Integer level = configTownLevel.floorKey(town.getNumResidents());
 //
@@ -818,27 +818,27 @@ public class TownySettings {
 		return parseString(String.format(getLangString("MSG_WAR_LOSE_BLOCK"), worldCoord.toString(), town));
 	}
 
-	public static String[] getWarTimeScoreMsg(Town town, int n) {
+	public static String[] getWarTimeScoreMsg(TownObject town, int n) {
 
 		return parseString(String.format(getLangString("MSG_WAR_SCORE"), town.getName(), n));
 	}
 	
 	//Need other languages Methods
-	public static String[] getWarTimeScoreNationEliminatedMsg(Town town, int n, Nation fallenNation) {
+	public static String[] getWarTimeScoreNationEliminatedMsg(TownObject town, int n, Nation fallenNation) {
 
 		return parseString(String.format(getLangString("MSG_WAR_SCORE_NATION_ELIM"), town.getName(), n, fallenNation.getName()));
 	}
 	
-	public static String[] getWarTimeScoreTownEliminatedMsg(Town town, int n, Town fallenTown, int fallenTownBlocks) {
+	public static String[] getWarTimeScoreTownEliminatedMsg(TownObject town, int n, TownObject fallenTown, int fallenTownBlocks) {
 
 		return parseString(String.format(getLangString("MSG_WAR_SCORE_TOWN_ELIM"), town.getName(), n, fallenTown.getName(), fallenTownBlocks));
 	}
 	
-	public static String[] getWarTimeScoreTownBlockEliminatedMsg(Town town, int n, TownBlock fallenTownBlock) {
+	public static String[] getWarTimeScoreTownBlockEliminatedMsg(TownObject town, int n, TownBlock fallenTownBlock) {
 
 		String townBlockName = "";
 		try {
-			Town fallenTown = ((TownBlock)fallenTownBlock).getTown();
+			TownObject fallenTown = ((TownBlock)fallenTownBlock).getTown();
 			townBlockName = "[" + fallenTown.getName() + "](" + ((TownBlock)fallenTownBlock).getCoord().toString() + ")";
 		} catch (NotRegisteredException e) {
 			townBlockName = "(" + ((TownBlock)fallenTownBlock).getCoord().toString() + ")";
@@ -846,12 +846,12 @@ public class TownySettings {
 		return parseString(String.format(getLangString("MSG_WAR_SCORE_TOWNBLOCK_ELIM"), town.getName(), n, townBlockName));
 	}
 	
-	public static String[] getWarTimeScorePlayerKillMsg(Player attacker, Player dead, int n, Town attackingTown) {
+	public static String[] getWarTimeScorePlayerKillMsg(Player attacker, Player dead, int n, TownObject attackingTown) {
 
 		return parseString(String.format(getLangString("MSG_WAR_SCORE_PLAYER_KILL"), attacker.getName(), dead.getName(), n, attackingTown.getName()));
 	}
 	
-	public static String[] getWarTimeScorePlayerKillMsg(Player attacker, Player dead, Player defender, int n, Town attackingTown) {
+	public static String[] getWarTimeScorePlayerKillMsg(Player attacker, Player dead, Player defender, int n, TownObject attackingTown) {
 
 		return parseString(String.format(getLangString("MSG_WAR_SCORE_PLAYER_KILL_DEFENDING"), attacker.getName(), dead.getName(), defender.getName(), n, attackingTown.getName()));
 	}
@@ -861,7 +861,7 @@ public class TownySettings {
 		return parseString(String.format(getLangString("MSG_WAR_KING_KILLED"), kingsNation.getName()));
 	}
 	
-	public static String[] getWarTimeMayorKilled(Town mayorsTown) {
+	public static String[] getWarTimeMayorKilled(TownObject mayorsTown) {
 
 		return parseString(String.format(getLangString("MSG_WAR_MAYOR_KILLED"), mayorsTown.getName()));
 	}
@@ -871,7 +871,7 @@ public class TownySettings {
 		return parseString(String.format(getLangString("MSG_WAR_WINNING_NATION_SPOILS"), winningNation.getName(), money));
 	}
 	
-	public static String[] getWarTimeWinningTownSpoilsMsg(Town winningTown, String money, int score)
+	public static String[] getWarTimeWinningTownSpoilsMsg(TownObject winningTown, String money, int score)
 	{
 		return parseString(String.format(getLangString("MSG_WAR_WINNING_TOWN_SPOILS"), winningTown.getName(), money, score));
 	}
@@ -902,7 +902,7 @@ public class TownySettings {
 		return parseString(String.format(getLangString("MSG_DEL_RESIDENT"), resident.getName()));
 	}
 
-	public static String[] getDelTownMsg(Town town) {
+	public static String[] getDelTownMsg(TownObject town) {
 
 		return parseString(String.format(getLangString("MSG_DEL_TOWN"), town.getName()));
 	}
@@ -957,7 +957,7 @@ public class TownySettings {
 		}
 	}
 
-	public static String getCapitalPostfix(Town town) {
+	public static String getCapitalPostfix(TownObject town) {
 
 		try {
 			return ChatColor.translateAlternateColorCodes('&',(String) getNationLevel(town.getNation()).get(TownySettings.NationLevel.CAPITAL_POSTFIX));
@@ -967,7 +967,7 @@ public class TownySettings {
 		}
 	}
 
-	public static String getTownPostfix(Town town) {
+	public static String getTownPostfix(TownObject town) {
 
 		try {
 			return ChatColor.translateAlternateColorCodes('&',(String) getTownLevel(town).get(TownySettings.TownLevel.NAME_POSTFIX));
@@ -997,7 +997,7 @@ public class TownySettings {
 		}
 	}
 
-	public static String getTownPrefix(Town town) {
+	public static String getTownPrefix(TownObject town) {
 
 		try {
 			return ChatColor.translateAlternateColorCodes('&',(String) getTownLevel(town).get(TownySettings.TownLevel.NAME_PREFIX));
@@ -1007,7 +1007,7 @@ public class TownySettings {
 		}
 	}
 
-	public static String getCapitalPrefix(Town town) {
+	public static String getCapitalPrefix(TownObject town) {
 
 		try {
 			return ChatColor.translateAlternateColorCodes('&',(String) getNationLevel(town.getNation()).get(TownySettings.NationLevel.CAPITAL_PREFIX));
@@ -1098,7 +1098,7 @@ public class TownySettings {
 		return getBoolean(ConfigNodes.PLUGIN_DATABASE_SSL);
 	}
 
-	public static int getMaxTownBlocks(Town town) {
+	public static int getMaxTownBlocks(TownObject town) {
 
 		int ratio = getTownBlockRatio();
 		int n = town.getBonusBlocks() + town.getPurchasedBlocks();
@@ -1118,7 +1118,7 @@ public class TownySettings {
 		return n;
 	}
 	
-	public static int getMaxOutposts(Town town) {
+	public static int getMaxOutposts(TownObject town) {
 		
 		int townOutposts = (Integer) getTownLevel(town).get(TownySettings.TownLevel.OUTPOST_LIMIT);
 		int nationOutposts = 0;
@@ -1131,7 +1131,7 @@ public class TownySettings {
 		return n;
 	}
 	
-	public static int getMaxBonusBlocks(Town town) {
+	public static int getMaxBonusBlocks(TownObject town) {
 		
 		return (Integer) getTownLevel(town).get(TownySettings.TownLevel.TOWN_BLOCK_BUY_BONUS_LIMIT);
 	}
@@ -1141,7 +1141,7 @@ public class TownySettings {
 		return (Integer) getNationLevel(nation).get(TownySettings.NationLevel.TOWN_BLOCK_LIMIT_BONUS);
 	}
 
-	public static int getNationBonusBlocks(Town town) {
+	public static int getNationBonusBlocks(TownObject town) {
 
 		if (town.hasNation())
 			try {
@@ -1448,7 +1448,7 @@ public class TownySettings {
 		return getInt(ConfigNodes.TOWN_LIMIT);
 	}
 
-	public static int getMaxPurchedBlocks(Town town) {
+	public static int getMaxPurchedBlocks(TownObject town) {
 
 		if (isBonusBlocksPerTownLevel())
 			return getMaxBonusBlocks(town);
@@ -1461,7 +1461,7 @@ public class TownySettings {
 		return getInt(ConfigNodes.TOWN_MAX_CLAIM_RADIUS_VALUE);
 	}
 
-	public static boolean isSellingBonusBlocks(Town town) {
+	public static boolean isSellingBonusBlocks(TownObject town) {
 
 		return getMaxPurchedBlocks(town) != 0;
 	}
@@ -1830,7 +1830,7 @@ public class TownySettings {
 		return getBoolean(ConfigNodes.WAR_EVENT_REMOVE_ON_MONARCH_DEATH);
 	}
 
-    public static double getTownUpkeepCost(Town town) {
+    public static double getTownUpkeepCost(TownObject town) {
     	 
         double multiplier;
  
@@ -1903,7 +1903,7 @@ public class TownySettings {
 		return getBoolean(ConfigNodes.ECO_UPKEEP_PLOTPAYMENTS);
 	}
 	
-    public static double getTownPenaltyUpkeepCost(Town town) {
+    public static double getTownPenaltyUpkeepCost(TownObject town) {
     	
     	int claimed, allowedClaims, overClaimed;
     	
@@ -2345,7 +2345,7 @@ public class TownySettings {
 		return getBoolean(ConfigNodes.FLAGS_TOWN_OUTSIDER_SWITCH);
 	}
 
-	public static boolean getDefaultResidentPermission(TownBlockOwner owner, ActionType type) {
+	public static boolean getDefaultResidentPermission(TownBlockOwnerObject owner, ActionType type) {
 
 		if (owner instanceof Resident)
 			switch (type) {
@@ -2360,7 +2360,7 @@ public class TownySettings {
 			default:
 				throw new UnsupportedOperationException();
 			}
-		else if (owner instanceof Town)
+		else if (owner instanceof TownObject)
 			switch (type) {
 			case BUILD:
 				return getPermFlag_Town_Resident_Build();
@@ -2377,7 +2377,7 @@ public class TownySettings {
 			throw new UnsupportedOperationException();
 	}
 
-	public static boolean getDefaultNationPermission(TownBlockOwner owner, ActionType type) {
+	public static boolean getDefaultNationPermission(TownBlockOwnerObject owner, ActionType type) {
 
 		if (owner instanceof Resident)
 			switch (type) {
@@ -2392,7 +2392,7 @@ public class TownySettings {
 			default:
 				throw new UnsupportedOperationException();
 			}
-		else if (owner instanceof Town)
+		else if (owner instanceof TownObject)
 			switch (type) {
 			case BUILD:
 				return getPermFlag_Town_Nation_Build();
@@ -2409,7 +2409,7 @@ public class TownySettings {
 			throw new UnsupportedOperationException();
 	}
 	
-	public static boolean getDefaultAllyPermission(TownBlockOwner owner, ActionType type) {
+	public static boolean getDefaultAllyPermission(TownBlockOwnerObject owner, ActionType type) {
 
 		if (owner instanceof Resident)
 			switch (type) {
@@ -2424,7 +2424,7 @@ public class TownySettings {
 			default:
 				throw new UnsupportedOperationException();
 			}
-		else if (owner instanceof Town)
+		else if (owner instanceof TownObject)
 			switch (type) {
 			case BUILD:
 				return getPermFlag_Town_Ally_Build();
@@ -2441,7 +2441,7 @@ public class TownySettings {
 			throw new UnsupportedOperationException();
 	}
 
-	public static boolean getDefaultOutsiderPermission(TownBlockOwner owner, ActionType type) {
+	public static boolean getDefaultOutsiderPermission(TownBlockOwnerObject owner, ActionType type) {
 
 		if (owner instanceof Resident)
 			switch (type) {
@@ -2456,7 +2456,7 @@ public class TownySettings {
 			default:
 				throw new UnsupportedOperationException();
 			}
-		else if (owner instanceof Town)
+		else if (owner instanceof TownObject)
 			switch (type) {
 			case BUILD:
 				return getPermFlag_Town_Outsider_Build();
@@ -2473,7 +2473,7 @@ public class TownySettings {
 			throw new UnsupportedOperationException();
 	}
 
-	public static boolean getDefaultPermission(TownBlockOwner owner, PermLevel level, ActionType type) {
+	public static boolean getDefaultPermission(TownBlockOwnerObject owner, PermLevel level, ActionType type) {
 
 		switch (level) {
 		case RESIDENT:

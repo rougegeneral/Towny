@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class PlayerEnterTownEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-	private Town enteredtown;
+	private TownObject enteredtown;
 	private PlayerMoveEvent pme;
 	private WorldCoord from;
 	private WorldCoord to;
@@ -26,7 +26,7 @@ public class PlayerEnterTownEvent extends Event {
 		return handlers;
 	}
 
-	public PlayerEnterTownEvent(Player player,WorldCoord to, WorldCoord from, Town enteredtown, PlayerMoveEvent pme) {
+	public PlayerEnterTownEvent(Player player, WorldCoord to, WorldCoord from, TownObject enteredtown, PlayerMoveEvent pme) {
 		super(!Bukkit.getServer().isPrimaryThread());
 		this.enteredtown = enteredtown;
 		this.player = player;
@@ -43,7 +43,7 @@ public class PlayerEnterTownEvent extends Event {
 		return pme;
 	}
 
-	public Town getEnteredtown() {
+	public TownObject getEnteredtown() {
 		return enteredtown;
 	}
 

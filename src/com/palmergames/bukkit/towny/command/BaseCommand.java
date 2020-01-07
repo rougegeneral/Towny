@@ -3,7 +3,7 @@ package com.palmergames.bukkit.towny.command;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -35,7 +35,7 @@ public class BaseCommand implements TabCompleter{
 
 			}
 			// Match towns
-			for (Town town : townyUniverse.getDataSource().getTowns()) {
+			for (TownObject town : townyUniverse.getDataSource().getTowns()) {
 				if (town.getName().toLowerCase().startsWith(lastArg)) {
 					output.add(town.getName());
 				}

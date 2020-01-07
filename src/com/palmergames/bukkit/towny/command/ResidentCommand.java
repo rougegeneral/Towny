@@ -12,7 +12,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.SpawnType;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask;
@@ -174,7 +174,7 @@ public class ResidentCommand extends BaseCommand implements CommandExecutor {
 				if (split[1].equalsIgnoreCase("paybail")) {
 					Resident resident = townyUniverse.getDataSource().getResident(player.getName());
 					if (resident.canPayFromHoldings(TownySettings.getBailAmount())) {
-						Town JailTown = townyUniverse.getDataSource().getTown(resident.getJailTown());
+						TownObject JailTown = townyUniverse.getDataSource().getTown(resident.getJailTown());
 						resident.payTo(TownySettings.getBailAmount(), JailTown, "Bail");
 						resident.setJailed(false);
 						resident.setJailSpawn(0);

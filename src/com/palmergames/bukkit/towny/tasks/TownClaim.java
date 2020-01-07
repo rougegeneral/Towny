@@ -13,7 +13,7 @@ import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
@@ -36,7 +36,7 @@ public class TownClaim extends Thread {
 	Towny plugin;
 	private volatile Player player;
 	private Location outpostLocation;
-	private volatile Town town;
+	private volatile TownObject town;
 	private List<WorldCoord> selection;
 	private boolean outpost, claim, forced;
 
@@ -49,7 +49,7 @@ public class TownClaim extends Thread {
 	 * @param forced admin forced claim/unclaim
 	 * @param isOutpost if claim is/was an Outpost   
 	 */
-	public TownClaim(Towny plugin, Player player, Town town, List<WorldCoord> selection, boolean isOutpost, boolean claim, boolean forced) {
+	public TownClaim(Towny plugin, Player player, TownObject town, List<WorldCoord> selection, boolean isOutpost, boolean claim, boolean forced) {
 
 		super();
 		this.plugin = plugin;
@@ -69,7 +69,7 @@ public class TownClaim extends Thread {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
 		List<TownyWorld> worlds = new ArrayList<>();
-		List<Town> towns = new ArrayList<>();
+		List<TownObject> towns = new ArrayList<>();
 		TownyWorld world;
 		if (player != null)
 			TownyMessaging.sendMsg(player, "Processing " + ((claim) ? "Town Claim..." : "Town unclaim..."));
@@ -153,7 +153,7 @@ public class TownClaim extends Thread {
 		}
 
 		if (!towns.isEmpty()) {
-			for (Town test : towns) {
+			for (TownObject test : towns) {
 				townyUniverse.getDataSource().saveTown(test);
 			}
 		}
@@ -179,7 +179,7 @@ public class TownClaim extends Thread {
 		}
 	}
 
-	private void townClaim(Town town, WorldCoord worldCoord, boolean isOutpost) throws TownyException {
+	private void townClaim(TownObject town, WorldCoord worldCoord, boolean isOutpost) throws TownyException {
 
 		try {
 			TownBlock townBlock = worldCoord.getTownBlock();
@@ -223,7 +223,7 @@ public class TownClaim extends Thread {
 		}
 	}
 
-	private void townUnclaim(final Town town, final WorldCoord worldCoord, boolean force) throws TownyException {
+	private void townUnclaim(final TownObject town, final WorldCoord worldCoord, boolean force) throws TownyException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		
 		try {
@@ -253,7 +253,7 @@ public class TownClaim extends Thread {
 		}
 	}
 
-	public static void townUnclaimAll(Towny plugin, final Town town) {
+	public static void townUnclaimAll(Towny plugin, final TownObject town) {
 
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 

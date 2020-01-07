@@ -22,7 +22,7 @@ public class TownBlock extends TownyObject implements Saveable {
 	// TODO: Admin only or possibly a group check
 	// private List<Group> groups;
 	private TownyWorld world;
-	private Town town;
+	private TownObject town;
 	private Resident resident = null;
 	private TownBlockType type = TownBlockType.RESIDENTIAL;
 	private String name = "";
@@ -44,7 +44,7 @@ public class TownBlock extends TownyObject implements Saveable {
 		this.setWorld(world);
 	}
 
-	public void setTown(Town town) {
+	public void setTown(TownObject town) {
 
 		try {
 			if (hasTown())
@@ -59,7 +59,7 @@ public class TownBlock extends TownyObject implements Saveable {
 		}
 	}
 
-	public Town getTown() throws NotRegisteredException {
+	public TownObject getTown() throws NotRegisteredException {
 
 		if (!hasTown())
 			throw new NotRegisteredException(String.format("The TownBlock at (%s, %d, %d) is not registered to a town.", world.getName(), x, z));
@@ -104,7 +104,7 @@ public class TownBlock extends TownyObject implements Saveable {
 		return resident != null;
 	}
 
-	public boolean isOwner(TownBlockOwner owner) {
+	public boolean isOwner(TownBlockOwnerObject owner) {
 
 		try {
 			if (owner == getTown())

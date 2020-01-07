@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ public class TownPreClaimEvent extends Event implements Cancellable{
 
     private static final HandlerList handlers = new HandlerList();
     private TownBlock townBlock;
-    private Town town;
+    private TownObject town;
     private Player player;
     private boolean isCancelled = false;
 
@@ -31,7 +31,7 @@ public class TownPreClaimEvent extends Event implements Cancellable{
         return handlers;
     }
 
-    public TownPreClaimEvent(Town _town, TownBlock _townBlock, Player _player) {
+    public TownPreClaimEvent(TownObject _town, TownBlock _townBlock, Player _player) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.town = _town;
         this.townBlock = _townBlock;
@@ -59,7 +59,7 @@ public class TownPreClaimEvent extends Event implements Cancellable{
     /**
      * @return the town
      * */
-    public Town getTown() {
+    public TownObject getTown() {
         return town;
     }
     

@@ -9,7 +9,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 
 import java.lang.reflect.Type;
 import java.util.UUID;
@@ -20,22 +20,22 @@ import java.util.UUID;
  * @author Suneet Tipirneni (Siris)
  * @author Lukas Mansour (ArcticDive)
  */
-public class TownFieldSerializer implements JsonSerializer<Town>, JsonDeserializer<Town> {
+public class TownFieldSerializer implements JsonSerializer<TownObject>, JsonDeserializer<TownObject> {
 
 	@Override
-	public JsonElement serialize(Town src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(TownObject src, Type typeOfSrc, JsonSerializationContext context) {
 		return new JsonPrimitive(src.getIdentifier().toString());
 	}
 
 	@Override
-	public Town deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+	public TownObject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		Gson gson = new Gson();
 
 		// Convert String into UUID object
 		UUID ID = UUID.fromString(json.getAsString());
 
 		// Get Town from ID
-		Town town = TownyUniverse.getInstance().getTown(ID);
+		TownObject town = TownyUniverse.getInstance().getTown(ID);
 		JsonElement jObj = gson.toJsonTree(town);
 
 		return context.deserialize(jObj, typeOfT);

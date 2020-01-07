@@ -1,19 +1,19 @@
 package com.palmergames.bukkit.towny.exceptions;
 
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 
 public class EmptyTownException extends Exception {
 
 	private static final long serialVersionUID = 5058583908170407803L;
 	private EmptyNationException emptyNationException;
-	private Town town;
+	private TownObject town;
 
-	public EmptyTownException(Town town) {
+	public EmptyTownException(TownObject town) {
 
 		setTown(town);
 	}
 
-	public EmptyTownException(Town town, EmptyNationException emptyNationException) {
+	public EmptyTownException(TownObject town, EmptyNationException emptyNationException) {
 
 		setTown(town);
 		setEmptyNationException(emptyNationException);
@@ -34,12 +34,12 @@ public class EmptyTownException extends Exception {
 		this.emptyNationException = emptyNationException;
 	}
 
-	public void setTown(Town town) {
+	public void setTown(TownObject town) {
 
 		this.town = town;
 	}
 
-	public Town getTown() {
+	public TownObject getTown() {
 
 		return town;
 	}

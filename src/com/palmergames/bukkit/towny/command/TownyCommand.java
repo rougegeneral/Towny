@@ -16,8 +16,8 @@ import com.palmergames.bukkit.towny.object.Economical;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.ResidentList;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownBlockOwner;
+import com.palmergames.bukkit.towny.object.TownObject;
+import com.palmergames.bukkit.towny.object.TownBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.war.eventwar.War;
@@ -144,7 +144,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 				else
 					showMap(player);
 			} else if (split[0].equalsIgnoreCase("prices")) {
-				Town town = null;
+				TownObject town = null;
 				if (split.length > 1) {
 					try {
 						town = townyUniverse.getDataSource().getTown(split[1]);
@@ -241,7 +241,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 
 	private void parseWarParticipants(Player player, String[] split) throws NotRegisteredException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
-		List<Town> townsToSort = War.warringTowns;
+		List<TownObject> townsToSort = War.warringTowns;
 		List<Nation> nationsToSort = War.warringNations;
 		int page = 1;
 		List<String> output = new ArrayList<>();
@@ -255,7 +255,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 				else if (townyUniverse.getDataSource().getResident(player.getName()).getTown().getNation().hasAlly(nations))
 					nationLine += Colors.Green + " (Ally)";
 			output.add(nationLine);
-			for (Town towns : townsToSort) {
+			for (TownObject towns : townsToSort) {
 				if (towns.getNation().equals(nations)) {
 					townLine = Colors.Blue + "  -" + towns.getName();
 					if (towns.isCapital())
@@ -324,7 +324,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 				sendErrorMsg(player, "Invalid sub command.");
 		else if (args[0].equalsIgnoreCase("land"))
 			if (args.length == 1 || args[1].equalsIgnoreCase("all")) {
-				List<TownBlockOwner> list = new ArrayList<>(universe.getDataSource().getResidents());
+				List<TownBlockOwnerObject> list = new ArrayList<>(universe.getDataSource().getResidents());
 				list.addAll(universe.getDataSource().getTowns());
 				towny_top.add(ChatTools.formatTitle("Most Land Owned"));
 				towny_top.addAll(getMostLand(list, 10));
@@ -379,7 +379,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 	 * @param town - The town being checked.
 	 * @return - Prices screen for a town.
 	 */
-	public List<String> getTownyPrices(Town town) {
+	public List<String> getTownyPrices(TownObject town) {
 
 		List<String> output = new ArrayList<>();
 		Nation nation = null;
@@ -467,20 +467,20 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 		return output;
 	}
 
-	public List<String> getMostLand(List<TownBlockOwner> list, int maxListing) {
+	public List<String> getMostLand(List<TownBlockOwnerObject> list, int maxListing) {
 
 		List<String> output = new ArrayList<>();
-		KeyValueTable<TownBlockOwner, Integer> kvTable = new KeyValueTable<>();
-		for (TownBlockOwner obj : list)
+		KeyValueTable<TownBlockOwnerObject, Integer> kvTable = new KeyValueTable<>();
+		for (TownBlockOwnerObject obj : list)
 			kvTable.put(obj, obj.getTownBlocks().size());
 		kvTable.sortByValue();
 		kvTable.reverse();
 		int n = 0;
-		for (KeyValue<TownBlockOwner, Integer> kv : kvTable.getKeyValues()) {
+		for (KeyValue<TownBlockOwnerObject, Integer> kv : kvTable.getKeyValues()) {
 			n++;
 			if (maxListing != -1 && n > maxListing)
 				break;
-			TownBlockOwner town = kv.key;
+			TownBlockOwnerObject town = kv.key;
 			output.add(String.format(Colors.Blue + "%30s " + Colors.Gold + "|" + Colors.LightGray + " %10d", TownyFormatter.getFormattedName(town), kv.value));
 		}
 		return output;

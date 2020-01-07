@@ -9,7 +9,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.PlayerCache;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyPermission;
@@ -130,7 +130,7 @@ public class TownyEntityListener implements Listener {
 					else {
 						BlockProjectileSource bShooter = (BlockProjectileSource) ((Projectile) attacker).getShooter();
 						if (TownyAPI.getInstance().getTownBlock(bShooter.getBlock().getLocation()) != null) {
-							Town bTown = TownyAPI.getInstance().getTownBlock(bShooter.getBlock().getLocation()).getTown();
+							TownObject bTown = TownyAPI.getInstance().getTownBlock(bShooter.getBlock().getLocation()).getTown();
 							if (!bTown.hasNation() && TownySettings.isWarTimeTownsNeutral()) {
 								event.setCancelled(true);
 								return;
@@ -159,8 +159,8 @@ public class TownyEntityListener implements Listener {
 					return;
 				}
 				try {
-					Town attackerTown = universe.getDataSource().getResident(attacker.getName()).getTown();
-					Town defenderTown = universe.getDataSource().getResident(defender.getName()).getTown();
+					TownObject attackerTown = universe.getDataSource().getResident(attacker.getName()).getTown();
+					TownObject defenderTown = universe.getDataSource().getResident(defender.getName()).getTown();
 	
 					//Cancel because one of the two players' town has no nation and should not be interfering during war.  AND towns_are_neutral is true in the config.
 					if ((!attackerTown.hasNation() || !defenderTown.hasNation()) && TownySettings.isWarTimeTownsNeutral()) {

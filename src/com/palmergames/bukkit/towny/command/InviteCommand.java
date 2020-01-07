@@ -10,7 +10,7 @@ import com.palmergames.bukkit.towny.invites.Invite;
 import com.palmergames.bukkit.towny.invites.InviteHandler;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.util.ChatTools;
 import com.palmergames.bukkit.util.Colors;
 import com.palmergames.util.StringMgmt;
@@ -115,7 +115,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 
 	public static void parseDeny(Player player, String[] args) {
 		Resident resident;
-		Town town;
+		TownObject town;
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		try {
 			resident = townyUniverse.getDataSource().getResident(player.getName());
@@ -140,7 +140,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 			}
 		} else {
 			if (invites.size() == 1) { // Only 1 Invite.
-				town = (Town) invites.get(0).getSender();
+				town = (TownObject) invites.get(0).getSender();
 			} else {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_player_has_multiple_invites"));
 				parseInviteList(player, null);
@@ -170,7 +170,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 
 	public static void parseAccept(Player player, String[] args) {
 		Resident resident;
-		Town town;
+		TownObject town;
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		try {
 			resident = townyUniverse.getDataSource().getResident(player.getName());
@@ -192,7 +192,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 			}
 		} else {
 			if (invites.size() == 1) {
-				town = (Town) invites.get(0).getSender();
+				town = (TownObject) invites.get(0).getSender();
 			} else {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_player_has_multiple_invites"));
 				parseInviteList(player, null);
@@ -256,13 +256,13 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 			// If it's from the sender, do it differently
 			String output = null;
 			if (fromSender) {
-				if (invite.getSender() instanceof Town) { // If it's sent by a town to a resident
+				if (invite.getSender() instanceof TownObject) { // If it's sent by a town to a resident
 					output = Colors.Blue + ((Resident) invite.getReceiver()).getName() + Colors.Gray + " - " + Colors.Green + name;
 					object = TownySettings.getLangString("player_sing");
 				}
 				if (invite.getSender() instanceof Nation) {
-					if (invite.getReceiver() instanceof Town) {
-						output = Colors.Blue + ((Town) invite.getReceiver()).getName() + Colors.Gray + " - " + Colors.Green + name;
+					if (invite.getReceiver() instanceof TownObject) {
+						output = Colors.Blue + ((TownObject) invite.getReceiver()).getName() + Colors.Gray + " - " + Colors.Green + name;
 						object = TownySettings.getLangString("town_sing");
 					}
 					if (invite.getReceiver() instanceof Nation) {
@@ -272,10 +272,10 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 				}
 			} else { // So it's not from the sender, then it's from the receiver so
 				if (invite.getReceiver() instanceof Resident) {
-					output = Colors.Blue + ((Town) invite.getSender()).getName() + Colors.Gray + " - " + Colors.Green + name;
+					output = Colors.Blue + ((TownObject) invite.getSender()).getName() + Colors.Gray + " - " + Colors.Green + name;
 					object = TownySettings.getLangString("town_sing");
 				}
-				if (invite.getReceiver() instanceof Town) {
+				if (invite.getReceiver() instanceof TownObject) {
 					output = Colors.Blue + ((Nation) invite.getSender()).getName() + Colors.Gray + " - " + Colors.Green + name;
 					object = TownySettings.getLangString("nation_sing");
 				}

@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import org.bukkit.Bukkit;
@@ -23,7 +23,7 @@ public class TownBlockSettingsChangedEvent extends Event {
 	}
 
 	private TownyWorld w;
-	private Town t;
+	private TownObject t;
 	private TownBlock tb;
 	private TownBlockSettingsChangedEvent() {
 		super(!Bukkit.getServer().isPrimaryThread());
@@ -35,7 +35,7 @@ public class TownBlockSettingsChangedEvent extends Event {
 		this.w = w;
 	}
 
-	public TownBlockSettingsChangedEvent (Town t) {
+	public TownBlockSettingsChangedEvent (TownObject t) {
 		this();
 		this.t = t;
 	}
@@ -49,7 +49,7 @@ public class TownBlockSettingsChangedEvent extends Event {
 		return w;
 	}
 	
-	public Town getTown() {
+	public TownObject getTown() {
 		return t;
 	}
 	

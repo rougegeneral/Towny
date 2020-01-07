@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -11,7 +11,7 @@ public class RenameTownEvent extends Event  {
     private static final HandlerList handlers = new HandlerList();
     
     private String oldName;
-    private Town town;
+    private TownObject town;
 
     @Override
     public HandlerList getHandlers() {
@@ -24,7 +24,7 @@ public class RenameTownEvent extends Event  {
 		return handlers;
 	}
 
-    public RenameTownEvent(String oldName, Town town) {
+    public RenameTownEvent(String oldName, TownObject town) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.oldName = oldName;
         this.town = town;
@@ -42,7 +42,7 @@ public class RenameTownEvent extends Event  {
     *
     * @return the town with it's changed name
     */
-   public Town getTown() {
+   public TownObject getTown() {
        return this.town;
    }
     

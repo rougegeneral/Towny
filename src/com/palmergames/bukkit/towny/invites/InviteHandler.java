@@ -5,7 +5,7 @@ import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class InviteHandler {
 				amount = TownySettings.getMaximumInvitesReceivedResident();
 			}
 		}
-		if (receiver instanceof Town) {
+		if (receiver instanceof TownObject) {
 			if (TownySettings.getMaximumInvitesReceivedTown() == 0) {
 				amount = 100;
 			} else {
@@ -125,7 +125,7 @@ public class InviteHandler {
 
 	public static int getSentInvitesMaxAmount(TownyInviteSender sender) {
 		int amount = 0;
-		if (sender instanceof Town) {
+		if (sender instanceof TownObject) {
 			if (TownySettings.getMaximumInvitesSentTown() == 0) {
 				amount = 100;
 			} else {

@@ -8,9 +8,9 @@ import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownBlockOwner;
+import com.palmergames.bukkit.towny.object.TownBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.util.StringMgmt;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class AreaSelectionUtil {
 
-	public static List<WorldCoord> selectWorldCoordArea(TownBlockOwner owner, WorldCoord pos, String[] args) throws TownyException {
+	public static List<WorldCoord> selectWorldCoordArea(TownBlockOwnerObject owner, WorldCoord pos, String[] args) throws TownyException {
 
 		List<WorldCoord> out = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class AreaSelectionUtil {
 			} else if (args[0].equalsIgnoreCase("outpost")) {
 				TownBlock tb = pos.getTownBlock();
 				if (!tb.isOutpost() && tb.hasTown()) { // isOutpost(), only for mysql however, if we include this we can skip the outposts on flatfile so less laggy!
-					Town town = tb.getTown();
+					TownObject town = tb.getTown();
 					if (TownyUniverse.getInstance().isTownBlockLocContainedInTownOutposts(town.getAllOutpostSpawns(), tb)) {
 						tb.setOutpost(true);
 						out.add(pos);
@@ -70,15 +70,15 @@ public class AreaSelectionUtil {
 		return out;
 	}
 
-	public static List<WorldCoord> selectWorldCoordAreaRect(TownBlockOwner owner, WorldCoord pos, String[] args) throws TownyException {
+	public static List<WorldCoord> selectWorldCoordAreaRect(TownBlockOwnerObject owner, WorldCoord pos, String[] args) throws TownyException {
 
 		List<WorldCoord> out = new ArrayList<>();
 		if (pos.getTownyWorld().isClaimable()) {
 			if (args.length > 0) {
 				int r = 0, available = 1000;
 
-				if (owner instanceof Town) {
-					Town town = (Town) owner;
+				if (owner instanceof TownObject) {
+					TownObject town = (TownObject) owner;
 					available = TownySettings.getMaxTownBlocks(town) - town.getTownBlocks().size();
 				} else if (owner instanceof Resident) {
 					available = TownySettings.getMaxResidentPlots((Resident) owner);
@@ -117,14 +117,14 @@ public class AreaSelectionUtil {
 		return out;
 	}
 
-	public static List<WorldCoord> selectWorldCoordAreaCircle(TownBlockOwner owner, WorldCoord pos, String[] args) throws TownyException {
+	public static List<WorldCoord> selectWorldCoordAreaCircle(TownBlockOwnerObject owner, WorldCoord pos, String[] args) throws TownyException {
 
 		List<WorldCoord> out = new ArrayList<>();
 		if (pos.getTownyWorld().isClaimable()) {
 			if (args.length > 0) {
 				int r = 0, available = 0;
-				if (owner instanceof Town) {
-					Town town = (Town) owner;
+				if (owner instanceof TownObject) {
+					TownObject town = (TownObject) owner;
 					available = TownySettings.getMaxTownBlocks(town) - town.getTownBlocks().size();
 				} else if (owner instanceof Resident) {
 					available = TownySettings.getMaxResidentPlots((Resident) owner);
@@ -172,7 +172,7 @@ public class AreaSelectionUtil {
 	 * @param town - Town to check distance from
 	 * @return List of townblocks
 	 */
-	public static List<WorldCoord> filterInvalidProximityTownBlocks(List<WorldCoord> selection, Town town) {
+	public static List<WorldCoord> filterInvalidProximityTownBlocks(List<WorldCoord> selection, TownObject town) {
 
 		List<WorldCoord> out = new ArrayList<>();
 		for (WorldCoord worldCoord : selection)
@@ -224,7 +224,7 @@ public class AreaSelectionUtil {
 		return out;
 	}
 
-	public static List<WorldCoord> filterOwnedBlocks(TownBlockOwner owner, List<WorldCoord> selection) {
+	public static List<WorldCoord> filterOwnedBlocks(TownBlockOwnerObject owner, List<WorldCoord> selection) {
 
 		List<WorldCoord> out = new ArrayList<>();
 		for (WorldCoord worldCoord : selection)
@@ -324,7 +324,7 @@ public class AreaSelectionUtil {
 		return -1;
 	}
 
-	public static boolean isOnEdgeOfOwnership(TownBlockOwner owner, WorldCoord worldCoord) {
+	public static boolean isOnEdgeOfOwnership(TownBlockOwnerObject owner, WorldCoord worldCoord) {
 
 		int[][] offset = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 		for (int i = 0; i < 4; i++)

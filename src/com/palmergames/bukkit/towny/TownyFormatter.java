@@ -8,13 +8,12 @@ import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.ResidentList;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownBlockOwner;
+import com.palmergames.bukkit.towny.object.TownBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.object.TownyWorld;
-import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
@@ -56,7 +55,7 @@ public class TownyFormatter {
 		return getFormattedResidents(prefix, onlineResidents);
 	}
 
-	public static List<String> getFormattedResidents(Town town) {
+	public static List<String> getFormattedResidents(TownObject town) {
 		List<String> out = new ArrayList<>();
 
 		String[] residents = getFormattedNames(town.getResidents().toArray(new Resident[0]));
@@ -67,7 +66,7 @@ public class TownyFormatter {
 
 	}
 
-	public static List<String> getFormattedOutlaws(Town town) {
+	public static List<String> getFormattedOutlaws(TownObject town) {
 
 		List<String> out = new ArrayList<String>();
 
@@ -84,9 +83,9 @@ public class TownyFormatter {
 		return ChatTools.listArr(getFormattedNames(residentList), String.format(residentListPrefixFormat, prefix, residentList.size(), TownySettings.getLangString("res_format_list_1"), TownySettings.getLangString("res_format_list_2"), TownySettings.getLangString("res_format_list_3")));
 	}
 	
-	public static List<String> getFormattedTowns(String prefix, List<Town> townList) {
+	public static List<String> getFormattedTowns(String prefix, List<TownObject> townList) {
 		
-		Town[] arrayTowns = townList.toArray(new Town[0]);
+		TownObject[] arrayTowns = townList.toArray(new TownObject[0]);
 
 		return ChatTools.listArr(getFormattedNames(arrayTowns), String.format(embassyTownListPrefixFormat, prefix, townList.size(), TownySettings.getLangString("res_format_list_1"), TownySettings.getLangString("res_format_list_2"), TownySettings.getLangString("res_format_list_3")));
 	}
@@ -113,8 +112,8 @@ public class TownyFormatter {
 		List<String> out = new ArrayList<String>();
 
 		try {
-			TownBlockOwner owner;
-			Town town = townBlock.getTown();
+			TownBlockOwnerObject owner;
+			TownObject town = townBlock.getTown();
 			TownyWorld world = townBlock.getWorld();
 
 			if (townBlock.hasResident()) {
@@ -202,7 +201,7 @@ public class TownyFormatter {
 		out.add(line);
 		
 		// Embassies in: Camelot, London, Tokyo
-		List<Town> townEmbassies = new ArrayList<Town>();
+		List<TownObject> townEmbassies = new ArrayList<TownObject>();
 		try {
 			
 			String actualTown = resident.hasTown() ? resident.getTown().getName() : "";
@@ -254,7 +253,7 @@ public class TownyFormatter {
 	 * @param town the town for which to check against.
 	 * @return a list containing formatted rank data.
 	 */
-	public static List<String> getRanks(Town town) {
+	public static List<String> getRanks(TownObject town) {
 
 		List<String> ranklist = new ArrayList<String>();
 
@@ -316,7 +315,7 @@ public class TownyFormatter {
 	 * @param town the town in which to check
 	 * @return a string list containing the results.
 	 */
-	public static List<String> getStatus(Town town) {
+	public static List<String> getStatus(TownObject town) {
 
 		List<String> out = new ArrayList<>();
 
@@ -509,10 +508,10 @@ public class TownyFormatter {
 				   );
 		// Assistants [2]: Sammy, Ginger
 		List<String> ranklist = new ArrayList<String>();
-		List<Town> towns = nation.getTowns();
+		List<TownObject> towns = nation.getTowns();
 		List<Resident> residents = new ArrayList<Resident>();
 		
-		for (Town town: towns) {
+		for (TownObject town: towns) {
 			 residents.addAll(town.getResidents());
 		}
 		
@@ -532,7 +531,7 @@ public class TownyFormatter {
 			out.addAll(ranklist);
 		
 		// Towns [44]: James City, Carry Grove, Mason Town
-		String[] towns2 = getFormattedNames(nation.getTowns().toArray(new Town[0]));
+		String[] towns2 = getFormattedNames(nation.getTowns().toArray(new TownObject[0]));
 		if (towns2.length > 10) {
 			String[] entire = towns2;
 			towns2 = new String[12];
@@ -627,7 +626,7 @@ public class TownyFormatter {
 	public static List<String> getTaxStatus(Resident resident) {
 
 		List<String> out = new ArrayList<String>();
-		Town town = null;
+		TownObject town = null;
 
 		double plotTax = 0.0;
 
@@ -696,8 +695,8 @@ public class TownyFormatter {
 			return "Null";
 		else if (obj instanceof Resident)
 			return getFormattedResidentName((Resident) obj);
-		else if (obj instanceof Town)
-			return getFormattedTownName((Town) obj);
+		else if (obj instanceof TownObject)
+			return getFormattedTownName((TownObject) obj);
 		else if (obj instanceof Nation)
 			return getFormattedNationName((Nation) obj);
 		// System.out.println("just name: " + obj.getName());
@@ -715,7 +714,7 @@ public class TownyFormatter {
 		return (resident.hasTitle() ? resident.getTitle() + " " : "") + resident.getName() + (resident.hasSurname() ? " " + resident.getSurname() : "");
 	}
 
-	public static String getFormattedTownName(Town town) {
+	public static String getFormattedTownName(TownObject town) {
 
 		if (town.isCapital())
 			return TownySettings.getCapitalPrefix(town) + town.getName().replaceAll("_", " ") + TownySettings.getCapitalPostfix(town);
@@ -743,10 +742,10 @@ public class TownyFormatter {
 		return names.toArray(new String[0]);
 	}
 
-	public static String[] getFormattedNames(Town[] towns) {
+	public static String[] getFormattedNames(TownObject[] towns) {
 
 		List<String> names = new ArrayList<String>();
-		for (Town town : towns)
+		for (TownObject town : towns)
 			names.add(getFormattedName(town));
 		return names.toArray(new String[0]);
 	}

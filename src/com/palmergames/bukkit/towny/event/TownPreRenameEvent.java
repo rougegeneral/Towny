@@ -5,13 +5,13 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 
 public class TownPreRenameEvent extends Event implements Cancellable {
 
 	private static final HandlerList handlers = new HandlerList();
 	private String oldName, newName;
-	private Town town;
+	private TownObject town;
 	private boolean isCancelled = false;
 
 	@Override
@@ -23,7 +23,7 @@ public class TownPreRenameEvent extends Event implements Cancellable {
 		return handlers;
 	}
 
-	public TownPreRenameEvent(Town town, String newName) {
+	public TownPreRenameEvent(TownObject town, String newName) {
 		super(!Bukkit.getServer().isPrimaryThread());
 		this.oldName = town.getName();
 		this.town = town;
@@ -49,7 +49,7 @@ public class TownPreRenameEvent extends Event implements Cancellable {
 	 *
 	 * @return the town with it's changed name
 	 */
-	public Town getTown() {
+	public TownObject getTown() {
 		return this.town;
 	}
 

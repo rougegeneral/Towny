@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.invites.Invite;
 import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.TownyInviteSender;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 
 public class PlayerJoinTownInvite implements Invite {
 
@@ -40,7 +40,7 @@ public class PlayerJoinTownInvite implements Invite {
 	@Override
 	public void accept() throws TownyException {
 		Resident resident = (Resident) getReceiver();
-		Town town = (Town) getSender();
+		TownObject town = (TownObject) getSender();
 		TownCommand.townAddResident(town, resident);
 		TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_join_town"), resident.getName()));
 		resident.deleteReceivedInvite(this);
@@ -50,7 +50,7 @@ public class PlayerJoinTownInvite implements Invite {
 	@Override
 	public void decline(boolean fromSender) {
 		Resident resident = (Resident) getReceiver();
-		Town town = (Town) getSender();
+		TownObject town = (TownObject) getSender();
 		resident.deleteReceivedInvite(this);
 		town.deleteSentInvite(this);
 		if (!fromSender) {

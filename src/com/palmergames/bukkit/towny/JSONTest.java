@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 
 public class JSONTest extends TownyTest {
 	
@@ -39,7 +39,7 @@ public class JSONTest extends TownyTest {
 	}
 
 	public void testTownJSON() {
-		Town loadedTown = loadTownFromJSON();
+		TownObject loadedTown = loadTownFromJSON();
 		
 		// Make sure ID's are equal.
 		boolean test = getMockTown().getWorld().getIdentifier().equals(loadedTown.getWorld().getIdentifier());
@@ -47,7 +47,7 @@ public class JSONTest extends TownyTest {
 	}
 	
 	public void testTownMayorJSON() {
-		Town loadedTown = loadTownFromJSON();
+		TownObject loadedTown = loadTownFromJSON();
 
 		// Make sure ID's are equal.
 		boolean test = getMockTown().getMayor().getIdentifier().equals(loadedTown.getMayor().getIdentifier());
@@ -56,15 +56,15 @@ public class JSONTest extends TownyTest {
 
 	public void testTownWorldJSON() {
 		// Get the contents from a json file (simulated).
-		Town loadedTown = loadTownFromJSON();
+		TownObject loadedTown = loadTownFromJSON();
 
 		// Make sure ID's are equal.
 		boolean test = getMockTown().getWorld().getIdentifier().equals(loadedTown.getWorld().getIdentifier());
 		checkOff("TOWN WORLDS ARE IDENTICAL", test);
 	}
 	
-	public Town loadTownFromJSON() {
-		return gson.fromJson(contents, Town.class);
+	public TownObject loadTownFromJSON() {
+		return gson.fromJson(contents, TownObject.class);
 	}
 
 	public void setShowContentsOnStart(boolean showContentsOnStart) {

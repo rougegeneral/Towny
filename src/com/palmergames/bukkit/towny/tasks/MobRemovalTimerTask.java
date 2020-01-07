@@ -97,7 +97,7 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 						continue;
 
 					// Check if the plot is registered to a town.
-					Town town = townBlock.getTown();
+					TownObject town = townBlock.getTown();
 
 					// Check if the town this plot is registered to allows mobs.
 					if (town.hasMobs())

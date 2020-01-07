@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -17,9 +17,9 @@ public class TownAddResidentRankEvent extends Event
 	
     private Resident resident;
     private String rank;
-    private Town town;
+    private TownObject town;
     
-    public TownAddResidentRankEvent(Resident resident, String rank, Town town) {
+    public TownAddResidentRankEvent(Resident resident, String rank, TownObject town) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.resident = resident;
         this.rank = rank;
@@ -48,7 +48,7 @@ public class TownAddResidentRankEvent extends Event
      *
      * @return the town this resident is part of
      * */
-    public Town getTown()
+    public TownObject getTown()
     {
         return town;
     }

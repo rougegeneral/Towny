@@ -16,7 +16,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.NationSpawnLevel;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.SpawnType;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownSpawnLevel;
 import com.palmergames.bukkit.towny.object.TownyObject;
@@ -66,7 +66,7 @@ public class SpawnUtil {
 		if (resident.isJailed())
 			throw new TownyException(TownySettings.getLangString("msg_cannot_spawn_while_jailed"));
 
-		Town town = null;
+		TownObject town = null;
 		Nation nation = null;
 		Location spawnLoc = null;
 		TownSpawnLevel townSpawnPermission = null;
@@ -94,7 +94,7 @@ public class SpawnUtil {
 			break;
 
 		case TOWN:
-			town = (Town) townyObject;
+			town = (TownObject) townyObject;
 			if (outpost) {
 				if (!town.hasOutpostSpawn())
 					throw new TownyException(TownySettings.getLangString("msg_err_outpost_spawn"));

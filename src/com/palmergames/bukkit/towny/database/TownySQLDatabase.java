@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny.database;
 
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
@@ -37,7 +37,7 @@ public final class TownySQLDatabase extends TownyDatabase {
 	
 	@Nonnull
 	@Override
-	public Map<UUID, Town> loadTowns() {
+	public Map<UUID, TownObject> loadTowns() {
 		return null;
 	}
 	

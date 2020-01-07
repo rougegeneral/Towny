@@ -14,7 +14,7 @@ public enum TownBlockType {
 	COMMERCIAL(1, "Shop", "C") {  // Just like residential but has additional tax
 
 		@Override
-		public double getTax(Town town) {
+		public double getTax(TownObject town) {
 
 			return town.getCommercialPlotTax() + town.getPlotTax();
 		}
@@ -26,7 +26,7 @@ public enum TownBlockType {
 	EMBASSY(3, "Embassy", "E") {  // For other towns to own a plot in your town.
 
 		@Override
-		public double getTax(Town town) {
+		public double getTax(TownObject town) {
 
 			return town.getEmbassyPlotTax() + town.getPlotTax();
 		}
@@ -82,7 +82,7 @@ public enum TownBlockType {
 		return name;
 	}
 
-	public double getTax(Town town) {
+	public double getTax(TownObject town) {
 
 		return town.getPlotTax();
 	}

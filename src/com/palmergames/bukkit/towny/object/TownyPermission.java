@@ -243,7 +243,7 @@ public class TownyPermission {
 				Colors.LightGreen + " Item = " + Colors.LightGray + (residentItemUse ? "f" : "-") + (nationItemUse ? "n" : "-") + (allyItemUse ? "a" : "-") + (outsiderItemUse ? "o" : "-");
 	}
 
-	public void loadDefault(TownBlockOwner owner) {
+	public void loadDefault(TownBlockOwnerObject owner) {
 
 		residentBuild = TownySettings.getDefaultPermission(owner, PermLevel.RESIDENT, ActionType.BUILD);
 		residentDestroy = TownySettings.getDefaultPermission(owner, PermLevel.RESIDENT, ActionType.DESTROY);
@@ -268,7 +268,7 @@ public class TownyPermission {
 		 * mobs = owner.getPermissions().mobs;
 		 */
 
-		if (owner instanceof Town) {
+		if (owner instanceof TownObject) {
 			pvp = TownySettings.getPermFlag_Town_Default_PVP();
 			fire = TownySettings.getPermFlag_Town_Default_FIRE();
 			explosion = TownySettings.getPermFlag_Town_Default_Explosion();

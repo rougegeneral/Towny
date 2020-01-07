@@ -3,7 +3,7 @@ package com.palmergames.bukkit.towny.database;
 import com.palmergames.bukkit.towny.database.results.CreateResult;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownObject;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
@@ -35,16 +35,16 @@ public final class TownyDatabaseHelper {
 	 *
 	 * @param identifier {@link UUID} of the new nation.
 	 * @param name {@link String} containing the nation name.
-	 * @param capital {@link Town} the capital of the nation.   
+	 * @param capital {@link TownObject} the capital of the nation.   
 	 * @return {@link CreateResult}, enum containing the result of the nation creation.
 	 */
 	@Nonnull
-	public static CreateResult newNation(UUID identifier, String name, @Nullable Town capital) {
+	public static CreateResult newNation(UUID identifier, String name, @Nullable TownObject capital) {
 		return null;
 	}
 	
 	/**
-	 * Creates a new {@link Town} and adds it to the database.
+	 * Creates a new {@link TownObject} and adds it to the database.
 	 *
 	 * @param identifier {@link UUID} of the new town.
 	 * @param name {@link String} containing the town name.
