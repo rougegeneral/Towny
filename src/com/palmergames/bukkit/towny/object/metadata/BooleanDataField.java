@@ -1,17 +1,20 @@
 package com.palmergames.bukkit.towny.object.metadata;
 
+import javax.annotation.Nonnull;
+
 public class BooleanDataField extends CustomDataField<Boolean> {
-    
-    public BooleanDataField(String key, Boolean value) {
-        super(key, CustomDataFieldType.BooleanField, value);
-    }
-    
-    public BooleanDataField(String key, Boolean value, String label) {
-    	super(key, CustomDataFieldType.BooleanField, value, label);
+	
+	public BooleanDataField(@Nonnull String name) {
+		super(name);
 	}
-    
-    public BooleanDataField(String key) {
-        // Initialized to false
-        super(key, CustomDataFieldType.BooleanField, false);
-    }
+
+	@Override
+	public Boolean parseInput(String input) {
+		return input.equalsIgnoreCase("true");
+	}
+
+	@Override
+	public Boolean degenerify(Object obj) {
+		return (Boolean)obj;
+	}
 }

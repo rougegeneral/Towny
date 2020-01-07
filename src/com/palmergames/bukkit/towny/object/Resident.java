@@ -519,7 +519,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 			TownyMessaging.sendErrorMsg(TownySettings.getLangString("msg_err_could_not_set_default_modes_for") + getName() + ".");
 
 	}
-
+	
 	/**
 	 * Only for internal Towny use. NEVER call this from any other plugin.
 	 *

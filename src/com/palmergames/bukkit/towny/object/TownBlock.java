@@ -31,6 +31,7 @@ public class TownBlock extends TownyObject implements Saveable {
 	private boolean locked = false;
 	private boolean outpost = false;
 	private HashSet<CustomDataField> metadata = null;
+	private PlotObjectGroup plotGroup;
 
 	//Plot level permissions
 	protected TownyPermission permissions = new TownyPermission();
@@ -494,8 +495,28 @@ public class TownBlock extends TownyObject implements Saveable {
 			metadata = new HashSet<>();
 		
 		String[] objects = str.split(";");
-		for (int i = 0; i < objects.length; i++) {
-			metadata.add(CustomDataField.load(objects[i]));
+		for (String object : objects) {
+			metadata.add(CustomDataField.load(object));
+		}
+	}
+	
+	public boolean hasPlotObjectGroup() { return plotGroup != null; }
+	
+	public PlotObjectGroup getPlotObjectGroup() {
+		return plotGroup;
+	}
+	
+	public void removePlotObjectGroup() {
+		this.plotGroup = null;
+	}
+
+	public void setPlotObjectGroup(PlotObjectGroup group) {
+		this.plotGroup = group;
+
+		try {
+			group.addTownBlock(this);
+		} catch (NullPointerException e) {
+			TownyMessaging.sendErrorMsg("Group is null." + String.valueOf(group));
 		}
 	}
 	

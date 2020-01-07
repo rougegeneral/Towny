@@ -845,7 +845,7 @@ public enum ConfigNodes {
 			"# NEVER set below 1."),
 	PROT_MOB_TYPES(
 			"protection.mob_types",
-			"Animals,WaterMob,NPC,Snowman,ArmorStand",
+			"Animals,WaterMob,NPC,Snowman,ArmorStand,Villager",
 			"",
 			"# permitted entities https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/package-summary.html",
 			"# Animals, Chicken, Cow, Creature, Creeper, Flying, Ghast, Giant, Monster, Pig, ",
@@ -927,6 +927,7 @@ public enum ConfigNodes {
 			"true",
 			"# When set to true, town's names are the long form (townprefix)(name)(townpostfix) configured in the town_level section.",
 			"# When false, it is only the town name."),	
+	NOTIFICATION_GROUP("notification.group", "&f[%s]"),
 	NOTIFICATION_USING_TITLES(
 			"notification.using_titles",
 			"false",

@@ -1,15 +1,24 @@
 package com.palmergames.bukkit.towny.object.metadata;
 
-public class DecimalDataField extends CustomDataField<Double> {
-    public DecimalDataField(String key, Double value) {
-        super(key, CustomDataFieldType.DecimalField, value);
-    }
+import javax.annotation.Nonnull;
 
-	public DecimalDataField(String key, Double value, String label) {
-		super(key, CustomDataFieldType.DecimalField, value, label);
+public class DecimalDataField extends CustomDataField<Double> {
+	
+	public DecimalDataField(@Nonnull String name) {
+		super(name);
 	}
 
-    public DecimalDataField(String key) {
-        super(key, CustomDataFieldType.DecimalField, 0.0);
-    }
+	@Override
+	public Double parseInput(String input) {
+		return Double.parseDouble(input);
+	}
+
+	@Override
+	public Double degenerify(Object obj) {
+		if (obj instanceof Double) {
+			return (Double) obj;
+		}
+		
+		return null;
+	}
 }

@@ -15,6 +15,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
 import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -369,6 +370,10 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 
 		return universe.getTownsMap().get(name);
 	}
+	
+	public PlotObjectGroup getPlotObjectGroup(String worldName, String townName, UUID groupID) {
+		return universe.getGroup(townName, groupID);
+	}
 
 	@Override
 	public List<Nation> getNations(String[] names) {
@@ -522,14 +527,13 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 				TownyRegenAPI.addPlotChunk(plotData, true);
 			}
 		}
-		
-		
-		deleteTownBlock(townBlock);
-		townBlock.clear();
+
 		if (resident != null)
 			saveResident(resident);
 
 		world.removeTownBlock(townBlock);
+
+		deleteTownBlock(townBlock);
 		// Raise an event to signal the unclaim
 		Bukkit.getPluginManager().callEvent(new TownUnclaimEvent(town, coord));	
 	}
@@ -537,18 +541,17 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	@Override
 	public void removeTownBlock(TownBlock townBlock) {
 
-		Resident resident = null;
 		Town town = null;
-		try {
-			resident = townBlock.getResident();
-		} catch (NotRegisteredException ignored) {
-		}
+//		Resident resident = null;                   - Removed in 0.95.2.5
+//		try {
+//			resident = townBlock.getResident();
+//		} catch (NotRegisteredException ignored) {
+//		}
 		try {
 			town = townBlock.getTown();
 		} catch (NotRegisteredException ignored) {
 		}
-		
-		
+
 		TownyWorld world = townBlock.getWorld();
 		world.removeTownBlock(townBlock);
 
@@ -556,10 +559,10 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		deleteTownBlock(townBlock);
 
 		saveTownBlockList();
-		
 
-		if (resident != null)
-			saveResident(resident);
+//		if (resident != null)           - Removed in 0.95.2.5, residents don't store townblocks in them.
+//			saveResident(resident);
+
 //		if (town != null)         		- Removed in 0.91.1.2, possibly fixing SQL database corruption 
 //		    saveTown(town);				  occuring when towns are deleted. 
 
@@ -594,6 +597,17 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	@Override
 	public List<TownBlock> getAllTownBlocks() {
 		return TownyUniverse.getInstance().getTownBlocks();
+	}
+	
+	public List<PlotObjectGroup> getAllGroups() {
+		List<PlotObjectGroup> groups = new ArrayList<>();
+		groups.addAll(universe.getGroups());
+		
+		return groups;
+	}
+	
+	public void newPlotGroup(PlotObjectGroup group) {
+		universe.getGroups().add(group);
 	}
 
 	@Override
@@ -1061,6 +1075,19 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 //		}
 //
 //		Bukkit.getPluginManager().callEvent(new RenameNationEvent(oldName, nation));
+	}
+
+	@Override
+	public void renameGroup(PlotObjectGroup group, String newName) throws AlreadyRegisteredException {
+		// Create new one
+		group.setGroupName(newName);
+		
+		// Save
+		savePlotGroup(group);
+		saveGroupList();
+
+		// Delete the old group file.
+		deleteGroup(group);
 	}
 
 	@Override

@@ -1,16 +1,21 @@
 package com.palmergames.bukkit.towny.object.metadata;
 
+import javax.annotation.Nonnull;
+
 public class StringDataField extends CustomDataField<String> {
 
-    public StringDataField(String key) {
-        super(key, CustomDataFieldType.StringField);
-    }
-
-	public StringDataField(String key, String value, String label) {
-		super(key, CustomDataFieldType.StringField, value, label);
+	public StringDataField(@Nonnull String name) {
+		super(name);
 	}
-    
-    public StringDataField(String key, String value) {
-        super(key, CustomDataFieldType.StringField, value, null);
-    }
+
+	@Override
+	public String parseInput(String input) {
+		// A string is a string...
+		return input;
+	}
+
+	@Override
+	public String degenerify(Object obj) {
+		return (String)obj;
+	}
 }

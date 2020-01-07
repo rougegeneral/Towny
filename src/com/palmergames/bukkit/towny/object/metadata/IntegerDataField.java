@@ -1,18 +1,21 @@
 package com.palmergames.bukkit.towny.object.metadata;
 
-public class IntegerDataField extends CustomDataField<Integer> {
-    
-    // Initializes default value to zero.
-    public IntegerDataField(String key) {
-        super(key, CustomDataFieldType.IntegerField);
-    }
+import javax.annotation.Nonnull;
 
-	public IntegerDataField(String key, Integer value, String label) {
-		super(key, CustomDataFieldType.IntegerField, value, label);
+public class IntegerDataField extends CustomDataField<Integer> {
+	
+	public IntegerDataField(@Nonnull String name) {
+		super(name);
 	}
-    
-    // Allow for initialization with default value provided.
-    public IntegerDataField(String key, Integer value) {
-        super(key, CustomDataFieldType.IntegerField, value);
-    }
+
+	@Override
+	public Integer parseInput(String input) {
+		return Integer.parseInt(input);
+	}
+
+	@Override
+	public Integer degenerify(Object obj) {
+		return (Integer)obj;
+	}
+
 }

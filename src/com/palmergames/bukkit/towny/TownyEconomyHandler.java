@@ -163,7 +163,7 @@ public class TownyEconomyHandler {
 		switch (Type) {
 
 		case RESERVE:
-		    return reserveEconomy.hasAccount(accountName);
+		    return reserveEconomy.hasAccountDetail(accountName).success();
 			
 		case VAULT:
 			return vaultEconomy.hasAccount(accountName);
@@ -186,7 +186,7 @@ public class TownyEconomyHandler {
 		switch (Type) {
 
 		case RESERVE:
-		    return reserveEconomy.hasAccount(uniqueId);
+		    return reserveEconomy.hasAccountDetail(uniqueId).success();
 			
 		case VAULT:
 			return vaultEconomy.hasAccount(Bukkit.getOfflinePlayer(uniqueId));
@@ -210,7 +210,7 @@ public class TownyEconomyHandler {
 			switch (Type) {
 
 			case RESERVE:
-				reserveEconomy.deleteAccount(accountName);
+				reserveEconomy.deleteAccountDetail(accountName);
 				break;
 				
 			case VAULT: // Attempt to zero the account as Vault provides no delete method.
@@ -245,8 +245,9 @@ public class TownyEconomyHandler {
 		switch (Type) {
 
 		case RESERVE:
-			if (!reserveEconomy.hasAccount(accountName))
-				reserveEconomy.createAccount(accountName);
+			if (!reserveEconomy.hasAccountDetail(accountName).success()) {
+				if(!reserveEconomy.createAccountDetail(accountName).success()) return 0.0;
+			}
 
 			return reserveEconomy.getHoldings(accountName, world.getName()).doubleValue();
 
@@ -305,11 +306,12 @@ public class TownyEconomyHandler {
 		switch (Type) {
 
 		case RESERVE:
-			if (!reserveEconomy.hasAccount(accountName))
-				reserveEconomy.createAccount(accountName);
+			if (!reserveEconomy.hasAccountDetail(accountName).success()) {
+				if(!reserveEconomy.createAccountDetail(accountName).success()) return false;
+			}
 			
 			Bukkit.getPluginManager().callEvent(event);
-			return reserveEconomy.removeHoldings(accountName, new BigDecimal(amount), world.getName());
+			return reserveEconomy.removeHoldingsDetail(accountName, new BigDecimal(amount), world.getName()).success();
 
 		case VAULT:
 			if (!vaultEconomy.hasAccount(accountName))
@@ -351,11 +353,12 @@ public class TownyEconomyHandler {
 		switch (Type) {
 
 		case RESERVE:
-			if (!reserveEconomy.hasAccount(accountName))
-				reserveEconomy.createAccount(accountName);
+			if (!reserveEconomy.hasAccountDetail(accountName).success()) {
+				if(!reserveEconomy.createAccountDetail(accountName).success()) return false;
+			}
 
-			Bukkit.getPluginManager().callEvent(event);
-			return reserveEconomy.addHoldings(accountName, new BigDecimal(amount), world.getName());
+			BukkitTools.getPluginManager().callEvent(event);
+			return reserveEconomy.addHoldingsDetail(accountName, new BigDecimal(amount), world.getName()).success();
 
 		case VAULT:
 			if (!vaultEconomy.hasAccount(accountName))
@@ -377,9 +380,11 @@ public class TownyEconomyHandler {
 		switch (Type) {
 
 		case RESERVE:
-			if (!reserveEconomy.hasAccount(accountName))
-				reserveEconomy.createAccount(accountName);
-			return reserveEconomy.setHoldings(accountName, new BigDecimal(amount), world.getName());
+			if (!reserveEconomy.hasAccountDetail(accountName).success()) {
+				if(!reserveEconomy.createAccountDetail(accountName).success()) return false;
+			}
+
+			return reserveEconomy.setHoldingsDetail(accountName, new BigDecimal(amount), world.getName()).success();
 
 		case VAULT:
 			if (!vaultEconomy.hasAccount(accountName))

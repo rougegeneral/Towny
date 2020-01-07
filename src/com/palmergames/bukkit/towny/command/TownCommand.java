@@ -10,6 +10,7 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationType;
 import com.palmergames.bukkit.towny.event.NewTownEvent;
+import com.palmergames.bukkit.towny.event.PreNewTownEvent;
 import com.palmergames.bukkit.towny.event.TownBlockSettingsChangedEvent;
 import com.palmergames.bukkit.towny.event.TownInvitePlayerEvent;
 import com.palmergames.bukkit.towny.event.TownPreClaimEvent;
@@ -223,7 +224,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 					throw new TownyException(TownySettings.getLangString("msg_specify_name"));
 				} else if (split.length >= 2) {
 					String[] newSplit = StringMgmt.remFirstArg(split);
-					String townName = String.join("_", newSplit);					
+					String townName = String.join("_", newSplit);
 					newTown(player, townName, player.getName(), false);			
 				}
 
@@ -558,7 +559,6 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 						throw new TownyException(TownySettings.getLangString("msg_err_command_disable"));
 
 					parseTownOutlawCommand(player, newSplit);
-
 				} else {
 					try {
 						final Town town = townyUniverse.getDataSource().getTown(split[0]);
@@ -2041,6 +2041,14 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 	public static void newTown(Player player, String name, String mayorName, boolean noCharge) {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
+		PreNewTownEvent preEvent = new PreNewTownEvent(player, name);
+		Bukkit.getPluginManager().callEvent(preEvent);
+		
+		if (preEvent.isCancelled()) {
+			TownyMessaging.sendErrorMsg(player, preEvent.getCancelMessage());
+			return;
+		}
+
 		try {
 			if (TownyAPI.getInstance().isWarTime())
 				throw new TownyException(TownySettings.getLangString("msg_war_cannot_do"));
@@ -2089,7 +2097,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 			if (!noCharge && TownySettings.isUsingEconomy() && !resident.pay(TownySettings.getNewTownPrice(), "New Town Cost"))
 				throw new TownyException(String.format(TownySettings.getLangString("msg_no_funds_new_town2"), (resident.getName().equals(player.getName()) ? "You" : resident.getName()), TownySettings.getNewTownPrice()));
 
-			newTown(world, name, resident, key, player.getLocation());
+			newTown(world, name, resident, key, player.getLocation(), player);
 			TownyMessaging.sendGlobalMessage(TownySettings.getNewTownMsg(player.getName(), StringMgmt.remUnderscore(name)));
 		} catch (TownyException x) {
 			TownyMessaging.sendErrorMsg(player, x.getMessage());
@@ -2099,8 +2107,15 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		}
 	}
 
-	public static Town newTown(TownyWorld world, String name, Resident resident, Coord key, Location spawn) throws TownyException {
+	public static Town newTown(TownyWorld world, String name, Resident resident, Coord key, Location spawn, Player player) throws TownyException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
+		
+		TownPreClaimEvent preEvent = new TownPreClaimEvent(townyUniverse.getDataSource().getTown(name), world.getTownBlock(key), player);
+		Bukkit.getPluginManager().callEvent(preEvent);
+		
+		if (preEvent.isCancelled()) {
+			return null;
+		}
 
 		world.newTownBlock(key);
 		townyUniverse.getDataSource().newTown(name);
@@ -2307,7 +2322,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		if (split.length == 0) {
 			try {
 				Resident resident = townyUniverse.getDataSource().getResident(player.getName());
-				ConfirmationHandler.addConfirmation(resident, ConfirmationType.TOWNDELETE, null); // It takes the senders town & nation, an admin deleting another town has no confirmation.
+				ConfirmationHandler.addConfirmation(resident, ConfirmationType.TOWN_DELETE, null); // It takes the senders town & nation, an admin deleting another town has no confirmation.
 				TownyMessaging.sendConfirmationMessage(player, null, null, null, null);
 
 			} catch (TownyException x) {
