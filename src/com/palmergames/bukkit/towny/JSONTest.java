@@ -8,7 +8,7 @@ public class JSONTest extends TownyTest {
 	
 	Gson gson;
 	String contents;
-	private boolean showContentsOnStart = false;
+	private boolean showContentsOnStart = true;
 	
 	public JSONTest() {
 		// We want the json to be readable.

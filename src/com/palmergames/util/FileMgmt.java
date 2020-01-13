@@ -92,8 +92,13 @@ public class FileMgmt {
 					targetLocation.mkdir();
 
 				String[] children = sourceLocation.list();
-				for (String aChildren : children)
+				for (String aChildren : children) {
+					if (aChildren.equalsIgnoreCase(".DS_Store")) {
+						continue;
+					}
 					copyDirectory(new File(sourceLocation, aChildren), new File(targetLocation, aChildren));
+				}
+					
 			} else {
 				OutputStream out = new FileOutputStream(targetLocation);
 				try {

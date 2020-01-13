@@ -55,8 +55,6 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 	private transient List<String> modes = new ArrayList<>();
 	private transient ConfirmationType confirmationType;
 	private transient List<Invite> receivedinvites = new ArrayList<>();
-	private String name;
-	private UUID identifier; // TODO: - Hook this up to player UUID perhaps?
  
 	private transient List<String> townRanks = new ArrayList<>();
 	private transient List<String> nationRanks = new ArrayList<>();
@@ -653,11 +651,6 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 	}
 	
 	@Override
-	public String getName() {
-		return name;
-	}
-	
-	@Override
 	public List<Invite> getReceivedInvites() {
 		return receivedinvites;
 	}
@@ -712,14 +705,6 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 	@Override
 	public String getStorableName() {
 		return null;
-	}
-
-	public UUID getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(UUID identifier) {
-		this.identifier = identifier;
 	}
 }
 

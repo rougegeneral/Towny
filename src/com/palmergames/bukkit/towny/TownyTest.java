@@ -35,7 +35,9 @@ public abstract class TownyTest {
 			mockWorld.addTown(mockTown);
 			mockTown.addResident(getMockResident());
 			mockTown.setMayor(getMockResident());
-		} catch (Exception ignored) {}
+		} catch (Exception ex) {
+			TownyMessaging.sendErrorMsg(ex.getMessage());
+		}
 		
 		getTownyUniverse().addWorld(mockWorld);
 		getTownyUniverse().addTown(mockTown);

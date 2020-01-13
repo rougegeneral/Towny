@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public abstract class TownyBlockOwnerObject extends TownyObject implements Economical {
 	protected transient List<TownBlock> townBlocks = new ArrayList<>();
-	protected TownyPermission permissions = new TownyPermission();
+	public TownyPermission permissions = new TownyPermission();
 	
 	protected TownyBlockOwnerObject(UUID identifier) {
 		super(identifier);

@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TownyWorld extends TownyObject implements Saveable {
 	
 	private transient List<Town> towns = new ArrayList<>();
-	private UUID identifier;
 	private boolean isClaimable = true;
 	private boolean isUsingPlotManagementDelete = TownySettings.isUsingPlotManagementDelete();
 	private boolean isUsingPlotManagementMayorDelete = TownySettings.isUsingPlotManagementMayorDelete();
@@ -776,14 +775,6 @@ public class TownyWorld extends TownyObject implements Saveable {
 		super.removeMetaData(md);
 
 		TownyUniverse.getInstance().getDataSource().saveWorld(this);
-	}
-
-	public UUID getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(UUID identifier) {
-		this.identifier = identifier;
 	}
 
 	@Override
