@@ -31,6 +31,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -58,6 +59,10 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
  
 	private transient List<String> townRanks = new ArrayList<>();
 	private transient List<String> nationRanks = new ArrayList<>();
+	
+	public Resident(HashMap<String, Object> loadMap) {
+		super(loadMap);
+	}
 
 	public Resident(UUID identifier) {
 		super(identifier);

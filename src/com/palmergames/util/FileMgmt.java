@@ -33,6 +33,13 @@ public class FileMgmt {
 		return file.exists() || file.mkdirs() || file.isDirectory();
 	}
 	
+	public static File[] getFilesInDirectory(String folderPath) {
+		File folder = new File(folderPath);
+		
+		// On Unix-Like systems this file can cause issues, if not ignored.
+		return folder.listFiles((dir, name) -> !name.equals(".DS_Store")); 
+	}
+	
 	/**
 	 * Checks an array of folderPaths to see if they exist, if they don't
 	 * it will try to create the folder at the designated paths.

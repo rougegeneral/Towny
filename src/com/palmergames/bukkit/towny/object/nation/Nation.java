@@ -35,6 +35,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,10 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	private transient List<Invite> receivedinvites = new ArrayList<>();
 	private transient List<Invite> sentinvites = new ArrayList<>();
 	private transient List<Invite> sentallyinvites = new ArrayList<>();
+	
+	public Nation(HashMap<String, Object> loadMap) {
+		super(loadMap);
+	}
 
 	public Nation(UUID identifier) {
 		super(identifier);

@@ -23,6 +23,7 @@ import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.TownyInviteSender;
 import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
 import com.palmergames.bukkit.towny.object.coordinate.Coord;
+import com.palmergames.bukkit.towny.object.group.ObjectGroup;
 import com.palmergames.bukkit.towny.object.group.ObjectGroupManageable;
 import com.palmergames.bukkit.towny.object.group.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.townblock.TownBlock;
@@ -85,6 +86,10 @@ public class Town extends TownyBlockOwnerObject implements ResidentList, TownyIn
 	private transient List<Invite> sentinvites = new ArrayList<>();
 	private boolean isConquered = false;
 	private int conqueredDays;
+	
+	public Town(HashMap<String, Object> loadMap) {
+		super(loadMap);
+	}
 
 	public Town(UUID identifier) {
 		super(identifier);

@@ -3,6 +3,7 @@ package com.palmergames.bukkit.towny.object;
 import com.palmergames.bukkit.towny.TownyFormatter;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -12,6 +13,10 @@ public abstract class TownyObject {
 	
 	private HashSet<CustomDataField> metadata = null;
 	
+	protected TownyObject(HashMap<String, Object> loadMap) {
+		this.name = (String)loadMap.get("name");
+		this.identifier = UUID.fromString((String) loadMap.get("identifier"));
+	}
 	
 	protected TownyObject(UUID identifier) {
 		this.identifier = identifier;

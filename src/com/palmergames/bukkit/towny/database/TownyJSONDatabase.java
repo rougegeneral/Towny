@@ -2,8 +2,11 @@ package com.palmergames.bukkit.towny.database;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.palmergames.bukkit.towny.Towny;
+import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.database.io.FileManager;
+import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.object.nation.Nation;
 import com.palmergames.bukkit.towny.object.resident.Resident;
 import com.palmergames.bukkit.towny.object.town.Town;
@@ -14,6 +17,8 @@ import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -30,6 +35,10 @@ import java.util.UUID;
 public final class TownyJSONDatabase extends TownyDatabase {
 	private Gson gson;
 	private String databaseFilePath;
+	private String residentFilePath;
+	private String worldFilePath;
+	private String townBlockFilePath;
+	private String townFilePath;
 	
 	public TownyJSONDatabase() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -42,13 +51,17 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		
 		// Make sure directories are in place.
 		databaseFilePath = Towny.getPlugin().getDataFolder() + File.separator + "database" + File.separator + "json" + File.separator;
+		residentFilePath = databaseFilePath + File.separator + "residents";
+		worldFilePath = databaseFilePath + File.separator + "worlds";
+		townBlockFilePath = databaseFilePath + File.separator + "townblocks";
+		townFilePath = databaseFilePath + File.separator + "towns";
 		FileMgmt.checkOrCreateFolders(
 			databaseFilePath, 
-			databaseFilePath + File.separator + "worlds",
+			worldFilePath,
 			databaseFilePath + File.separator + "nations",
-			databaseFilePath + File.separator + "towns",
-			databaseFilePath + File.separator + "residents",
-			databaseFilePath + File.separator + "townblocks");
+			townFilePath,
+			residentFilePath,
+			townBlockFilePath);
 	}
 	
 	@Override
@@ -60,8 +73,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	@Nonnull
 	@Override
 	public Map<UUID, Resident> loadResidents() {
-		// TODO: - Implement
-		return new HashMap<>();
+		return load(residentFilePath, Resident.class);
 	}
 	
 	@Override
@@ -72,8 +84,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	@Nonnull
     @Override
 	public Map<UUID, Town> loadTowns() {
-		// TODO: - Implement
-		return new HashMap<>();
+		return load(townFilePath, Town.class);
 	}
 	
 	@Override
@@ -92,12 +103,49 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	public boolean loadNation(String name) {
 		return false;
 	}
+
+	/**
+	 * Loads a HashMap keyed by an UUID, and a town object itself.
+	 * 
+	 * @param path The root directory of where all the object files are listed.
+	 * @param type The {@link TownyObject} subclass to load the file into.
+	 * @param <T> The TownyObject type.
+	 * @return A HashMap keyed by UUID and the type specified.
+	 * 
+	 * @author Suneet Tipirneni (Siris)
+	 */
+	private <T extends TownyObject> Map<UUID, T> load(String path, Class<T> type) {
+		
+		// Initialize map.
+		HashMap<UUID, T> objMap = new HashMap<>();
+		
+		// Get files in directory.
+		File[] files = FileMgmt.getFilesInDirectory(path);
+
+		// Iterate through each file
+		for (File residentFile : files) {
+
+			// Create a reader to read the json file.
+			JsonReader reader;
+			try {
+				reader = new JsonReader(new FileReader(residentFile));
+			} catch (FileNotFoundException e) {
+				TownyMessaging.sendErrorMsg(e.getMessage());
+				continue;
+			}
+
+			// Get the object via gson and save it to the global map.
+			T obj = gson.fromJson(reader, type);
+			objMap.put(obj.getIdentifier(), obj);
+		}
+
+		return objMap;
+	}
 	
 	@Nonnull
 	@Override
 	public Map<UUID, TownyWorld> loadWorlds() {
-		// TODO: - Implement
-		return new HashMap<>();
+		return load(worldFilePath, TownyWorld.class);
 	}
 	
 	@Override
@@ -108,7 +156,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	@Nonnull
 	@Override
 	public Map<UUID, TownBlock> loadTownBlocks() {
-		return null;
+		return load(townBlockFilePath, TownBlock.class);
 	}
 	
 	@Override

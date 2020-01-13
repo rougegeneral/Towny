@@ -8,12 +8,17 @@ import com.palmergames.bukkit.towny.permissions.TownyPermission;
 import org.bukkit.World;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 public abstract class TownyBlockOwnerObject extends TownyObject implements Economical {
 	protected transient List<TownBlock> townBlocks = new ArrayList<>();
 	public TownyPermission permissions = new TownyPermission();
+	
+	protected TownyBlockOwnerObject(HashMap<String, Object> loadMap) {
+		super(loadMap);
+	}
 	
 	protected TownyBlockOwnerObject(UUID identifier) {
 		super(identifier);

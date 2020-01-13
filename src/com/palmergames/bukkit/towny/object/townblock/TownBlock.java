@@ -23,6 +23,8 @@ import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.object.resident.Resident;
 import com.palmergames.bukkit.towny.object.town.Town;
 import org.bukkit.Bukkit;
+
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
@@ -46,6 +48,10 @@ public class TownBlock extends TownyObject implements Saveable {
 	//Plot level permissions
 	protected TownyPermission permissions = new TownyPermission();
 	protected boolean isChanged = false;
+	
+	public TownBlock(HashMap<String, Object> loadMap) {
+		super(loadMap);
+	}
 	
 	public TownBlock(UUID identifier, int x, int z, TownyWorld world) {
 		super(identifier);
