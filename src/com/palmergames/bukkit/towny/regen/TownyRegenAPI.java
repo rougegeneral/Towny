@@ -9,11 +9,11 @@ import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.towny.regen.block.BlockLocation;
 import com.palmergames.bukkit.towny.tasks.ProtectionRegenTask;
-import org.bukkit.Bukkit;
+import com.palmergames.bukkit.util.BukkitTools;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -420,7 +420,7 @@ public class TownyRegenAPI {
 
 		TownyMessaging.sendDebugMsg("Processing deleteTownBlockMaterial");
 
-		World world = Bukkit.getWorld(townBlock.getWorld().getName());
+		World world = BukkitTools.getServer().getWorld(townBlock.getWorld().getName());
 
 		if (world != null) {
 			/*
@@ -502,7 +502,7 @@ public class TownyRegenAPI {
 	public static void cancelProtectionRegenTasks() {
 
 		for (ProtectionRegenTask task : protectionRegenTasks.values()) {
-			Bukkit.getScheduler().cancelTask(task.getTaskId());
+			BukkitTools.getServer().getScheduler().cancelTask(task.getTaskId());
 			task.replaceProtections();
 		}
 		protectionRegenTasks.clear();

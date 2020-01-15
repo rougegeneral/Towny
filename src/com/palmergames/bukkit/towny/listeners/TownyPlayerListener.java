@@ -27,6 +27,7 @@ import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 import com.palmergames.bukkit.towny.war.eventwar.WarUtil;
 import com.palmergames.bukkit.towny.war.flagwar.TownyWarConfig;
+import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
 import com.palmergames.bukkit.util.Colors;
 import org.bukkit.Bukkit;
@@ -816,7 +817,7 @@ public class TownyPlayerListener implements Listener {
 		plugin.getCache(player).updateCoord(to);
 
 		PlayerChangePlotEvent event = new PlayerChangePlotEvent(player, from, to, moveEvent);
-		Bukkit.getPluginManager().callEvent(event);
+		BukkitTools.getPluginManager().callEvent(event);
 	}
 	
 	/*
@@ -839,20 +840,20 @@ public class TownyPlayerListener implements Listener {
 					try {
 						Town fromTown = from.getTownBlock().getTown();
 						if (!to.getTownBlock().getTown().equals(fromTown)){
-							Bukkit.getPluginManager().callEvent(new PlayerEnterTownEvent(player,to,from,to.getTownBlock().getTown(), pme)); // From Town into different Town.
-							Bukkit.getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from,from.getTownBlock().getTown(), pme));//
+							BukkitTools.getPluginManager().callEvent(new PlayerEnterTownEvent(player,to,from,to.getTownBlock().getTown(), pme)); // From Town into different Town.
+							BukkitTools.getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from,from.getTownBlock().getTown(), pme));//
 						}
 						// Both are the same town, do nothing, no Event should fire here.
 					} catch (NotRegisteredException e) { // From Wilderness into Town.
-						Bukkit.getPluginManager().callEvent(new PlayerEnterTownEvent(player,to, from, to.getTownBlock().getTown(), pme));
+						BukkitTools.getPluginManager().callEvent(new PlayerEnterTownEvent(player,to, from, to.getTownBlock().getTown(), pme));
 					}
 				} else {
 					if (from.getTownBlock().hasTown() && !(to.getTownBlock().hasTown())){ // From has a town, to doesn't so: From Town into Wilderness
-						Bukkit.getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from, from.getTownBlock().getTown(), pme));
+						BukkitTools.getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from, from.getTownBlock().getTown(), pme));
 					}
 				}
 			} catch (NotRegisteredException e) {
-				Bukkit.getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from, from.getTownBlock().getTown(), pme));
+				BukkitTools.getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from, from.getTownBlock().getTown(), pme));
 			}
 
 		} catch (NotRegisteredException e) {

@@ -83,7 +83,7 @@ public class TownyAPI {
      * @return an online {@link Player} or if it's not obtainable.
      */
     public Player getPlayer(Resident resident) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : BukkitTools.getOnlinePlayers()) {
             if (player != null) {
                 if (player.getName().equals(resident.getName())) {
                     return player;
@@ -101,7 +101,7 @@ public class TownyAPI {
      */
     public UUID getPlayerUUID(Resident resident) {
         // TODO: Store UUIDs in the db, so we don't need to rely on the player being online.
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : BukkitTools.getOnlinePlayers()) {
             if (player != null) {
                 if (player.getName().equals(resident.getName())) {
                     return player.getUniqueId();
@@ -120,7 +120,7 @@ public class TownyAPI {
     public List<Player> getOnlinePlayers(ResidentList residentList) {
         ArrayList<Player> players = new ArrayList<>();
         
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : BukkitTools.getOnlinePlayers()) {
             if (player != null) {
                 if (residentList.hasResident(player.getName())) {
                     players.add(player);
@@ -139,7 +139,7 @@ public class TownyAPI {
     public List<Player> getOnlinePlayers(Town town) {
         ArrayList<Player> players = new ArrayList<>();
         
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : BukkitTools.getOnlinePlayers()) {
             if (player != null) {
                 if (town.hasResident(player.getName())) {
                     players.add(player);
@@ -358,7 +358,7 @@ public class TownyAPI {
     public List<Resident> getOnlineResidents(ResidentList residentList) {
         
         List<Resident> onlineResidents = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : BukkitTools.getOnlinePlayers()) {
             if (player != null)
                 for (Resident resident : residentList.getResidents()) {
                     if (resident.getName().equalsIgnoreCase(player.getName()))
@@ -391,7 +391,7 @@ public class TownyAPI {
     
     public void clearWarEvent() {
         TownyUniverse townyUniverse = TownyUniverse.getInstance();
-        townyUniverse.getWarEvent().cancelTasks(Bukkit.getScheduler());
+        townyUniverse.getWarEvent().cancelTasks(BukkitTools.getScheduler());
         townyUniverse.setWarEvent(null);
     }
     public void requestTeleport(Player player, Location spawnLoc) {

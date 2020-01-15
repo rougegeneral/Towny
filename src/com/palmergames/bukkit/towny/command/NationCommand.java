@@ -851,7 +851,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 			
 			Transaction transaction = new Transaction(TransactionType.WITHDRAW, player, amount);
 			NationPreTransactionEvent preEvent = new NationPreTransactionEvent(nation, transaction);
-			Bukkit.getPluginManager().callEvent(preEvent);
+			BukkitTools.getPluginManager().callEvent(preEvent);
 			
 			if (preEvent.isCancelled()) {
 				TownyMessaging.sendErrorMsg(player, preEvent.getCancelMessage());
@@ -860,7 +860,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 			
 			nation.withdrawFromBank(resident, amount);
 			TownyMessaging.sendPrefixedNationMessage(nation, String.format(TownySettings.getLangString("msg_xx_withdrew_xx"), resident.getName(), amount, "nation"));
-			Bukkit.getPluginManager().callEvent(new NationTransactionEvent(nation, transaction));
+			BukkitTools.getPluginManager().callEvent(new NationTransactionEvent(nation, transaction));
 		} catch (TownyException | EconomyException x) {
 			TownyMessaging.sendErrorMsg(player, x.getMessage());
 		}
@@ -886,7 +886,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 			Transaction transaction = new Transaction(TransactionType.DEPOSIT, player, amount);
 
 			NationPreTransactionEvent preEvent = new NationPreTransactionEvent(nation, transaction);
-			Bukkit.getPluginManager().callEvent(preEvent);
+			BukkitTools.getPluginManager().callEvent(preEvent);
 			
 			if (preEvent.isCancelled()) {
 				TownyMessaging.sendErrorMsg(preEvent.getCancelMessage());
@@ -897,7 +897,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 				throw new TownyException(TownySettings.getLangString("msg_insuf_funds"));
 
 			TownyMessaging.sendPrefixedNationMessage(nation, String.format(TownySettings.getLangString("msg_xx_deposited_xx"), resident.getName(), amount, "nation"));
-			Bukkit.getPluginManager().callEvent(new NationTransactionEvent(nation, transaction));
+			BukkitTools.getPluginManager().callEvent(new NationTransactionEvent(nation, transaction));
 		} catch (TownyException | EconomyException x) {
 			TownyMessaging.sendErrorMsg(player, x.getMessage());
 		}
@@ -1073,7 +1073,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 		townyUniverse.getDataSource().saveNation(nation);
 		townyUniverse.getDataSource().saveNationList();
 
-		Bukkit.getPluginManager().callEvent(new NewNationEvent(nation));
+		BukkitTools.getPluginManager().callEvent(new NewNationEvent(nation));
 
 		return nation;
 	}
@@ -2315,7 +2315,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 	public static void nationRename(Player player, Nation nation, String newName) {
 
 		NationPreRenameEvent event = new NationPreRenameEvent(nation, newName);
-		Bukkit.getPluginManager().callEvent(event);
+		BukkitTools.getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
 			TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_rename_cancelled"));
 			return;

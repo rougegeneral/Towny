@@ -12,7 +12,7 @@ import com.palmergames.bukkit.towny.object.resident.Resident;
 import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.towny.tasks.TownyTimerTask;
-import org.bukkit.Bukkit;
+import com.palmergames.bukkit.util.BukkitTools;
 import org.bukkit.entity.Player;
 
 import java.util.Hashtable;
@@ -42,7 +42,7 @@ public class WarTimerTask extends TownyTimerTask {
 
 		int numPlayers = 0;
 		Hashtable<TownBlock, WarZoneData> plotList = new Hashtable<>();
-		for (Player player : Bukkit.getOnlinePlayers()) {
+		for (Player player : BukkitTools.getOnlinePlayers()) {
 			if (player != null) {
 				numPlayers += 1;
 				TownyMessaging.sendDebugMsg("[War] " + player.getName() + ": ");

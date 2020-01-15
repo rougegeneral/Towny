@@ -1304,7 +1304,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 
 			//Change settings event
 			TownBlockSettingsChangedEvent event = new TownBlockSettingsChangedEvent(town);
-			Bukkit.getPluginManager().callEvent(event);
+			BukkitTools.getPluginManager().callEvent(event);
 			
 			townyUniverse.getDataSource().saveTown(town);
 		}
@@ -2112,12 +2112,6 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 	public static Town newTown(TownyWorld world, String name, Resident resident, Coord key, Location spawn, Player player) throws TownyException {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		
-		TownPreClaimEvent preEvent = new TownPreClaimEvent(townyUniverse.getDataSource().getTown(name), world.getTownBlock(key), player);
-		Bukkit.getPluginManager().callEvent(preEvent);
-		
-		if (preEvent.isCancelled()) {
-			return null;
-		}
 		world.newTownBlock(key);
 		townyUniverse.getDataSource().newTown(name);
 		Town town = townyUniverse.getDataSource().getTown(name);
@@ -2165,7 +2159,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		// Reset cache permissions for anyone in this TownBlock
 		plugin.updateCache(townBlock.getWorldCoord());
 
-		Bukkit.getPluginManager().callEvent(new NewTownEvent(town));
+		BukkitTools.getPluginManager().callEvent(new NewTownEvent(town));
 
 		return town;
 	}
@@ -2174,7 +2168,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		
 		TownPreRenameEvent event = new TownPreRenameEvent(town, newName);
-		Bukkit.getPluginManager().callEvent(event);
+		BukkitTools.getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
 			TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_rename_cancelled"));
 			return;
@@ -3015,7 +3009,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 				for(WorldCoord coord : selection){
 					//Use the user's current world
 					TownPreClaimEvent preClaimEvent = new TownPreClaimEvent(town, new TownBlock(UUID.randomUUID(),coord.getX(), coord.getZ(), world), player);
-					Bukkit.getPluginManager().callEvent(preClaimEvent);
+					BukkitTools.getPluginManager().callEvent(preClaimEvent);
 					if(preClaimEvent.isCancelled())
 						blockedClaims++;
 				}
@@ -3184,7 +3178,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 			
 			Transaction transaction = new Transaction(TransactionType.WITHDRAW, player, amount);
 			TownPreTransactionEvent preEvent = new TownPreTransactionEvent(town, transaction);
-			Bukkit.getPluginManager().callEvent(preEvent);
+			BukkitTools.getPluginManager().callEvent(preEvent);
 			
 			if (preEvent.isCancelled()) {
 				TownyMessaging.sendErrorMsg(player, preEvent.getCancelMessage());
@@ -3193,7 +3187,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 			
 			town.withdrawFromBank(resident, amount);
 			TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_xx_withdrew_xx"), resident.getName(), amount, "town"));
-			Bukkit.getPluginManager().callEvent(new TownTransactionEvent(town, transaction));
+			BukkitTools.getPluginManager().callEvent(new TownTransactionEvent(town, transaction));
 		} catch (TownyException | EconomyException x) {
 			TownyMessaging.sendErrorMsg(player, x.getMessage());
 		}
@@ -3219,7 +3213,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 			Transaction transaction = new Transaction(TransactionType.DEPOSIT, player, amount);
 			
 			TownPreTransactionEvent preEvent = new TownPreTransactionEvent(town, transaction);
-			Bukkit.getPluginManager().callEvent(preEvent);
+			BukkitTools.getPluginManager().callEvent(preEvent);
 			
 			if (preEvent.isCancelled()) {
 				TownyMessaging.sendErrorMsg(player, preEvent.getCancelMessage());
@@ -3230,7 +3224,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 				throw new TownyException(TownySettings.getLangString("msg_insuf_funds"));
 			
 			TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_xx_deposited_xx"), resident.getName(), amount, "town"));
-			Bukkit.getPluginManager().callEvent(new TownTransactionEvent(town, transaction));
+			BukkitTools.getPluginManager().callEvent(new TownTransactionEvent(town, transaction));
 		} catch (TownyException | EconomyException x) {
 			TownyMessaging.sendErrorMsg(player, x.getMessage());
 		}
@@ -3259,7 +3253,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 			Transaction transaction = new Transaction(TransactionType.DEPOSIT, player, amount);
 
 			TownPreTransactionEvent preEvent = new TownPreTransactionEvent(town, transaction);
-			Bukkit.getPluginManager().callEvent(preEvent);
+			BukkitTools.getPluginManager().callEvent(preEvent);
 
 			if (preEvent.isCancelled()) {
 				TownyMessaging.sendErrorMsg(player, preEvent.getCancelMessage());
@@ -3270,7 +3264,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 				throw new TownyException(TownySettings.getLangString("msg_insuf_funds"));
 
 			TownyMessaging.sendPrefixedNationMessage(resident.getTown().getNation(), String.format(TownySettings.getLangString("msg_xx_deposited_xx"), resident.getName(), amount, town + " town"));
-			Bukkit.getPluginManager().callEvent(new TownTransactionEvent(town, transaction));
+			BukkitTools.getPluginManager().callEvent(new TownTransactionEvent(town, transaction));
 		} catch (EconomyException | TownyException x) {
 			TownyMessaging.sendErrorMsg(player, x.getMessage());
 		}
@@ -3278,53 +3272,19 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 	
 	public static List<Resident> getValidatedResidentsForInviteRevoke(Object sender, String[] names, Town town) {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
-		List<Resident> invited = new ArrayList<>();
-		for (String name : names) {
-			List<Player> matches = BukkitTools.matchPlayer(name);
-			if (matches.size() > 1) {
-				StringBuilder line = new StringBuilder("Multiple players selected: ");
-				for (Player p : matches)
-					line.append(", ").append(p.getName());
-				TownyMessaging.sendErrorMsg(sender, line.toString());
-			} else if (matches.size() == 1) {
-				// Match found online
-				try {
-					Resident target = townyUniverse.getDataSource().getResident(matches.get(0).getName());
-					invited.add(target);
-				} catch (TownyException x) {
-					TownyMessaging.sendErrorMsg(sender, x.getMessage());
-				}
-			} else {
-				// No online matches so test for offline.
-				Resident target;
-				try {
-					target = townyUniverse.getDataSource().getResident(name);
-					invited.add(target);
-				} catch (NotRegisteredException x) {
-					TownyMessaging.sendErrorMsg(sender, x.getMessage());
+		List<Resident> toRevoke = new ArrayList<>();
+		for (Invite invite : town.getSentInvites()) {
+			for (String name : names) {
+				if (invite.getReceiver().getName().equalsIgnoreCase(name)) {
+					try {
+						toRevoke.add(townyUniverse.getDataSource().getResident(name));
+					} catch (NotRegisteredException ignored) {
+					}
 				}
 			}
+			
 		}
-		return invited;
+		return toRevoke;		
 	}
-	
-	public static List<Resident> getOnlineResidentsViewable(Player viewer, ResidentList residentList) {
-		
-		List<Resident> onlineResidents = new ArrayList<>();
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (player != null) {
-				/*
-				 * Loop town/nation resident list
-				 */
-				for (Resident resident : residentList.getResidents()) {
-					if (resident.getName().equalsIgnoreCase(player.getName()))
-						if ((viewer == null) || (viewer.canSee(BukkitTools.getPlayerExact(resident.getName())))) {
-							onlineResidents.add(resident);
-						}
-				}
-			}
-		}
-		
-		return onlineResidents;
-	}
+
 }

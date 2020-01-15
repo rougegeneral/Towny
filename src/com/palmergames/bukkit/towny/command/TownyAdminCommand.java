@@ -359,8 +359,8 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 		double y = 1.0;
 		double z;
 		Location loc;
-		if (Bukkit.getWorld(split[0]) != null ) {
-			world =  Bukkit.getWorld(split[0]);
+		if (Bukkit.getServer().getWorld(split[0]) != null ) {
+			world =  Bukkit.getServer().getWorld(split[0]);
 			x = Double.parseDouble(split[1]) * TownySettings.getTownBlockSize();
 			z = Double.parseDouble(split[2]) * TownySettings.getTownBlockSize();
 		} else {
@@ -614,7 +614,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			} else if (split[1].equalsIgnoreCase("rename")) {
 				
 				TownPreRenameEvent event = new TownPreRenameEvent(town, split[2]);
-				Bukkit.getPluginManager().callEvent(event);
+				BukkitTools.getPluginManager().callEvent(event);
 				if (event.isCancelled()) {
 					TownyMessaging.sendErrorMsg(sender, TownySettings.getLangString("msg_err_rename_cancelled"));
 					return;
@@ -806,7 +806,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			} else if (split[1].equalsIgnoreCase("rename")) {
 
 				NationPreRenameEvent event = new NationPreRenameEvent(nation, split[2]);
-				Bukkit.getPluginManager().callEvent(event);
+				BukkitTools.getPluginManager().callEvent(event);
 				if (event.isCancelled()) {
 					TownyMessaging.sendErrorMsg(sender, TownySettings.getLangString("msg_err_rename_cancelled"));
 					return;

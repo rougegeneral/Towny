@@ -20,7 +20,7 @@ public class BlockObject {
 	
 	public BlockObject(String key) {
 		
-		this.blockData = Bukkit.createBlockData(key);
+		this.blockData = Bukkit.getServer().createBlockData(key);
 	}
 	
 	public Material getMaterial() {

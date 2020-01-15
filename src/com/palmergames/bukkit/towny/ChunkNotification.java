@@ -273,7 +273,7 @@ public class ChunkNotification {
 	private boolean testWorldPVP() {
 
 		try {
-			return Bukkit.getWorld(to.getTownyWorld().getName()).getPVP();
+			return Bukkit.getServer().getWorld(to.getTownyWorld().getName()).getPVP();
 		} catch (NotRegisteredException e) {
 			// Not a Towny registered world
 			return true;

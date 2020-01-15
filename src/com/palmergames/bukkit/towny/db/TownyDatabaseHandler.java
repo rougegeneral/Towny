@@ -23,6 +23,7 @@ import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
 import com.palmergames.bukkit.towny.regen.TownyRegenAPI;
+import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.NameValidation;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -338,6 +339,14 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		}
 		if (universe.getResidentMap().get(name) == null) {
 			throw new NotRegisteredException(String.format("The resident '%s' is not registered.", name));
+
+		} else if (TownySettings.isFakeResident(name)) {
+// TODO: Restore fakeresident compatibility.
+//			Resident resident = new Resident(name);
+//			resident.setNPC(true);
+//
+//			return resident;
+
 		}
 		return universe.getResidentMap().get(name);
 
@@ -528,7 +537,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 			e.printStackTrace();
 		}
 
-		Bukkit.getPluginManager().callEvent(new DeletePlayerEvent(resident.getName()));
+		BukkitTools.getPluginManager().callEvent(new DeletePlayerEvent(resident.getName()));
 	}
 
 	public void removeOneOfManyTownBlocks(TownBlock townBlock, Town town) {
@@ -560,7 +569,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 
 		deleteTownBlock(townBlock);
 		// Raise an event to signal the unclaim
-		Bukkit.getPluginManager().callEvent(new TownUnclaimEvent(town, coord));	
+		BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, coord));	
 	}
 	
 	@Override
@@ -602,7 +611,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 			}
 		}
 		// Raise an event to signal the unclaim
-		Bukkit.getPluginManager().callEvent(new TownUnclaimEvent(town, townBlock.getWorldCoord()));
+		BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, townBlock.getWorldCoord()));
 	}
 
 	@Override

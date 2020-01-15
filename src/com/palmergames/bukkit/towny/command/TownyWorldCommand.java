@@ -442,7 +442,7 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 			
 			//Change settings event
 			TownBlockSettingsChangedEvent event = new TownBlockSettingsChangedEvent(Globalworld);
-			Bukkit.getPluginManager().callEvent(event);
+			BukkitTools.getPluginManager().callEvent(event);
 		}
 
 	}

@@ -17,6 +17,7 @@ import com.palmergames.bukkit.towny.object.town.Town;
 import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
+import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
 
 import java.io.IOException;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DailyTimerTask extends TownyTimerTask {
@@ -59,7 +59,7 @@ public class DailyTimerTask extends TownyTimerTask {
 				TownyMessaging.sendDebugMsg("Collecting Nation Costs");
 				collectNationCosts();
 				
-				Bukkit.getPluginManager().callEvent(new NewDayEvent(removedTowns, removedNations, totalTownUpkeep, totalNationUpkeep, start));
+				BukkitTools.getPluginManager().callEvent(new NewDayEvent(removedTowns, removedNations, totalTownUpkeep, totalNationUpkeep, start));
 				
 			} catch (EconomyException ignored) {
 				System.out.println("Economy Exception");

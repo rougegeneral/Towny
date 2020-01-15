@@ -70,7 +70,7 @@ public class HealthRegenTimerTask extends TownyTimerTask {
 
 			// Raise an event so other plugins can keep in sync.
 			EntityRegainHealthEvent event = new EntityRegainHealthEvent(player, currentHP, RegainReason.REGEN);
-			Bukkit.getPluginManager().callEvent(event);
+			Bukkit.getServer().getPluginManager().callEvent(event);
 
 		}
 		

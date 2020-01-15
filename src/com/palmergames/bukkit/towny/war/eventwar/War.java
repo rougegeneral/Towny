@@ -189,7 +189,7 @@ public class War {
 	public void start() {
 		
 		EventWarPreStartEvent preEvent = new EventWarPreStartEvent();
-		Bukkit.getPluginManager().callEvent(preEvent);
+		Bukkit.getServer().getPluginManager().callEvent(preEvent);
 		if (preEvent.getWarSpoils() != 0.0)
 			try {
 				warSpoils.collect(preEvent.getWarSpoils(), "WarSpoils EventWarPreStartEvent Added");
@@ -247,7 +247,7 @@ public class War {
 			TownyMessaging.sendGlobalMessage(String.format(TownySettings.getLangString("msg_war_activate_war_hud_tip")));
 			
 			EventWarStartEvent event = new EventWarStartEvent(warringTowns, warringNations, warSpoils.getHoldingBalance());
-			Bukkit.getPluginManager().callEvent(event);
+			Bukkit.getServer().getPluginManager().callEvent(event);
 		} catch (EconomyException e) {
 			TownyMessaging.sendErrorMsg("[War] Could not seed spoils of war.");
 		}
@@ -285,7 +285,7 @@ public class War {
 	public void end() {
 		
 		// Send stats to the players
-		for (Player player : Bukkit.getOnlinePlayers())
+		for (Player player : BukkitTools.getOnlinePlayers())
 			if (player != null)
 				sendStats(player);
 		
@@ -328,7 +328,7 @@ public class War {
 				TownyMessaging.sendGlobalMessage(TownySettings.getWarTimeWinningTownSpoilsMsg(winningTownScore.key, TownyEconomyHandler.getFormattedBalance(halfWinnings), winningTownScore.value));
 				
 				EventWarEndEvent event = new EventWarEndEvent(warringTowns, winningTownScore.key, halfWinnings, warringNations, nationWinnings);
-				Bukkit.getPluginManager().callEvent(event);
+				Bukkit.getServer().getPluginManager().callEvent(event);
 			} catch (TownyException e) {
 			}
 		} catch (EconomyException e1) {}
@@ -405,7 +405,7 @@ public class War {
 		TownyMessaging.sendGlobalMessage(pointMessage);
 
 		TownScoredEvent event = new TownScoredEvent(town, townScores.get(town));
-		Bukkit.getPluginManager().callEvent(event);
+		Bukkit.getServer().getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -432,7 +432,7 @@ public class War {
 		TownyMessaging.sendGlobalMessage(pointMessage);
 
 		TownScoredEvent event = new TownScoredEvent(attackerTown, townScores.get(attackerTown));
-		Bukkit.getPluginManager().callEvent(event);
+		Bukkit.getServer().getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -472,7 +472,7 @@ public class War {
 
 		//Call PlotAttackedEvent to update scoreboard users
 		PlotAttackedEvent event = new PlotAttackedEvent(townBlock, wzd.getAllPlayers(), hp);
-		Bukkit.getPluginManager().callEvent(event);
+		Bukkit.getServer().getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -545,7 +545,7 @@ public class War {
 
 		//Call PlotAttackedEvent to update scoreboard users
 		PlotAttackedEvent event = new PlotAttackedEvent(townBlock, wzd.getAllPlayers(), hp);
-		Bukkit.getPluginManager().callEvent(event);
+		Bukkit.getServer().getPluginManager().callEvent(event);
 	}
 
 	/**

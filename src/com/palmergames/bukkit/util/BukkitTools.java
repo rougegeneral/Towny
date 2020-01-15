@@ -9,10 +9,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -25,13 +29,30 @@ import java.util.UUID;
  */
 
 public class BukkitTools {
+
+	private static Towny plugin = null;
+	private static Server server = null;
+	
+	public static void initialize(Towny plugin) {
+		BukkitTools.plugin = plugin;
+		BukkitTools.server = plugin.getServer();
+	}
+	
+	/**
+	 * Get an array of all online players
+	 * 
+	 * @return array of online players
+	 */
+	public static Collection<? extends Player> getOnlinePlayers() {
+		return getServer().getOnlinePlayers();
+	}
 	
 	public static List<Player> matchPlayer(String name) {
 		List<Player> matchedPlayers = new ArrayList<>();
 		
 		for (Player iterPlayer : Bukkit.getOnlinePlayers()) {
 			String iterPlayerName = iterPlayer.getName();
-			if (Towny.getPlugin().isCitizens2()) {
+			if (plugin.isCitizens2()) {
 				if (CitizensAPI.getNPCRegistry().isNPC(iterPlayer)) {
 					continue;
 				}
@@ -72,6 +93,28 @@ public class BukkitTools {
 			}
 		}
 		return false; 
+	}
+	
+	public static List<World> getWorlds() {
+		return  getServer().getWorlds();
+	}
+	
+	public static World getWorld(String name) {
+		return  getServer().getWorld(name);
+	}
+	
+	public static Server getServer() {
+		synchronized(server) {
+			return server;
+		}
+	}
+	
+	public static PluginManager getPluginManager() {
+		return Bukkit.getServer().getPluginManager();
+	}
+	
+	public static BukkitScheduler getScheduler() {
+		return Bukkit.getServer().getScheduler();
 	}
 	
 	/**
@@ -126,13 +169,12 @@ public class BukkitTools {
 	 * @return Map of world to online players.
 	 */
 	public static HashMap<String, Integer> getPlayersPerWorld() {
+
 		HashMap<String, Integer> m = new HashMap<>();
-		for (World world : Bukkit.getWorlds()) {
+		for (World world : getServer().getWorlds())
 			m.put(world.getName(), 0);
-		}
-		for (Player player : Bukkit.getOnlinePlayers()) {
+		for (Player player :  getServer().getOnlinePlayers())
 			m.put(player.getWorld().getName(), m.get(player.getWorld().getName()) + 1);
-		}
 		return m;
 	}
 

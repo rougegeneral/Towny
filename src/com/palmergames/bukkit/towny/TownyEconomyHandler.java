@@ -4,11 +4,13 @@ import com.palmergames.bukkit.towny.event.TownyPreTransactionEvent;
 import com.palmergames.bukkit.towny.event.TownyTransactionEvent;
 import com.palmergames.bukkit.towny.object.economy.Transaction;
 import com.palmergames.bukkit.towny.object.economy.TransactionType;
+import com.palmergames.bukkit.util.BukkitTools;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import net.tnemc.core.economy.ExtendedEconomyAPI;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -291,12 +293,12 @@ public class TownyEconomyHandler {
 	 */
 	public static boolean subtract(String accountName, Double amount, World world) {
 
-		Player player = Bukkit.getPlayer(accountName);
+		Player player = Bukkit.getServer().getPlayer(accountName);
 		Transaction transaction = new Transaction(TransactionType.SUBTRACT, player, amount.intValue());
 		TownyTransactionEvent event = new TownyTransactionEvent(transaction);
 		TownyPreTransactionEvent preEvent = new TownyPreTransactionEvent(transaction);
 
-		Bukkit.getPluginManager().callEvent(preEvent);
+		BukkitTools.getPluginManager().callEvent(preEvent);
 
 		if (preEvent.isCancelled()) {
 			TownyMessaging.sendErrorMsg(player, preEvent.getCancelMessage());
@@ -310,14 +312,14 @@ public class TownyEconomyHandler {
 				if(!reserveEconomy.createAccountDetail(accountName).success()) return false;
 			}
 			
-			Bukkit.getPluginManager().callEvent(event);
+			BukkitTools.getPluginManager().callEvent(event);
 			return reserveEconomy.removeHoldingsDetail(accountName, new BigDecimal(amount), world.getName()).success();
 
 		case VAULT:
 			if (!vaultEconomy.hasAccount(accountName))
 				vaultEconomy.createPlayerAccount(accountName);
 
-			Bukkit.getPluginManager().callEvent(event);
+			BukkitTools.getPluginManager().callEvent(event);
 			return vaultEconomy.withdrawPlayer(accountName, amount).type == EconomyResponse.ResponseType.SUCCESS;
 			
 		default:
@@ -338,12 +340,12 @@ public class TownyEconomyHandler {
 	 */
 	public static boolean add(String accountName, Double amount, World world) {
 
-		Player player = Bukkit.getPlayer(accountName);
+		Player player = Bukkit.getServer().getPlayer(accountName);
 		Transaction transaction = new Transaction(TransactionType.ADD, player, amount.intValue());
 		TownyTransactionEvent event = new TownyTransactionEvent(transaction);
 		TownyPreTransactionEvent preEvent = new TownyPreTransactionEvent(transaction);
 
-		Bukkit.getPluginManager().callEvent(preEvent);
+		BukkitTools.getPluginManager().callEvent(preEvent);
 		
 		if (preEvent.isCancelled()) {
 			TownyMessaging.sendErrorMsg(player, preEvent.getCancelMessage());
@@ -357,7 +359,7 @@ public class TownyEconomyHandler {
 				if(!reserveEconomy.createAccountDetail(accountName).success()) return false;
 			}
 
-			Bukkit.getPluginManager().callEvent(event);
+			BukkitTools.getPluginManager().callEvent(event);
 			return reserveEconomy.addHoldingsDetail(accountName, new BigDecimal(amount), world.getName()).success();
 
 		case VAULT:

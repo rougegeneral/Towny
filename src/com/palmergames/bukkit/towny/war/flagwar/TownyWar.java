@@ -154,7 +154,7 @@ public class TownyWar {
 	public static void attackWon(CellUnderAttack cell) {
 
 		CellWonEvent cellWonEvent = new CellWonEvent(cell);
-		Bukkit.getPluginManager().callEvent(cellWonEvent);
+		Bukkit.getServer().getPluginManager().callEvent(cellWonEvent);
 		cell.cancel();
 		removeCellUnderAttack(cell);
 	}
@@ -162,7 +162,7 @@ public class TownyWar {
 	public static void attackDefended(Player player, CellUnderAttack cell) {
 
 		CellDefendedEvent cellDefendedEvent = new CellDefendedEvent(player, cell);
-		Bukkit.getPluginManager().callEvent(cellDefendedEvent);
+		Bukkit.getServer().getPluginManager().callEvent(cellDefendedEvent);
 		cell.cancel();
 		removeCellUnderAttack(cell);
 	}
@@ -170,7 +170,7 @@ public class TownyWar {
 	public static void attackCanceled(CellUnderAttack cell) {
 
 		CellAttackCanceledEvent cellAttackCanceledEvent = new CellAttackCanceledEvent(cell);
-		Bukkit.getPluginManager().callEvent(cellAttackCanceledEvent);
+		Bukkit.getServer().getPluginManager().callEvent(cellAttackCanceledEvent);
 		cell.cancel();
 		removeCellUnderAttack(cell);
 	}

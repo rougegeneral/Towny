@@ -3,7 +3,6 @@ package com.palmergames.bukkit.towny.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
@@ -26,7 +25,7 @@ public class ResidentUtil {
 	public static List<Resident> getOnlineResidentsViewable(Player viewer, ResidentList residentList) {
 		
 		List<Resident> onlineResidents = new ArrayList<>();
-		for (Player player : Bukkit.getOnlinePlayers()) {
+		for (Player player : BukkitTools.getOnlinePlayers()) {
 			if (player != null) {
 				/*
 				 * Loop town/nation resident list

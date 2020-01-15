@@ -5,9 +5,10 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.world.TownyWorld;
+import com.palmergames.bukkit.util.BukkitTools;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -36,7 +37,7 @@ public class TownyWorldListener implements Listener {
 		boolean dungeonWorld = false;
 		
 		// Don't create a new world for temporary DungeonsXL instanced worlds.
-		if (Bukkit.getPluginManager().getPlugin("DungeonsXL") != null)
+		if (BukkitTools.getPluginManager().getPlugin("DungeonsXL") != null)
 			if (worldName.startsWith("DXL_")) {
 				dungeonWorld = true;
 			}

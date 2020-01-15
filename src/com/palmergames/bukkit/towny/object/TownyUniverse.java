@@ -12,7 +12,8 @@ import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.towny.permissions.TownyPermissionSource;
 import com.palmergames.bukkit.towny.war.eventwar.War;
-import org.bukkit.Bukkit;
+import com.palmergames.bukkit.util.BukkitTools;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -129,7 +130,7 @@ public class TownyUniverse {
 
 	public void clearWarEvent() {
 
-		getWarEvent().cancelTasks(Bukkit.getScheduler());
+		getWarEvent().cancelTasks(BukkitTools.getScheduler());
 		setWarEvent(null);
 	}
 

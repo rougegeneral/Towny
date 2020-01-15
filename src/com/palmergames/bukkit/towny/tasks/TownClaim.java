@@ -19,6 +19,7 @@ import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
 import com.palmergames.bukkit.towny.regen.TownyRegenAPI;
+import com.palmergames.bukkit.util.BukkitTools;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -218,7 +219,7 @@ public class TownClaim extends Thread {
 			townyUniverse.getDataSource().saveTownBlockList();
 			
 			// Raise an event for the claim
-			Bukkit.getPluginManager().callEvent(new TownClaimEvent(townBlock));
+			BukkitTools.getPluginManager().callEvent(new TownClaimEvent(townBlock));
 				
 		}
 	}
@@ -261,7 +262,7 @@ public class TownClaim extends Thread {
 			TownyMessaging.sendPrefixedTownMessage(town, TownySettings.getLangString("msg_abandoned_area_1"));
 			
 			// Raise an event to signal the unclaim
-			Bukkit.getPluginManager().callEvent(new TownUnclaimEvent(town, null));
+			BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, null));
 		}, 1);
 
 	}
