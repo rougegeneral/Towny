@@ -532,7 +532,7 @@ public class TownBlock extends TownyObject implements Saveable {
 		try {
 			group.addTownBlock(this);
 		} catch (NullPointerException e) {
-			TownyMessaging.sendErrorMsg("Group is null." + String.valueOf(group));
+			TownyMessaging.sendErrorMsg("Townblock failed to setPlotObjectGroup(group), group is null. " + String.valueOf(group));
 		}
 	}
 	

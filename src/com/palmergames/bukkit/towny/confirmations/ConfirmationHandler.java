@@ -6,6 +6,7 @@ import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.command.PlotCommand;
+import com.palmergames.bukkit.towny.event.TownBlockSettingsChangedEvent;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.nation.Nation;
 import com.palmergames.bukkit.towny.object.group.PlotObjectGroup;
@@ -14,6 +15,7 @@ import com.palmergames.bukkit.towny.object.town.Town;
 import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 import com.palmergames.bukkit.towny.permissions.TownyPermission;
+import com.palmergames.bukkit.towny.object.TownyPermissionChange;
 import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.tasks.PlotClaim;
@@ -321,16 +323,27 @@ public class ConfirmationHandler {
 				TownBlock tb = confirmation.getGroup().getTownBlocks().get(0);
 				TownyBlockOwnerObject townyBlockOwnerObject = confirmation.getTownBlockOwner();				
 				
-				// setTownBlockPermissions returns true if the town block permissions were successfully changed
-				if (PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townyBlockOwnerObject, tb, confirmation.getArgs())) {
+				// setTownBlockPermissions returns a towny permission change object
+				TownyPermissionChange permChange = PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townyBlockOwnerObject, tb, confirmation.getArgs());
+				
+				// If the perm change object is not null
+				if (permChange != null) {
 					
 					// A simple index loop starting from the second element
 					for (int i = 1; i < confirmation.getGroup().getTownBlocks().size(); ++i) {
 						tb = confirmation.getGroup().getTownBlocks().get(i);
 						
-						// TODO Redesign how townblock perms are handled to allow better caching and setting of multiple townblock perms
-						PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townyBlockOwnerObject, tb, confirmation.getArgs());
+						tb.getPermissions().change(permChange);
+
+						tb.setChanged(true);
+						townyUniverse.getDataSource().saveTownBlock(tb);
+
+						// Change settings event
+						TownBlockSettingsChangedEvent event = new TownBlockSettingsChangedEvent(tb);
+						Bukkit.getServer().getPluginManager().callEvent(event);
 					}
+
+					plugin.resetCache();
 
 					Player player = confirmation.getPlayer();
 					

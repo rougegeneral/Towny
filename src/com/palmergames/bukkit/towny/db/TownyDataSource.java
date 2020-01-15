@@ -46,7 +46,7 @@ public abstract class TownyDataSource {
 
 	public boolean saveAll() {
 
-		return saveWorldList() && saveNationList() && saveTownList() && saveResidentList() && saveTownBlockList() && saveWorlds() && saveNations() && saveTowns() && saveResidents() && saveAllTownBlocks() && saveRegenList() && saveSnapshotList();
+		return saveWorldList() && saveNationList() && saveTownList() && savePlotGroupList() && saveResidentList() && saveTownBlockList() && saveWorlds() && saveNations() && saveTowns() && saveResidents() && savePlotGroups() && saveAllTownBlocks() && saveRegenList() && saveSnapshotList();
 	}
 
 	public boolean saveAllWorlds() {
@@ -95,7 +95,7 @@ public abstract class TownyDataSource {
 
 	abstract public boolean saveTownList();
 
-	abstract public boolean saveGroupList();
+	abstract public boolean savePlotGroupList();
 
 	abstract public boolean saveNationList();
 
@@ -139,7 +139,7 @@ public abstract class TownyDataSource {
 
 	abstract public void deleteFile(String file);
 	
-	abstract public void deleteGroup(PlotObjectGroup group);
+	abstract public void deletePlotGroup(PlotObjectGroup group);
 
 	public boolean cleanup() {
 
@@ -215,6 +215,13 @@ public abstract class TownyDataSource {
 			saveResident(resident);
 		return true;
 	}
+	
+	public boolean savePlotGroups() {
+		TownyMessaging.sendDebugMsg("Saving PlotGroups");
+		for (PlotObjectGroup plotGroup : getAllPlotGroups())
+			savePlotGroup(plotGroup);
+		return true;
+	}
 
 	public boolean saveTowns() {
 
@@ -244,6 +251,8 @@ public abstract class TownyDataSource {
 	abstract public List<Resident> getResidents(Player player, String[] names);
 
 	abstract public List<Resident> getResidents();
+	
+	abstract public List<PlotObjectGroup> getAllPlotGroups();
 
 	abstract public List<Resident> getResidents(String[] names);
 
