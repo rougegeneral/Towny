@@ -3,14 +3,15 @@ package com.palmergames.bukkit.towny.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.ResidentList;
+import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.resident.ResidentList;
 import com.palmergames.bukkit.util.BukkitTools;
 
 public class ResidentUtil {
@@ -25,7 +26,7 @@ public class ResidentUtil {
 	public static List<Resident> getOnlineResidentsViewable(Player viewer, ResidentList residentList) {
 		
 		List<Resident> onlineResidents = new ArrayList<>();
-		for (Player player : BukkitTools.getOnlinePlayers()) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (player != null) {
 				/*
 				 * Loop town/nation resident list

@@ -3,7 +3,9 @@ package com.palmergames.bukkit.towny.permissions;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.util.Colors;
+import com.palmergames.bukkit.towny.object.TownyPermissionChange;
 
 import java.util.Arrays;
 

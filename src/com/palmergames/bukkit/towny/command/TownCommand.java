@@ -37,6 +37,7 @@ import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.townblock.TownBlockType;
 import com.palmergames.bukkit.towny.permissions.TownyPermission;
+import com.palmergames.bukkit.towny.object.TownyPermissionChange;
 import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.towny.object.economy.Transaction;

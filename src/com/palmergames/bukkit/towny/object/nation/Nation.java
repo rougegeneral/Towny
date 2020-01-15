@@ -22,6 +22,7 @@ import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
 import com.palmergames.bukkit.towny.object.coordinate.Coord;
 import com.palmergames.bukkit.towny.object.economy.Economical;
 import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.world.TownyWorld;
 import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
