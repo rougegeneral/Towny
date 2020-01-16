@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Town extends TownyBlockOwnerObject implements ResidentList, TownyInviteReceiver, TownyInviteSender, Saveable, ObjectGroupManageable<PlotObjectGroup> {
+public class Town extends TownyBlockOwnerObject implements ResidentList, TownyInviteReceiver, TownyInviteSender, ObjectGroupManageable<PlotObjectGroup> {
 	private transient static final String ECONOMY_ACCOUNT_PREFIX = TownySettings.getTownAccountPrefix();
 	
 	private transient List<Resident> residents = new ArrayList<>();

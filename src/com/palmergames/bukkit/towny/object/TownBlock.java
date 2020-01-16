@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
-public class TownBlock extends TownyObject implements Saveable {
+public class TownBlock extends TownyObject {
 
 	// TODO: Admin only or possibly a group check
 	// private List<Group> groups;
