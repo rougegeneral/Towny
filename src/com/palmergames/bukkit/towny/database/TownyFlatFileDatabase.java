@@ -112,8 +112,8 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		
 		for (Saveable obj : objs) {
 			// Convert the obj to string in format: key=value.
-			Map<String, String> keyedValues = obj.getKeyedValues();
-			for (Map.Entry<String, String> keyedValue : keyedValues.entrySet()) {
+			Map<String, Object> keyedValues = obj.getKeyedValues();
+			for (Map.Entry<String, Object> keyedValue : keyedValues.entrySet()) {
 				contents.append(keyedValue.getKey()).append("=").append(keyedValue.getValue()).append(System.getProperty("line.separator"));
 			}
 			// Get file properties
