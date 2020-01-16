@@ -15,19 +15,9 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@interface load {}
 
 /**
  * @author Lukas Mansour (Articdive)
@@ -70,20 +60,6 @@ public abstract class TownyDatabase {
 	 * @return true, if the backup was successfully carried out, false if otherwise.
 	 */
 	public abstract boolean backup();
-	
-	public void loadAll() {
-		Method[] classMethods = this.getClass().getMethods();
-		
-		for (Method method : classMethods) {
-			if (method.isAnnotationPresent(load.class)) {
-				try {
-					method.invoke(this, (Object) null);
-				} catch (IllegalAccessException | InvocationTargetException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 	
 	// Residents
 	

@@ -15,7 +15,7 @@ public abstract class TownyObject {
 	
 	protected TownyObject(HashMap<String, Object> loadMap) {
 		this.name = (String)loadMap.get("name");
-		this.identifier = UUID.fromString((String) loadMap.get("identifier"));
+		this.identifier = UUID.fromString((String)loadMap.get("identifier"));
 	}
 	
 	protected TownyObject(UUID identifier) {
