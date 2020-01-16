@@ -13,8 +13,8 @@ import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -774,7 +774,7 @@ public class TownyWorld extends TownyObject implements Saveable {
 	}
 
 	@Override
-	public HashMap<String, String> getKeyedValues() {
+	public Map<String, Object> getKeyedValues() {
 		return null;
 	}
 

@@ -19,7 +19,7 @@ public interface Saveable {
 	 * @return A {@link Map} keyed by field names and containing,
 	 * field values as the values in the map.
 	 */
-	Map<String, String> getKeyedValues();
+	Map<String, Object> getKeyedValues();
 	
 	/**
 	 * Used for flatfile storage (excluding json, because it uses {@link Gson#toJson(Object)} to reflect fields)

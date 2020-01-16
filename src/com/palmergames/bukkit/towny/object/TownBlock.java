@@ -528,7 +528,7 @@ public class TownBlock extends TownyObject implements Saveable {
 	}
 	
 	@Override
-	public Map<String, String> getKeyedValues() {
+	public Map<String, Object> getKeyedValues() {
 		return null;
 	}
 	

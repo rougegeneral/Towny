@@ -707,7 +707,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	}
 	
 	@Override
-	public Map<String, String> getKeyedValues() {
+	public Map<String, Object> getKeyedValues() {
 		return null;
 	}
 	
