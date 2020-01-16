@@ -1,7 +1,5 @@
 package com.palmergames.bukkit.towny.database;
 
-import com.google.gson.Gson;
-
 import java.util.Map;
 
 /**
@@ -13,7 +11,7 @@ import java.util.Map;
 public interface Saveable {
 	
 	/**
-	 * Gets the hashmap of keyed values corresponding to fields within
+	 * Gets the {@link Map} of keyed values corresponding to fields within
 	 * the towny object implementing the interface.
 	 *
 	 * @return A {@link Map} keyed by field names and containing,
@@ -22,11 +20,15 @@ public interface Saveable {
 	Map<String, Object> getKeyedValues();
 	
 	/**
-	 * Used for flatfile storage (excluding json, because it uses {@link Gson#toJson(Object)} to reflect fields)
-	 * to determine the path which, the data file for this object will be stored.
+	 * Used for flatfile storage (excluding json, because it uses {@link com.google.gson.Gson#toJson(Object)} to reflect fields)
+	 * to determine the path which, the data file for this object will be stored.<br><br>
 	 * <strong>This should not include the actual name for the file, refer to {@link #getStorableName()}</strong>
+	 * <br><br>
+	 * <strong>Note:</strong> Usually this is implemented via {@link com.palmergames.bukkit.towny.object.TownyObject}
+	 * which is the UUID of the subclass of {@link com.palmergames.bukkit.towny.object.TownyObject}
 	 *
 	 * @return A String that represents the path of where the object data should be stored.
+	 * 
 	 */
 	String getStorableRootFilePath();
 	

@@ -1303,12 +1303,6 @@ public class Town extends TownyBlockOwnerObject implements ResidentList, TownyIn
 		// NOTE: This is temporary until I setup the folder system.
 		return Towny.getPlugin().getDataFolder().getPath();
 	}
-
-	@Override
-	public String getStorableName() {
-		// Temporary testing name.
-		return "test_name";
-	}
 	
 	public List<TownBlock> getTownBlocksForPlotGroup(PlotObjectGroup group) {
 		

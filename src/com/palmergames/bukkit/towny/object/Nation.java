@@ -715,9 +715,4 @@ public class Nation extends TownyObject implements ResidentList, TownyInviteSend
 	public String getStorableRootFilePath() {
 		return null;
 	}
-	
-	@Override
-	public String getStorableName() {
-		return null;
-	}
 }

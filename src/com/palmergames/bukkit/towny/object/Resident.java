@@ -704,10 +704,5 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 	public String getStorableRootFilePath() {
 		return null;
 	}
-	
-	@Override
-	public String getStorableName() {
-		return null;
-	}
 }
 

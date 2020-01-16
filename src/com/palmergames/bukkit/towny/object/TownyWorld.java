@@ -782,9 +782,4 @@ public class TownyWorld extends TownyObject implements Saveable {
 	public String getStorableRootFilePath() {
 		return "worlds";
 	}
-
-	@Override
-	public String getStorableName() {
-		return "test_world";
-	}
 }

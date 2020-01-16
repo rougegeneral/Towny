@@ -536,9 +536,4 @@ public class TownBlock extends TownyObject implements Saveable {
 	public String getStorableRootFilePath() {
 		return null;
 	}
-	
-	@Override
-	public String getStorableName() {
-		return null;
-	}
 }

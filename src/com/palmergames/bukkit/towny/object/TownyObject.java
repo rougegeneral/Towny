@@ -1,13 +1,14 @@
 package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownyFormatter;
+import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
-public abstract class TownyObject {
+public abstract class TownyObject implements Saveable {
 	private final UUID identifier;
 	private String name;
 	
@@ -72,5 +73,13 @@ public abstract class TownyObject {
 	
 	public UUID getIdentifier() {
 		return identifier;
+	}
+	
+	// Because we're storing the file as the the UUID, we will,
+	// just grab the UUID from the base Object so implementation
+	// isn't needed in inheriting classes.
+	@Override
+	public String getStorableName() {
+		return this.getIdentifier().toString();
 	}
 }
