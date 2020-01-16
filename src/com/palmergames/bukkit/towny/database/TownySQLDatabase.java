@@ -7,6 +7,7 @@ import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -83,7 +84,7 @@ public final class TownySQLDatabase extends TownyDatabase {
 	public boolean save(Saveable... objs) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean delete(Saveable... objs) {
 		return false;

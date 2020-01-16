@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -160,6 +161,20 @@ public abstract class TownyDatabase {
 	 * @return A boolean indicating if the save was successful.
 	 */
 	public abstract boolean save(Saveable... objs);
+
+	/**
+	 * A wrapper function that allows the use of {@link TownyDatabase#save(Saveable...)} without
+	 * the need for prior conversion to a primitive java array.
+	 *
+	 * @param objs The {@link Collection} of {@link Saveable} objects to save.
+	 * @param <T> An object that implements {@link Saveable}.   
+	 * @return Success or failure.
+	 */
+	public final <T extends Saveable> boolean save(Collection<T> objs) {
+		// Create primitive array copy;
+		Saveable[] copy = new Saveable[objs.size()];
+		return save(objs.toArray(copy));
+	}
 	
 	/**
 	 * Deletes any object conforming to the {@link Saveable} interface.

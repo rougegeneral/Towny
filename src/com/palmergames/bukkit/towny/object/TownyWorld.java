@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TownyWorld extends TownyObject implements Saveable {
+public class TownyWorld extends TownyObject {
 	
 	private transient List<Town> towns = new ArrayList<>();
 	private boolean isClaimable = true;

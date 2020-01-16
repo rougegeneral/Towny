@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -128,7 +129,7 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 		
 		return true;
 	}
-	
+
 	@Override
 	public boolean delete(Saveable... objs) {
 		return false;

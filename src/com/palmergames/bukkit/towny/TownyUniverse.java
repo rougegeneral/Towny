@@ -233,8 +233,18 @@ public class TownyUniverse {
         return pluginFolder;
     }
     
-    public void addWorld(TownyWorld world) {
-		worlds.put(world.getIdentifier(), world);
+    public TownyWorld addWorld(TownyWorld world) {
+		
+		// Check if it exists already.
+		if (worlds.containsKey(world.getIdentifier())) {
+			return worlds.get(world.getIdentifier());
+		}
+		
+		// Add to global list.
+		TownyWorld retVal = worlds.put(world.getIdentifier(), world);
+		database.save(worlds.values());
+		
+		return retVal;
 	}
 	
 	public void addResident(Resident resident) {

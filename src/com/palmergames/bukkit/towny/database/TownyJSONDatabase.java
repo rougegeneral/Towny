@@ -19,6 +19,7 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -173,7 +174,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 			
 			// Get file properties
 			String fileName = obj.getStorableName() + ".json";
-			String filePath = databaseFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
+			String filePath = databaseFilePath + File.separator + obj.getStorableRootFilePath() + File.separator + fileName;
 			DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
 			File file = new File(filePath);
 			
@@ -183,7 +184,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 		
 		return true;
 	}
-	
+
 	@Override
 	public boolean delete(Saveable... objs) {
 		return false;

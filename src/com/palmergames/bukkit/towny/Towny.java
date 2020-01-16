@@ -203,8 +203,8 @@ public class Towny extends JavaPlugin {
 		
 		// ---------------------------- Testing Code ----------------------------
 		
-		JSONTest jsonTester = new JSONTest();
-		jsonTester.runTests();
+		//JSONTest jsonTester = new JSONTest();
+		//jsonTester.runTests();
 		
 		// ---------------------------- Testing Code ----------------------------
 
@@ -531,12 +531,13 @@ public class Towny extends JavaPlugin {
 	 * @return the current (or new) cache for this player.
 	 */
 	public PlayerCache getCache(Player player) {
-
+        
 		if (!hasCache(player)) {
 			newCache(player);
-			getCache(player).setLastTownBlock(new WorldCoord(player.getWorld().getName(), Coord.parseCoord(player)));
+			// TODO: This should be using UUID instead of player name.
+			playerCache.get(player.getName()).setLastTownBlock(new WorldCoord(player.getWorld().getName(), Coord.parseCoord(player)));
 		}
-
+		
 		return playerCache.get(player.getName().toLowerCase());
 	}
 
