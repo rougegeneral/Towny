@@ -6,7 +6,6 @@ import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationType;
-import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.database.io.json.serializers.TownFieldSerializer;
 import com.palmergames.bukkit.towny.event.TownAddResidentRankEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentRankEvent;

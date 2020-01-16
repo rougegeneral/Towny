@@ -5,7 +5,6 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.database.io.json.serializers.ResidentFieldSerializer;
 import com.palmergames.bukkit.towny.database.io.json.serializers.WorldFieldSerializer;
 import com.palmergames.bukkit.towny.event.TownAddResidentEvent;
