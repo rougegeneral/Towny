@@ -1,6 +1,5 @@
-package com.palmergames.bukkit.towny.object.coordinate;
+package com.palmergames.bukkit.towny.object;
 
-import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import com.palmergames.bukkit.util.DrawUtil;
 import com.palmergames.bukkit.util.LocationRunnable;
 import org.bukkit.World;

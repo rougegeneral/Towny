@@ -1,10 +1,7 @@
-package com.palmergames.bukkit.towny.object.etc;
+package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.permissions.TownyPermission.ActionType;
 
-import com.palmergames.bukkit.towny.object.coordinate.Coord;
-import com.palmergames.bukkit.towny.object.world.TownyWorld;
-import com.palmergames.bukkit.towny.object.world.WorldCoord;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

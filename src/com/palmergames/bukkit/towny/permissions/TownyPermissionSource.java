@@ -9,8 +9,8 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
-import com.palmergames.bukkit.towny.object.resident.Resident;
-import com.palmergames.bukkit.towny.object.world.TownyWorld;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.util.BukkitTools;
 
 /**

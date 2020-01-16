@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.group;
+package com.palmergames.bukkit.towny.object;
 
 import java.util.UUID;
 

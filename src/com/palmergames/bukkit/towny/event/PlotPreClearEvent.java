@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

@@ -3,9 +3,9 @@ package com.palmergames.bukkit.towny.invites;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.nation.Nation;
-import com.palmergames.bukkit.towny.object.resident.Resident;
-import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;

@@ -1,11 +1,8 @@
-package com.palmergames.bukkit.towny.object.group;
+package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import com.palmergames.bukkit.towny.permissions.TownyPermission;
-import com.palmergames.bukkit.towny.object.resident.Resident;
-import com.palmergames.bukkit.towny.object.town.Town;
 
 import java.util.ArrayList;
 import java.util.List;

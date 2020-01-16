@@ -6,7 +6,7 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationHandler;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationType;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.Resident;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;

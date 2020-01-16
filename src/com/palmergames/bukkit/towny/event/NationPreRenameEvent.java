@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.palmergames.bukkit.towny.object.nation.Nation;
+import com.palmergames.bukkit.towny.object.Nation;
 
 public class NationPreRenameEvent extends Event implements Cancellable {
 

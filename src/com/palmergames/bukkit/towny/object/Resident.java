@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.resident;
+package com.palmergames.bukkit.towny.object;
 
 import com.google.gson.annotations.JsonAdapter;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -18,8 +18,6 @@ import com.palmergames.bukkit.towny.invites.Invite;
 import com.palmergames.bukkit.towny.invites.InviteHandler;
 import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.exceptions.TooManyInvitesException;
-import com.palmergames.bukkit.towny.object.town.Town;
-import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.tasks.SetDefaultModes;

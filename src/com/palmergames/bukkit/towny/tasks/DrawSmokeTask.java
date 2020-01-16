@@ -1,9 +1,9 @@
 package com.palmergames.bukkit.towny.tasks;
 
 import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.object.coordinate.CellBorder;
-import com.palmergames.bukkit.towny.object.coordinate.Coord;
-import com.palmergames.bukkit.towny.object.world.WorldCoord;
+import com.palmergames.bukkit.towny.object.CellBorder;
+import com.palmergames.bukkit.towny.object.Coord;
+import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.BorderUtil;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.DrawSmokeTaskFactory;

@@ -1,6 +1,4 @@
-package com.palmergames.bukkit.towny.object.townblock;
-
-import com.palmergames.bukkit.towny.object.town.Town;
+package com.palmergames.bukkit.towny.object;
 
 import java.util.EnumSet;
 import java.util.HashMap;

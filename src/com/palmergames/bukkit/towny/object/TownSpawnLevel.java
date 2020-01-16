@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.town;
+package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyUniverse;

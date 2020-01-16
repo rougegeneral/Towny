@@ -4,7 +4,7 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
 import com.palmergames.bukkit.towny.regen.TownyRegenAPI;
 import org.apache.logging.log4j.LogManager;

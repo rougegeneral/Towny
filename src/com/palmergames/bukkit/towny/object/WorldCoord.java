@@ -1,9 +1,7 @@
-package com.palmergames.bukkit.towny.object.world;
+package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.coordinate.Coord;
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

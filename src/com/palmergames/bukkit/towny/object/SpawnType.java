@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.etc;
+package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;

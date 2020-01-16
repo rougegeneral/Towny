@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
-import com.palmergames.bukkit.towny.object.townblock.TownBlockType;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.permissions.TownyPermission.ActionType;
 
 /**

@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.Town;
 
 public class TownScoredEvent extends Event {
 

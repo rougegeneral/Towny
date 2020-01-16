@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
-import com.palmergames.bukkit.towny.object.townblock.TownBlockType;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlockType;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

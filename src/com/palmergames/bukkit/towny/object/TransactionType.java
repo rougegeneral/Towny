@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.economy;
+package com.palmergames.bukkit.towny.object;
 
 public enum TransactionType {
 	DEPOSIT("Deposit"), WITHDRAW("Withdraw"), ADD("Add"), SUBTRACT("Subtract");

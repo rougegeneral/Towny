@@ -1,7 +1,7 @@
 package com.palmergames.bukkit.towny.event;
 
-import com.palmergames.bukkit.towny.object.nation.Nation;
-import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

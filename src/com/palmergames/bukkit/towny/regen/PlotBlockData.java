@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny.regen;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.regen.block.BlockObject;
 import com.palmergames.bukkit.util.BukkitTools;
 

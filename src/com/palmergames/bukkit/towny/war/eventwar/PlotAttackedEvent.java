@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlock;
 
 public class PlotAttackedEvent extends Event {
 

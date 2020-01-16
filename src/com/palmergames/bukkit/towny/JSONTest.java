@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.Town;
 
 public class JSONTest extends TownyTest {
 	

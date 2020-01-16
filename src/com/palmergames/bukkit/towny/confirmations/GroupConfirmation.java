@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.confirmations;
 
-import com.palmergames.bukkit.towny.object.group.PlotObjectGroup;
+import com.palmergames.bukkit.towny.object.PlotObjectGroup;
 import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
 
 import org.bukkit.entity.Player;

@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny.chat.types;
 
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.nation.Nation;
+import com.palmergames.bukkit.towny.object.Nation;
 import net.tnemc.tnc.core.common.chat.ChatType;
 import org.bukkit.entity.Player;
 

@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.resident;
+package com.palmergames.bukkit.towny.object;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.palmergames.bukkit.towny.event;
 
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
-import com.palmergames.bukkit.towny.object.town.Town;
-import com.palmergames.bukkit.towny.object.economy.Transaction;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.Transaction;
 import com.palmergames.bukkit.util.BukkitTools;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

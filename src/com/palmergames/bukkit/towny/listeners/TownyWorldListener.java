@@ -4,7 +4,7 @@ import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.world.TownyWorld;
+import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.util.BukkitTools;
 
 import java.util.ArrayList;

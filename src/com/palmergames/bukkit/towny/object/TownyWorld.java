@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.world;
+package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
@@ -6,12 +6,8 @@ import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.coordinate.Coord;
-import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.permissions.TownyPermission.ActionType;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
-import com.palmergames.bukkit.towny.object.town.Town;
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 

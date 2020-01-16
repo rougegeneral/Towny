@@ -7,7 +7,7 @@ import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.invites.Invite;
 import com.palmergames.bukkit.towny.invites.TownyInviteReceiver;
 import com.palmergames.bukkit.towny.invites.TownyInviteSender;
-import com.palmergames.bukkit.towny.object.nation.Nation;
+import com.palmergames.bukkit.towny.object.Nation;
 
 public class NationAllyNationInvite implements Invite {
 

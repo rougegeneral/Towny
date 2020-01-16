@@ -3,7 +3,7 @@ package com.palmergames.bukkit.towny.tasks;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.resident.Resident;
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.util.BukkitTools;
 import org.bukkit.command.CommandSender;
 

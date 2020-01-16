@@ -1,6 +1,6 @@
 package com.palmergames.bukkit.towny.war.eventwar;
 
-import com.palmergames.bukkit.towny.object.economy.Economical;
+import com.palmergames.bukkit.towny.object.Economical;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

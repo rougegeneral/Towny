@@ -11,10 +11,10 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.coordinate.Coord;
-import com.palmergames.bukkit.towny.object.townblock.TownBlock;
-import com.palmergames.bukkit.towny.object.townblock.TownBlockType;
-import com.palmergames.bukkit.towny.object.world.TownyWorld;
+import com.palmergames.bukkit.towny.object.Coord;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlockType;
+import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.utils.CombatUtil;
 
 public class HealthRegenTimerTask extends TownyTimerTask {

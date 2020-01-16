@@ -2,8 +2,8 @@ package com.palmergames.bukkit.towny.war.eventwar;
 
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.resident.Resident;
-import com.palmergames.bukkit.towny.object.town.Town;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;

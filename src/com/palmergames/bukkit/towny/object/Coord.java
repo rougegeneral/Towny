@@ -1,4 +1,4 @@
-package com.palmergames.bukkit.towny.object.coordinate;
+package com.palmergames.bukkit.towny.object;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;

@@ -8,9 +8,9 @@ import com.palmergames.bukkit.towny.command.TownCommand;
 import com.palmergames.bukkit.towny.command.TownyCommand;
 import com.palmergames.bukkit.towny.event.PlayerChangePlotEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.coordinate.CellBorder;
-import com.palmergames.bukkit.towny.object.resident.Resident;
-import com.palmergames.bukkit.towny.object.world.WorldCoord;
+import com.palmergames.bukkit.towny.object.CellBorder;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.BorderUtil;
 import com.palmergames.bukkit.util.DrawSmokeTaskFactory;
 
