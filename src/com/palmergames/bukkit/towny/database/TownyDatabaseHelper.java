@@ -1,11 +1,15 @@
 package com.palmergames.bukkit.towny.database;
 
+import com.palmergames.bukkit.towny.TownyAdapter;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.database.results.CreateResult;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,13 +25,24 @@ public final class TownyDatabaseHelper {
 	/**
 	 * Creates a new {@link TownyWorld} and adds it to the database.
 	 *
-	 * @param identifier {@link UUID} of the new world.
-	 * @param name {@link String} containing the world name.
+	 * @param world the Bukkit world to add.
 	 * @return {@link CreateResult}, enum containing the result of the world creation.
 	 */
 	@Nonnull
-	public static CreateResult newWorld(UUID identifier, String name) {
-		return null;
+	public static CreateResult newWorld(World world) {
+		
+		// Convert world to towny world.
+		TownyWorld townyWorld = TownyAdapter.wrapBukkitWorld(world);
+
+		// Don't create a new world for temporary DungeonsXL instanced worlds.
+		if (Bukkit.getServer().getPluginManager().getPlugin("DungeonsXL") != null && world.getName().startsWith("DXL_")) {
+			townyWorld.setUsingTowny(false);
+			return CreateResult.UNEXPECTED;
+		}
+
+		// Save changes.
+		TownyUniverse.getInstance().addWorld(townyWorld);
+		return (TownyUniverse.getInstance().save(townyWorld)) ? CreateResult.SUCCESSFUL : CreateResult.UNEXPECTED;
 	}
 	
 	/**
@@ -66,7 +81,18 @@ public final class TownyDatabaseHelper {
 	 */
 	@Nonnull
 	public static CreateResult newResident(UUID identifier, String name) {
-		return null;
+		
+		// Create Resident
+		Resident resident = new Resident(identifier);
+		resident.setName(name);
+		
+		// Add to towny Universe.
+		TownyUniverse.getInstance().addResident(resident);
+		
+		// Save changes.
+		TownyUniverse.getInstance().save(resident);
+		
+		return CreateResult.SUCCESSFUL;
 	}
 	
 	/**

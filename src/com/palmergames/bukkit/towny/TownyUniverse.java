@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -241,13 +242,10 @@ public class TownyUniverse {
 		}
 		
 		// Add to global list.
-		TownyWorld retVal = worlds.put(world.getIdentifier(), world);
-		database.save(worlds.values());
-		
-		return retVal;
+		return worlds.put(world.getIdentifier(), world);
 	}
 	
-	public void addResident(Resident resident) {
+	public void addResident(@Nonnull Resident resident) {
 		residents.put(resident.getIdentifier(), resident);
 	}
 	

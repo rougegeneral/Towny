@@ -713,7 +713,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		if (world == null) {
 			throw new TownyRuntimeException("Could not correlate WorldName to BukkitWorld");
 		}
-		switch (TownyDatabaseHelper.newWorld(world.getUID(), world.getName())) {
+		switch (TownyDatabaseHelper.newWorld(world)) {
 			case ALREADY_EXISTS: {
 				throw new AlreadyRegisteredException("The world " + name + " is already in use.");
 			}

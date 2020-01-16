@@ -5,6 +5,7 @@ import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyAdapter;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.database.TownyDatabaseHelper;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Coord;
@@ -40,29 +41,15 @@ public class TownyWorldListener implements Listener {
 	public void onWorldLoad(WorldLoadEvent event) {
 
 		newWorld(event.getWorld().getName());
-		createWorld(event.getWorld());
+		TownyDatabaseHelper.newWorld(event.getWorld());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onWorldInit(WorldInitEvent event) {
 
 		newWorld(event.getWorld().getName());
-		createWorld(event.getWorld());
+		TownyDatabaseHelper.newWorld(event.getWorld());
 	}
-	
-	private void createWorld(World world) {
-		// Convert the bukkit world to a towny one.
-		TownyWorld townyWorld = TownyAdapter.wrapBukkitWorld(world);
-
-		// Don't create a new world for temporary DungeonsXL instanced worlds.
-		if (Bukkit.getServer().getPluginManager().getPlugin("DungeonsXL") != null && world.getName().startsWith("DXL_")) {
-			townyWorld.setUsingTowny(false);
-			return;
-		}
-		
-		TownyUniverse.getInstance().addWorld(townyWorld);
-		
-	} 
 
 	@Deprecated
 	private void newWorld(String worldName) {

@@ -1,7 +1,9 @@
 package com.palmergames.bukkit.towny;
 
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 /**
  * A class with convenience methods that deal with translating
@@ -17,5 +19,12 @@ public class TownyAdapter {
 		wrappedWorld.setName(world.getName());
 		
 		return wrappedWorld;
+	}
+	
+	public static Resident wrapBukkitPlayer(Player player) {
+		Resident wrappedPlayer = new Resident(player.getUniqueId());
+		wrappedPlayer.setName(player.getName());
+		
+		return wrappedPlayer;
 	}
 }
