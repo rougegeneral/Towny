@@ -79,7 +79,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean loadResident(String identifier) {
-		return false;
+		return true;
 	}
 	
 	@Nonnull
@@ -90,7 +90,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean loadTown(String name) {
-		return false;
+		return true;
 	}
 	
 	@Nonnull
@@ -102,7 +102,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean loadNation(String name) {
-		return false;
+		return true;
 	}
 
 	/**
@@ -151,7 +151,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean loadTownyWorld(String name) {
-		return false;
+		return true;
 	}
 	
 	@Nonnull
@@ -162,7 +162,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	
 	@Override
 	public boolean loadTownBlock(int x, int z, TownyWorld world) {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -174,7 +174,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 			
 			// Get file properties
 			String fileName = obj.getStorableName() + ".json";
-			String filePath = databaseFilePath + File.separator + obj.getStorableRootFilePath() + File.separator + fileName;
+			String filePath = databaseFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
 			DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
 			File file = new File(filePath);
 			
@@ -187,7 +187,7 @@ public final class TownyJSONDatabase extends TownyDatabase {
 
 	@Override
 	public boolean delete(Saveable... objs) {
-		return false;
+		return true;
 	}
 	
 	@Override

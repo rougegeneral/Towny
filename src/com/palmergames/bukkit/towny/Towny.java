@@ -176,7 +176,7 @@ public class Towny extends JavaPlugin {
 			TownyTimerHandler.toggleTeleportWarmup(TownySettings.getTeleportWarmupTime() > 0);
 			TownyTimerHandler.toggleCooldownTimer(TownySettings.getPVPCoolDownTime() > 0 || TownySettings.getSpawnCooldownTime() > 0);
 			TownyTimerHandler.toggleDrawSmokeTask(true);
-			resetCache();
+			//resetCache(); // TODO this is broken
 			
 			// Setup bukkit command interfaces
 			registerSpecialCommands();
@@ -535,6 +535,9 @@ public class Towny extends JavaPlugin {
 		if (!hasCache(player)) {
 			newCache(player);
 			// TODO: This should be using UUID instead of player name.
+			if (playerCache.get(player.getName()) == null) {
+				throw new TownyRuntimeException("cache cannot be null");
+			}
 			playerCache.get(player.getName()).setLastTownBlock(new WorldCoord(player.getWorld().getName(), Coord.parseCoord(player)));
 		}
 		

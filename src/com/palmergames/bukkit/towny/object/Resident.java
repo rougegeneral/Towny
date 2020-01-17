@@ -72,7 +72,6 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 	}
 
 	public long getLastOnline() {
-
 		return lastOnline;
 	}
 
@@ -701,7 +700,7 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 	
 	@Override
 	public String getStorableRootFilePath() {
-		return null;
+		return "residents";
 	}
 }
 
