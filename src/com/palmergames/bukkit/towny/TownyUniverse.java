@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -98,15 +99,15 @@ public class TownyUniverse {
 		}
 		// Before we load we will backup, just incase something goes wrong
 		// This might just save a server owner's day.
-		if (!database.backup()) {
+		if (!getDatabase().backup()) {
 			LOGGER.log(Level.ERROR, "[Towny] Error: Failed to backup database before loading!");
 			throw new TownyRuntimeException();
 		}
-		this.worlds.putAll(database.loadWorlds());
-		this.nations.putAll(database.loadNations());
-		this.towns.putAll(database.loadTowns());
-		this.residents.putAll(database.loadResidents());
-		this.townBlocks.putAll(database.loadTownBlocks());
+		this.worlds.putAll(getDatabase().loadWorlds());
+		this.nations.putAll(getDatabase().loadNations());
+		this.towns.putAll(getDatabase().loadTowns());
+		this.residents.putAll(getDatabase().loadResidents());
+		this.townBlocks.putAll(getDatabase().loadTownBlocks());
 		switch (saveDBType) {
 			case "ff":
 			case "flatfile": {
@@ -136,7 +137,7 @@ public class TownyUniverse {
 		// TODO: Remove after all references are removed from Towny!
 		this.dataSource = new TownyDatabaseHandler(Towny.getPlugin(), this);
 		// Backup save Database aswell
-		if (!database.backup()) {
+		if (!getDatabase().backup()) {
 			LOGGER.log(Level.ERROR, "[Towny] Error: Failed to backup database after loading!");
 			throw new TownyRuntimeException("Error: Failed to backup database after loading!");
 		}
@@ -150,6 +151,17 @@ public class TownyUniverse {
 			residents.values().forEach(this::save);
 			townBlocks.values().forEach(this::save);
 		}
+		
+		// Update worlds.
+		for (World world : Towny.getPlugin().getServer().getWorlds()) {
+			if (!worlds.containsKey(world.getUID())) {
+				TownyWorld townyWorld = TownyAdapter.wrapBukkitWorld(world);
+				worlds.put(world.getUID(), townyWorld);
+			}
+		}
+		
+		// Save changes.
+		getDatabase().save(worlds.values());
     }
 
     
@@ -344,7 +356,7 @@ public class TownyUniverse {
     }
     
     public boolean backupDatabase() {
-		return database.backup();
+		return getDatabase().backup();
 	}
     
     public List<String> getTreeString(int depth) {
@@ -422,11 +434,11 @@ public class TownyUniverse {
 	}
 	
 	public boolean unsafeDelete(Saveable saveable) {
-    	return database.delete(saveable);
+    	return getDatabase().delete(saveable);
 	}
 	
 	public boolean save(Saveable saveable) {
-		return database.save(saveable);
+		return getDatabase().save(saveable);
 	}
 	
 	public static TownyUniverse getInstance() {
@@ -553,5 +565,19 @@ public class TownyUniverse {
 	
 	public HashMap<String, CustomDataField> getRegisteredMetadata() {
 		return registeredMetadata;
+	}
+
+	public TownyDatabase getDatabase() {
+		return database;
+	}
+	
+	@Nullable
+	public TownyWorld getWorld(World world) {
+		return worlds.get(world.getUID());
+	}
+	
+	@Nullable
+	public TownyWorld getWorld(TownyWorld world) {
+		return worlds.get(world.getIdentifier());
 	}
 }

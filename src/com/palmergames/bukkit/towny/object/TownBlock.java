@@ -432,18 +432,6 @@ public class TownBlock extends TownyObject {
 		return world;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-
-		if (obj == this)
-			return true;
-		if (!(obj instanceof TownBlock))
-			return false;
-
-		TownBlock o = (TownBlock) obj;
-		return this.getX() == o.getX() && this.getZ() == o.getZ() && this.getWorld() == o.getWorld();
-	}
-
 	public void clear() {
 
 		setTown(null);

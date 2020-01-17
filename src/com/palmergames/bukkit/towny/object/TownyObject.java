@@ -6,6 +6,7 @@ import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class TownyObject implements Saveable {
@@ -81,5 +82,18 @@ public abstract class TownyObject implements Saveable {
 	@Override
 	public String getStorableName() {
 		return this.getIdentifier().toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		TownyObject that = (TownyObject) o;
+		return identifier.equals(that.identifier);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(identifier);
 	}
 }

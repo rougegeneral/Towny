@@ -108,6 +108,4 @@ public final class TownyDatabaseHelper {
 	public static CreateResult newTownBlock(UUID identifier, int x, int y, TownyWorld world) {
 		return null;
 	}
-	
-	
 }

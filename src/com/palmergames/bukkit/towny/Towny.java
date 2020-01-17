@@ -176,7 +176,7 @@ public class Towny extends JavaPlugin {
 			TownyTimerHandler.toggleTeleportWarmup(TownySettings.getTeleportWarmupTime() > 0);
 			TownyTimerHandler.toggleCooldownTimer(TownySettings.getPVPCoolDownTime() > 0 || TownySettings.getSpawnCooldownTime() > 0);
 			TownyTimerHandler.toggleDrawSmokeTask(true);
-			//resetCache(); // TODO this is broken
+			resetCache();
 			
 			// Setup bukkit command interfaces
 			registerSpecialCommands();
@@ -504,12 +504,14 @@ public class Towny extends JavaPlugin {
 	}
 
 	public void newCache(Player player) {
-
-		try {
-			playerCache.put(player.getName().toLowerCase(), new PlayerCache(TownyUniverse.getInstance().getDataSource().getWorld(player.getWorld().getName()), player));
-		} catch (NotRegisteredException e) {
-			TownyMessaging.sendErrorMsg(player, "Could not create permission cache for this world (" + player.getWorld().getName() + ".");
+		
+		TownyWorld playerWorld = TownyUniverse.getInstance().getWorld(player.getWorld());
+		
+		if (playerWorld == null) {
+			throw new TownyRuntimeException("Could not create player cache because world is null.");
 		}
+		
+		playerCache.put(player.getName().toLowerCase(), new PlayerCache(playerWorld, player));
 
 	}
 
@@ -535,10 +537,10 @@ public class Towny extends JavaPlugin {
 		if (!hasCache(player)) {
 			newCache(player);
 			// TODO: This should be using UUID instead of player name.
-			if (playerCache.get(player.getName()) == null) {
+			if (playerCache.get(player.getName().toLowerCase()) == null) {
 				throw new TownyRuntimeException("cache cannot be null");
 			}
-			playerCache.get(player.getName()).setLastTownBlock(new WorldCoord(player.getWorld().getName(), Coord.parseCoord(player)));
+			playerCache.get(player.getName().toLowerCase()).setLastTownBlock(new WorldCoord(player.getWorld().getName(), Coord.parseCoord(player)));
 		}
 		
 		return playerCache.get(player.getName().toLowerCase());
