@@ -2,8 +2,6 @@ package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.permissions.TownyPermission;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

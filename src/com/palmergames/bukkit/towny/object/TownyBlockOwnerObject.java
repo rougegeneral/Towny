@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.permissions.TownyPermission;
+
 import org.bukkit.World;
 
 import java.util.ArrayList;
