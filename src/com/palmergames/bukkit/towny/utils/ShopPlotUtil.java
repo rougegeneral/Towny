@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
-import com.palmergames.bukkit.towny.permissions.TownyPermission.ActionType;
+import com.palmergames.bukkit.towny.object.TownyPermission.ActionType;
 
 /**
  * A util for Shop Plugin Developers to use,

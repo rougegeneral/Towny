@@ -1,10 +1,10 @@
 package com.palmergames.bukkit.towny.object;
 
-import com.palmergames.bukkit.towny.permissions.TownyPermission.ActionType;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+
+import com.palmergames.bukkit.towny.object.TownyPermission.ActionType;
 
 import java.util.HashMap;
 

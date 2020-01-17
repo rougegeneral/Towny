@@ -90,7 +90,7 @@ public class WorldCoord extends Coord {
 
 		if (!(obj instanceof WorldCoord)) {
 			Coord that = (Coord) obj;
-			return this.x == that.getX() && this.z == that.getZ();
+			return this.x == that.x && this.z == that.z;
 		}
 
 		WorldCoord that = (WorldCoord) obj;
