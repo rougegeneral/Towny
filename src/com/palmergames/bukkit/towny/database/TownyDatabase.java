@@ -2,6 +2,7 @@ package com.palmergames.bukkit.towny.database;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
+import com.palmergames.bukkit.towny.object.Dirty;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -157,10 +158,10 @@ public abstract class TownyDatabase {
 	/**
 	 * Saves any object conforming to the {@link Saveable} interface.
 	 *
-	 * @param objs The {@link Saveable} object(s) to be saved.
+	 * @param obj The {@link Saveable} object to be saved.
 	 * @return A boolean indicating if the save was successful.
 	 */
-	public abstract boolean save(Saveable... objs);
+	public abstract boolean save(Saveable obj);
 
 	/**
 	 * A wrapper function that allows the use of {@link TownyDatabase#save(Saveable...)} without
@@ -183,6 +184,39 @@ public abstract class TownyDatabase {
 	 * @return A boolean indicating if the deletion was successful.
 	 */
 	public abstract boolean delete(Saveable... objs);
+
+	/**
+	 * A database function which saves a batch of saveable objects, in an
+	 * efficient manner.
+	 * 
+	 * @param objs The Saveable objects to be save.
+	 * @return A boolean indicating success or failure.
+	 */
+	public boolean save(Saveable... objs) {
+		for (Saveable obj : objs) {
+			// If the object implements a dirty conformance then use it.
+			// We don't want to save objects that haven't been changed.
+			// This is much more efficient.
+			if (obj instanceof Dirty && ((Dirty) obj).isDirty()) {
+				// Save
+				save(obj);
+
+				// Make sure to clean the object after saving.
+				((Dirty) obj).setDirty(false);
+				continue;
+			}
+
+			// Do not save an object that isn't dirty.
+			if (obj instanceof Dirty) {
+				continue;
+			}
+
+			// Otherwise just save without using dirty conformance (less efficient).
+			save(obj);
+		}
+		
+		return true;
+	}
 	
 	// Regen
 	public abstract void loadRegenQueue();

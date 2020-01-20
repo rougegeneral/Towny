@@ -3,15 +3,17 @@ package com.palmergames.bukkit.towny.object;
 import com.palmergames.bukkit.towny.TownyFormatter;
 import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
+import org.bukkit.boss.BossBar;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class TownyObject implements Saveable {
+public abstract class TownyObject implements Saveable, Dirty {
 	private final UUID identifier;
 	private String name;
+	private boolean dirty = false;
 	
 	private HashSet<CustomDataField> metadata = null;
 	
@@ -95,5 +97,15 @@ public abstract class TownyObject implements Saveable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(identifier);
+	}
+	
+	@Override
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
+
+	@Override
+	public boolean isDirty() {
+		return dirty;
 	}
 }

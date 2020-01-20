@@ -2,6 +2,7 @@ package com.palmergames.bukkit.towny.database;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.database.io.FileManager;
+import com.palmergames.bukkit.towny.object.Dirty;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -107,26 +108,24 @@ public final class TownyFlatFileDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean save(Saveable... objs) {
-		
+	public boolean save(Saveable obj) {
+
 		StringBuilder contents = new StringBuilder();
-		
-		for (Saveable obj : objs) {
-			// Convert the obj to string in format: key=value.
-			Map<String, Object> keyedValues = obj.getKeyedValues();
-			for (Map.Entry<String, Object> keyedValue : keyedValues.entrySet()) {
-				contents.append(keyedValue.getKey()).append("=").append(keyedValue.getValue()).append(System.getProperty("line.separator"));
-			}
-			// Get file properties
-			String fileName = obj.getStorableName() + ".txt";
-			String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
-			DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
-			File file = new File(filePath);
-			
-			// Save file...
-			FileManager.saveFile(file, contents.toString());
+
+		// Convert the obj to string in format: key=value.
+		Map<String, Object> keyedValues = obj.getKeyedValues();
+		for (Map.Entry<String, Object> keyedValue : keyedValues.entrySet()) {
+			contents.append(keyedValue.getKey()).append("=").append(keyedValue.getValue()).append(System.getProperty("line.separator"));
 		}
-		
+		// Get file properties
+		String fileName = obj.getStorableName() + ".txt";
+		String filePath = obj.getStorableRootFilePath() + File.separator + fileName;
+		DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
+		File file = new File(filePath);
+
+		// Save file...
+		FileManager.saveFile(file, contents.toString());
+
 		return true;
 	}
 

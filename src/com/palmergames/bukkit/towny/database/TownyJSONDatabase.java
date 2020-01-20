@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonReader;
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.database.io.FileManager;
+import com.palmergames.bukkit.towny.object.Dirty;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -166,22 +167,20 @@ public final class TownyJSONDatabase extends TownyDatabase {
 	}
 	
 	@Override
-	public boolean save(Saveable... objs) {
-		
-		for (Saveable obj : objs) {
-			// Convert the obj to json.
-			String contents = gson.toJson(obj);
-			
-			// Get file properties
-			String fileName = obj.getStorableName() + ".json";
-			String filePath = databaseFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
-			DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
-			File file = new File(filePath);
-			
-			// Save file...
-			FileManager.saveFile(file, contents);
-		}
-		
+	public boolean save(Saveable obj) {
+
+		// Convert the obj to json.
+		String contents = gson.toJson(obj);
+
+		// Get file properties
+		String fileName = obj.getStorableName() + ".json";
+		String filePath = databaseFilePath + obj.getStorableRootFilePath() + File.separator + fileName;
+		DATABASE_LOGGER.log(Level.DEBUG, "Contents = " + contents); //TODO: Improve debugging
+		File file = new File(filePath);
+
+		// Save file...
+		FileManager.saveFile(file, contents);
+
 		return true;
 	}
 
