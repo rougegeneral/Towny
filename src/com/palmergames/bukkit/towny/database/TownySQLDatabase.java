@@ -79,9 +79,9 @@ public final class TownySQLDatabase extends TownyDatabase {
 	public boolean loadTownBlock(int x, int z, TownyWorld world) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean save(Saveable... objs) {
+	public boolean save(Saveable obj) {
 		return false;
 	}
 
