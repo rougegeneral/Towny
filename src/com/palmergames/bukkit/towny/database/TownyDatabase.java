@@ -2,7 +2,7 @@ package com.palmergames.bukkit.towny.database;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
-import com.palmergames.bukkit.towny.object.Dirty;
+import com.palmergames.bukkit.towny.object.ChangeTracked;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -197,17 +197,17 @@ public abstract class TownyDatabase {
 			// If the object implements a dirty conformance then use it.
 			// We don't want to save objects that haven't been changed.
 			// This is much more efficient.
-			if (obj instanceof Dirty && ((Dirty) obj).isDirty()) {
+			if (obj instanceof ChangeTracked && ((ChangeTracked) obj).isDirty()) {
 				// Save
 				save(obj);
 
 				// Make sure to clean the object after saving.
-				((Dirty) obj).setDirty(false);
+				((ChangeTracked) obj).setDirty(false);
 				continue;
 			}
 
 			// Do not save an object that isn't dirty.
-			if (obj instanceof Dirty) {
+			if (obj instanceof ChangeTracked) {
 				continue;
 			}
 

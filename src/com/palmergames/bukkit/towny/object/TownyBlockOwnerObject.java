@@ -25,6 +25,7 @@ public abstract class TownyBlockOwnerObject extends TownyObject implements Econo
 	public void setTownblocks(List<TownBlock> townblocks) {
 
 		this.townBlocks = townblocks;
+		setDirty(true);
 	}
 
 	public List<TownBlock> getTownBlocks() {
@@ -43,6 +44,7 @@ public abstract class TownyBlockOwnerObject extends TownyObject implements Econo
 			throw new AlreadyRegisteredException();
 		else
 			townBlocks.add(townBlock);
+		setDirty(true);
 	}
 
 	public void removeTownBlock(TownBlock townBlock) throws NotRegisteredException {

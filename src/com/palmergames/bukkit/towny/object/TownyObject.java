@@ -3,14 +3,13 @@ package com.palmergames.bukkit.towny.object;
 import com.palmergames.bukkit.towny.TownyFormatter;
 import com.palmergames.bukkit.towny.database.Saveable;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
-import org.bukkit.boss.BossBar;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class TownyObject implements Saveable, Dirty {
+public abstract class TownyObject implements Saveable, ChangeTracked {
 	private final UUID identifier;
 	private String name;
 	private boolean dirty = false;

@@ -2,7 +2,6 @@ package com.palmergames.bukkit.towny.database;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.database.io.FileManager;
-import com.palmergames.bukkit.towny.object.Dirty;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -13,7 +12,6 @@ import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
