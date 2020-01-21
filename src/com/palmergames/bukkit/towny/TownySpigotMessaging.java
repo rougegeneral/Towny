@@ -37,14 +37,14 @@ public class TownySpigotMessaging {
 		if (invite.getSender() instanceof Nation) {
 			if (invite.getReceiver() instanceof Town) { // Nation invited Town
 				String firstLine = ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "Invitation" + ChatColor.DARK_GRAY + "] " + ChatColor.BLUE + String.format(TownySettings.getLangString("you_have_been_invited_to_join2"), invite.getSender().getName());
-				String secondLine = ChatColor.GREEN + "/t invite accept " + invite.getSender().getName();
-				String thirdLine = ChatColor.GREEN +  "/t invite deny " + invite.getSender().getName();
+				String secondLine = "/t invite accept " + invite.getSender().getName();
+				String thirdLine = "/t invite deny " + invite.getSender().getName();
 				sendSpigotConfirmMessage(player, firstLine, secondLine, thirdLine, "");
 			}
 			if (invite.getReceiver() instanceof Nation) { // Nation allied Nation
 				String firstLine = ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "Invitation" + ChatColor.DARK_GRAY + "] " + ChatColor.BLUE + String.format(TownySettings.getLangString("you_have_been_requested_to_ally2"), invite.getSender().getName());
-				String secondLine = ChatColor.GREEN + "/n ally accept " + invite.getSender().getName();
-				String thirdLine = ChatColor.GREEN +  "/n ally deny " + invite.getSender().getName();
+				String secondLine = "/n ally accept " + invite.getSender().getName();
+				String thirdLine = "/n ally deny " + invite.getSender().getName();
 				sendSpigotConfirmMessage(player, firstLine, secondLine, thirdLine, "");
 			}
 		}
