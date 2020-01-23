@@ -51,46 +51,45 @@ public class TownySpigotMessaging {
 	}
 
 	/**
-	 * Sends a player a clickable confirmation message.
-	 * 
-	 * @param player The player to send to.
-	 * @param firstLine First line to be sent.
-	 * @param confirmLine The confirm line.
-	 * @param cancelLine The cancel line.
-	 * @param lastLine The last line.
+	 * Sends a player click-able confirmation messages if the server is running on Spigot \(or a fork, like Paper.\)
+	 * @param player - The player (CommandSender) to send the confirmation
+	 * @param firstline - The question regarding the confirmation.
+	 * @param confirmline - Line for sending the confirmation.
+	 * @param cancelline - Line for sending the cancellation.
+	 * @param lastline - If null, announces that the message will expire. Otherwise, ignored.
 	 */
-	public static void sendSpigotConfirmMessage(CommandSender player, String firstLine, String confirmLine, String cancelLine, String lastLine) {
+	public static void sendSpigotConfirmMessage(CommandSender player, String firstline, String confirmline, String cancelline, String lastline) {
 
-		if (firstLine == null) {
-			firstLine = ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "Confirmation" + ChatColor.DARK_GRAY + "] " + ChatColor.BLUE + TownySettings.getLangString("are_you_sure_you_want_to_continue");
+		if (firstline == null) {
+			firstline = ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "Confirmation" + ChatColor.DARK_GRAY + "] " + ChatColor.BLUE + TownySettings.getLangString("are_you_sure_you_want_to_continue");
 		}
-		if (confirmLine == null) {
-			confirmLine = "/" + TownySettings.getConfirmCommand();
+		if (confirmline == null) {
+			confirmline = "/" + TownySettings.getConfirmCommand();
 		}
-		if (cancelLine == null) {
-			cancelLine = "/" + TownySettings.getCancelCommand();
+		if (cancelline == null) {
+			cancelline = "/" + TownySettings.getCancelCommand();
 		}
-		if (lastLine == null) {
-			lastLine = ChatColor.BLUE + TownySettings.getLangString("this_message_will_expire");
+		if (lastline == null) {
+			lastline = ChatColor.BLUE + TownySettings.getLangString("this_message_will_expire");
 		} else {
-			lastLine = "";
+			lastline = "";
 		}
 
 		// Create confirm button based on given params.
-		TextComponent confirmComponent = new TextComponent(ChatColor.GREEN + confirmLine.replace('/', '[').concat("]"));
+		TextComponent confirmComponent = new TextComponent(ChatColor.GREEN + confirmline.replace('/', '[').concat("]"));
 		confirmComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(TownySettings.getLangString("msg_confirmation_spigot_hover_accept")).create()));
-		confirmComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, confirmLine));
+		confirmComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, confirmline));
 
 		// Create cancel button based on given params.
-		TextComponent cancelComponent = new TextComponent(ChatColor.GREEN + cancelLine.replace('/', '[').concat("]"));
+		TextComponent cancelComponent = new TextComponent(ChatColor.GREEN + cancelline.replace('/', '[').concat("]"));
 		cancelComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(TownySettings.getLangString("msg_confirmation_spigot_hover_cancel")).create()));
-		cancelComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, cancelLine));
+		cancelComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, cancelline));
 		
 		// Use spigot to send the message.
-		player.spigot().sendMessage(new ComponentBuilder(firstLine + "\n")
-			.append(confirmComponent).append(ChatColor.WHITE + " - " + String.format(TownySettings.getLangString("msg_confirmation_spigot_click_accept"), confirmLine.replace('/', '[').replace("[",""), confirmLine) + "\n")
-			.append(cancelComponent).append(ChatColor.WHITE + " - " + String.format(TownySettings.getLangString("msg_confirmation_spigot_click_cancel"), cancelLine.replace('/', '['), cancelLine).replace("[","") + "\n")
-			.append(lastLine)
+		player.spigot().sendMessage(new ComponentBuilder(firstline + "\n")
+			.append(confirmComponent).append(ChatColor.WHITE + " - " + String.format(TownySettings.getLangString("msg_confirmation_spigot_click_accept"), confirmline.replace('/', '[').replace("[",""), confirmline) + "\n")
+			.append(cancelComponent).append(ChatColor.WHITE + " - " + String.format(TownySettings.getLangString("msg_confirmation_spigot_click_cancel"), cancelline.replace('/', '['), cancelline).replace("[","") + "\n")
+			.append(lastline)
 			.create());
 	}
 }
