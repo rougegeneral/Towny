@@ -2,6 +2,8 @@ package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -91,6 +93,7 @@ public class PlotGroup extends ObjectGroup implements TownBlockOwner {
 
 	public boolean hasResident() { return resident != null; }
 	
+	@Override
 	public void addTownBlock(TownBlock townBlock) {
 		if (townBlocks == null)
 			townBlocks = new ArrayList<>();
@@ -98,6 +101,7 @@ public class PlotGroup extends ObjectGroup implements TownBlockOwner {
 		townBlocks.add(townBlock);
 	}
 
+	@Override
 	public void removeTownBlock(TownBlock townBlock) {
 		if (townBlocks != null)
 			townBlocks.remove(townBlock);
@@ -107,7 +111,8 @@ public class PlotGroup extends ObjectGroup implements TownBlockOwner {
 	public void setTownblocks(List<TownBlock> townBlocks) {
 		this.townBlocks = townBlocks;
 	}
-
+	
+	@Override @NotNull
 	public List<TownBlock> getTownBlocks() {
 		return townBlocks;
 	}
@@ -135,6 +140,7 @@ public class PlotGroup extends ObjectGroup implements TownBlockOwner {
 		this.permissions.load(line);
 	}
 
+	@Override
 	public TownyPermission getPermissions() {
 		return permissions;
 	}

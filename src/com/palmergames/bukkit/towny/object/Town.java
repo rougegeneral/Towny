@@ -22,6 +22,7 @@ import com.palmergames.util.StringMgmt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,7 +83,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		this.townBlocks = townblocks;
 	}
 
-	@Override
+	@NotNull
+    @Override
 	public List<TownBlock> getTownBlocks() {
 		return townBlocks;
 	}

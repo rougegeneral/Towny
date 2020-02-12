@@ -24,6 +24,7 @@ import com.palmergames.util.StringMgmt;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -705,7 +706,8 @@ public class Resident extends TownyObject implements TownyInviteReceiver, Econom
 		this.townBlocks = townBlocks;
 	}
 
-	@Override
+	@NotNull
+    @Override
 	public List<TownBlock> getTownBlocks() {
 		return townBlocks;
 	}

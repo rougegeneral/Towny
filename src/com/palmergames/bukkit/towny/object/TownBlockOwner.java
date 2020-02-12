@@ -2,6 +2,7 @@ package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public interface TownBlockOwner extends Permissible {
 	 * 
 	 * @return The townblocks this object contains.
 	 */
+	@NotNull
 	List<TownBlock> getTownBlocks();
 
 	/**

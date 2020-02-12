@@ -96,7 +96,7 @@ public class TownyWorld extends TownyObject {
 	 * Gets a townblock from the given coordinate.
 	 * 
 	 * @param coord The coordinate to get the townblock from.
-	 * @return The townblock in the coordinate null if not found.
+	 * @return The townblock in the coordinate, null if not found.
 	 */
 	@Nullable
 	public TownBlock getTownBlock(Coord coord) {
