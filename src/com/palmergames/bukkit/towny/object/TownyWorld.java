@@ -9,6 +9,7 @@ import com.palmergames.bukkit.towny.object.TownyPermission.ActionType;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,13 +92,15 @@ public class TownyWorld extends TownyObject {
 		}
 	}
 
-	public TownBlock getTownBlock(Coord coord) throws NotRegisteredException {
-
-		TownBlock townBlock = townBlocks.get(coord);
-		if (townBlock == null)
-			throw new NotRegisteredException();
-		else
-			return townBlock;
+	/**
+	 * Gets a townblock from the given coordinate.
+	 * 
+	 * @param coord The coordinate to get the townblock from.
+	 * @return The townblock in the coordinate null if not found.
+	 */
+	@Nullable
+	public TownBlock getTownBlock(Coord coord) {
+		return townBlocks.get(coord);
 	}
 
 	public void newTownBlock(int x, int z) throws AlreadyRegisteredException {

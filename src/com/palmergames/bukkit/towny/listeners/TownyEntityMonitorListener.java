@@ -29,6 +29,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import java.util.Objects;
+
 //import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
@@ -484,11 +486,9 @@ public class TownyEntityMonitorListener implements Listener {
 						TownBlock jailBlock = null;
 						Integer index = 1;
 						for (Location jailSpawn : attackerTown.getAllJailSpawns()) {
-							try {
-								jailBlock = townyUniverse.getDataSource().getWorld(loc.getWorld().getName()).getTownBlock(Coord.parseCoord(jailSpawn));
-							} catch (TownyException e) {
-								e.printStackTrace();
-							} 
+
+							jailBlock = Objects.requireNonNull(townyUniverse.getDataSource().getWorld(Objects.requireNonNull(loc.getWorld()).getName())).getTownBlock(Coord.parseCoord(jailSpawn));
+							
 							if (War.isWarZone(jailBlock.getWorldCoord())) {
 								defenderResident.setJailed(defenderResident, index, attackerTown);
 								try {
@@ -537,14 +537,12 @@ public class TownyEntityMonitorListener implements Listener {
 			if (!TownyAPI.getInstance().isWarTime()) {
 				defenderResident.setJailed(defenderResident, 1, town);
 			} else {
-				TownBlock jailBlock = null;
+				TownBlock jailBlock;
 				Integer index = 1;
 				for (Location jailSpawn : town.getAllJailSpawns()) {
-					try {
-						jailBlock = townyUniverse.getDataSource().getWorld(loc.getWorld().getName()).getTownBlock(Coord.parseCoord(jailSpawn));
-					} catch (TownyException e) {
-						e.printStackTrace();
-					} 
+					
+					jailBlock = townyUniverse.getDataSource().getWorld(loc.getWorld().getName()).getTownBlock(Coord.parseCoord(jailSpawn));
+					
 					if (War.isWarZone(jailBlock.getWorldCoord())) {
 						defenderResident.setJailed(defenderResident, index, town);
 						try {
@@ -557,7 +555,6 @@ public class TownyEntityMonitorListener implements Listener {
 					TownyMessaging.sendDebugMsg("A jail spawn was skipped because the plot has fallen in war.");
 				}
 				TownyMessaging.sendPrefixedTownMessage(town, TownySettings.getWarPlayerCannotBeJailedPlotFallenMsg());
-				return;
 			}
 
 		}

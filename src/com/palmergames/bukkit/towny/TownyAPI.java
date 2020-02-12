@@ -10,6 +10,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.ResidentList;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.permissions.TownyPermissionSource;
@@ -192,14 +193,14 @@ public class TownyAPI {
      */
     @Deprecated
     public boolean isWilderness(Block block) {
-        WorldCoord worldCoord;
-        
-        try {
-            worldCoord = new WorldCoord(townyUniverse.getDataSource().getWorld(block.getWorld().getName()).getName(), Coord.parseCoord(block));
-        } catch (NotRegisteredException e) {
-            // No record so must be Wilderness
-            return true;
-        }
+    	
+    	TownyWorld world = townyUniverse.getDataSource().getWorld(block.getWorld().getName());
+    	
+    	if (world == null) {
+    		return true;
+		}
+
+		WorldCoord worldCoord = new WorldCoord(world.getName(), Coord.parseCoord(block));
         
         try {
             return worldCoord.getTownBlock().getTown() == null;
@@ -216,14 +217,13 @@ public class TownyAPI {
      * @return true if the {@link Location} is in the wilderness, false otherwise.
      */
     public boolean isWilderness(Location location) {
-        WorldCoord worldCoord;
+        TownyWorld world = townyUniverse.getDataSource().getWorld(location.getWorld().getName());
         
-        try {
-            worldCoord = new WorldCoord(townyUniverse.getDataSource().getWorld(location.getWorld().getName()).getName(), Coord.parseCoord(location));
-        } catch (NotRegisteredException e) {
-            // No record so must be Wilderness
-            return true;
-        }
+        if (world == null) {
+        	return true;
+		}
+
+		WorldCoord worldCoord = new WorldCoord(townyUniverse.getDataSource().getWorld(location.getWorld().getName()).getName(), Coord.parseCoord(location));
         
         try {
             return worldCoord.getTownBlock().getTown() == null;
@@ -240,11 +240,14 @@ public class TownyAPI {
      * @return true or false
      */
     public boolean isTownyWorld(World world) {
-    	try {
-			return townyUniverse.getDataSource().getWorld(world.getName()).isUsingTowny();
-		} catch (NotRegisteredException e) {
-			return false;
+    	
+    	TownyWorld townyWorld = townyUniverse.getDataSource().getWorld(world.getName());
+    	
+    	if (townyWorld == null) {
+    		return false;
 		}
+    	
+    	return townyWorld.isUsingTowny();
     }
     
     /**

@@ -226,16 +226,13 @@ public class TownyPlayerListener implements Listener {
 		TownyWorld World = null;
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
-		try {
-			World = townyUniverse.getDataSource().getWorld(block.getLocation().getWorld().getName());
-			if (!World.isUsingTowny())
-				return;
-
-		} catch (NotRegisteredException e) {
-			// World not registered with Towny.
-			e.printStackTrace();
+		World = townyUniverse.getDataSource().getWorld(block.getLocation().getWorld().getName());
+		
+		if (World == null) {
 			return;
 		}
+		if (!World.isUsingTowny())
+			return;
 		
 		// prevent players trampling crops
 
@@ -410,16 +407,13 @@ public class TownyPlayerListener implements Listener {
 
 			TownyWorld World = null;
 
-			try {
-				World = TownyUniverse.getInstance().getDataSource().getWorld(event.getPlayer().getWorld().getName());
-				if (!World.isUsingTowny())
-					return;
-
-			} catch (NotRegisteredException e) {
-				// World not registered with Towny.
-				e.printStackTrace();
+			World = TownyUniverse.getInstance().getDataSource().getWorld(event.getPlayer().getWorld().getName());
+			if (World == null) {
 				return;
 			}
+			
+			if (!World.isUsingTowny())
+				return;
 
 			Player player = event.getPlayer();
 			Material block = null;
@@ -535,16 +529,23 @@ public class TownyPlayerListener implements Listener {
 		}
 		
 		if (WorldCoord.cellChanged(from, to)) {
-			try {
-				TownyWorld fromWorld = townyUniverse.getDataSource().getWorld(from.getWorld().getName());
-				WorldCoord fromCoord = new WorldCoord(fromWorld.getName(), Coord.parseCoord(from));
-				TownyWorld toWorld = townyUniverse.getDataSource().getWorld(to.getWorld().getName());
-				WorldCoord toCoord = new WorldCoord(toWorld.getName(), Coord.parseCoord(to));
-				
-				onPlayerMoveChunk(player, fromCoord, toCoord, from, to, event);
-			} catch (NotRegisteredException e) {
-				TownyMessaging.sendErrorMsg(player, e.getMessage());
+
+			TownyWorld fromWorld = townyUniverse.getDataSource().getWorld(from.getWorld().getName());
+			
+			if (fromWorld == null) {
+				return;
 			}
+			
+			WorldCoord fromCoord = new WorldCoord(fromWorld.getName(), Coord.parseCoord(from));
+			TownyWorld toWorld = townyUniverse.getDataSource().getWorld(to.getWorld().getName());
+			
+			if (toWorld == null) {
+				return;
+			}
+			
+			WorldCoord toCoord = new WorldCoord(toWorld.getName(), Coord.parseCoord(to));
+			onPlayerMoveChunk(player, fromCoord, toCoord, from, to, event);
+			
 		}
 
 		// Update the cached players current location

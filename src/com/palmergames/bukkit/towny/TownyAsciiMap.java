@@ -53,13 +53,13 @@ public class TownyAsciiMap {
 			return;
 		}
 
-		TownyWorld world;
-		try {
-			world = townyUniverse.getDataSource().getWorld(player.getWorld().getName());
-		} catch (NotRegisteredException e1) {
+		TownyWorld world = townyUniverse.getDataSource().getWorld(player.getWorld().getName());
+		
+		if (world == null) {
 			TownyMessaging.sendErrorMsg(player, "You are not in a registered world.");
 			return;
 		}
+		
 		if (!world.isUsingTowny()) {
 			TownyMessaging.sendErrorMsg(player, "This world is not using towny.");
 			return;

@@ -64,6 +64,7 @@ public class TownyWorldListener implements Listener {
 		try {
 			townyUniverse.getDataSource().newWorld(worldName);
 			TownyWorld world = townyUniverse.getDataSource().getWorld(worldName);
+			
 			if (dungeonWorld)
 				world.setUsingTowny(false);
 			
@@ -78,9 +79,6 @@ public class TownyWorldListener implements Listener {
 			}
 		} catch (AlreadyRegisteredException e) {
 			// Allready loaded			
-		} catch (NotRegisteredException e) {
-			TownyMessaging.sendErrorMsg("Could not create data for " + worldName);
-			e.printStackTrace();
 		}
 	}
 	
@@ -105,11 +103,13 @@ public class TownyWorldListener implements Listener {
 		Resident resident = null;
 		TownyWorld world = null;
 		List<BlockState> removed = new ArrayList<>();
-		try {
-			world = TownyUniverse.getInstance().getDataSource().getWorld(event.getWorld().getName());
-		} catch (NotRegisteredException e) {
+
+		world = TownyUniverse.getInstance().getDataSource().getWorld(event.getWorld().getName());
+		
+		if (world == null) {
 			return;
-		} 
+		}
+		
 		// The event Location is always one spot, and although 2x2 trees technically should have 4 locations, 
 		// we can trust that the saplings were all placed by one person, or group of people, who were allowed
 		// to place them.

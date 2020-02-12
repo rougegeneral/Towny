@@ -104,63 +104,64 @@ public class TownyBlockListener implements Listener {
 		WorldCoord worldCoord;
 		
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
-		try {
-			TownyWorld world = townyUniverse.getDataSource().getWorld(block.getWorld().getName());
-			worldCoord = new WorldCoord(world.getName(), Coord.parseCoord(block));
 
-			//Get build permissions (updates if none exist)
-			boolean bBuild = PlayerCacheUtil.getCachePermission(player, block.getLocation(), block.getType(), TownyPermission.ActionType.BUILD);
+		TownyWorld world = townyUniverse.getDataSource().getWorld(block.getWorld().getName());
 
-			// Allow build if we are permitted
-			if (bBuild)
-				return;
-			
-			/*
-			 * Fetch the players cache
-			 */
-			PlayerCache cache = plugin.getCache(player);
-			TownBlockStatus status = cache.getStatus();
+		if (world == null) {
+			TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_not_configured"));
+			event.setCancelled(true);
+			return;
+		}
+		
+		worldCoord = new WorldCoord(world.getName(), Coord.parseCoord(block));
+		
+		//Get build permissions (updates if none exist)
+		boolean bBuild = PlayerCacheUtil.getCachePermission(player, block.getLocation(), block.getType(), TownyPermission.ActionType.BUILD);
 
-			/*
-			 * Flag war
-			 */
-			if (((status == TownBlockStatus.ENEMY) && TownyWarConfig.isAllowingAttacks()) && (event.getBlock().getType() == TownyWarConfig.getFlagBaseMaterial())) {
+		// Allow build if we are permitted
+		if (bBuild)
+			return;
 
-				try {
-					if (TownyWar.callAttackCellEvent(plugin, player, block, worldCoord))
-						return;
-				} catch (TownyException e) {
-					TownyMessaging.sendErrorMsg(player, e.getMessage());
-				}
+		/*
+		 * Fetch the players cache
+		 */
+		PlayerCache cache = plugin.getCache(player);
+		TownBlockStatus status = cache.getStatus();
 
-				event.setBuild(false);
-				event.setCancelled(true);
+		/*
+		 * Flag war
+		 */
+		if (((status == TownBlockStatus.ENEMY) && TownyWarConfig.isAllowingAttacks()) && (event.getBlock().getType() == TownyWarConfig.getFlagBaseMaterial())) {
 
-			// Event War piggy backing on flag war's EditableMaterialInWarZone 
-			} else if ((status == TownBlockStatus.WARZONE && TownyWarConfig.isAllowingAttacks()) // Flag War 
-					|| (TownyAPI.getInstance().isWarTime() && cache.getStatus() == TownBlockStatus.WARZONE && !WarUtil.isPlayerNeutral(player))) { // Event War
-				if (!TownyWarConfig.isEditableMaterialInWarZone(block.getType())) {
-					event.setBuild(false);
-					event.setCancelled(true);
-					TownyMessaging.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_warzone_cannot_edit_material"), "build", block.getType().toString().toLowerCase()));
-				}
-				return;
-			} else {
-				event.setBuild(false);
-				event.setCancelled(true);
+			try {
+				if (TownyWar.callAttackCellEvent(plugin, player, block, worldCoord))
+					return;
+			} catch (TownyException e) {
+				TownyMessaging.sendErrorMsg(player, e.getMessage());
 			}
 
-			/* 
-			 * display any error recorded for this plot
-			 */
-			if ((cache.hasBlockErrMsg()) && (event.isCancelled()))
-				TownyMessaging.sendErrorMsg(player, cache.getBlockErrMsg());
+			event.setBuild(false);
+			event.setCancelled(true);
 
-		} catch (NotRegisteredException e1) {
-			TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_not_configured"));
+			// Event War piggy backing on flag war's EditableMaterialInWarZone 
+		} else if ((status == TownBlockStatus.WARZONE && TownyWarConfig.isAllowingAttacks()) // Flag War 
+			|| (TownyAPI.getInstance().isWarTime() && cache.getStatus() == TownBlockStatus.WARZONE && !WarUtil.isPlayerNeutral(player))) { // Event War
+			if (!TownyWarConfig.isEditableMaterialInWarZone(block.getType())) {
+				event.setBuild(false);
+				event.setCancelled(true);
+				TownyMessaging.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_warzone_cannot_edit_material"), "build", block.getType().toString().toLowerCase()));
+			}
+			return;
+		} else {
+			event.setBuild(false);
 			event.setCancelled(true);
 		}
 
+		/*
+		 * display any error recorded for this plot
+		 */
+		if ((cache.hasBlockErrMsg()) && (event.isCancelled()))
+			TownyMessaging.sendErrorMsg(player, cache.getBlockErrMsg());
 	}
 
 	// prevent blocks igniting if within a protected town area when fire spread is set to off.
@@ -255,21 +256,15 @@ public class TownyBlockListener implements Listener {
 		TownyWorld townyWorld = null;
 		TownBlock currentTownBlock = null, destinationTownBlock = null;
 
-		try {
-			townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(loc.getWorld().getName());
-			currentTownBlock = townyWorld.getTownBlock(coord);
-		} catch (NotRegisteredException e) {
-		}
+		townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(loc.getWorld().getName());
+		currentTownBlock = townyWorld.getTownBlock(coord);
 
-		try {
-			destinationTownBlock = townyWorld.getTownBlock(coordTo);
-		} catch (NotRegisteredException e1) {
-		}
+		destinationTownBlock = townyWorld.getTownBlock(coordTo);
 
 		if (currentTownBlock != destinationTownBlock) {
 			
 			// Cancel if either is not null, but other is (wild to town).
-			if (((currentTownBlock == null) && (destinationTownBlock != null)) || ((currentTownBlock != null) && (destinationTownBlock == null))) {
+			if (currentTownBlock == null || destinationTownBlock == null) {
 				return true;
 			}
 
@@ -299,58 +294,57 @@ public class TownyBlockListener implements Listener {
 		Coord coord = Coord.parseCoord(loc);
 		TownyWorld townyWorld;
 
-		try {
-			townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(loc.getWorld().getName());
-
-			if (!townyWorld.isUsingTowny())
-				return false;
-			
-			TownBlock townBlock = TownyAPI.getInstance().getTownBlock(loc);
-			
+		townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(loc.getWorld().getName());
 		
-			// Give the wilderness a pass on portal ignition, like we do in towns when fire is disabled.
-			if ((block.getRelative(BlockFace.DOWN).getType() != Material.OBSIDIAN) && ((townBlock == null && !townyWorld.isForceFire() && !townyWorld.isFire()))) {
-				TownyMessaging.sendDebugMsg("onBlockIgnite: Canceled " + block.getType().name() + " from igniting within " + coord.toString() + ".");
-				return true;
+		if (townyWorld == null) {
+			return false;
+		}
+
+		if (!townyWorld.isUsingTowny()) {
+			return false;
+		}
+
+		TownBlock townBlock = TownyAPI.getInstance().getTownBlock(loc);
+
+		// Give the wilderness a pass on portal ignition, like we do in towns when fire is disabled.
+		if ((block.getRelative(BlockFace.DOWN).getType() != Material.OBSIDIAN) && ((townBlock == null && !townyWorld.isForceFire() && !townyWorld.isFire()))) {
+			TownyMessaging.sendDebugMsg("onBlockIgnite: Canceled " + block.getType().name() + " from igniting within " + coord.toString() + ".");
+			return true;
+		}
+
+		try {
+
+			//TownBlock townBlock = townyWorld.getTownBlock(coord);
+
+			boolean inWarringTown = false;
+			if (TownyAPI.getInstance().isWarTime()) {
+				if (townyWorld.hasTownBlock(coord))
+					if (War.isWarringTown(townBlock.getTown()))
+						inWarringTown = true;
 			}
-
-			try {
-
-				//TownBlock townBlock = townyWorld.getTownBlock(coord);
-				
-				boolean inWarringTown = false;
-				if (TownyAPI.getInstance().isWarTime()) {
-					if (townyWorld.hasTownBlock(coord))
-						if (War.isWarringTown(townBlock.getTown()))
-							inWarringTown = true;
-				}
-				/*
-				 * Event War piggybacking off of Flag War's fire control setting.
-				 */
-				if (townyWorld.isWarZone(coord) || TownyAPI.getInstance().isWarTime() && inWarringTown) {
-					if (TownyWarConfig.isAllowingFireInWarZone()) {
-						return false;
-					} else {
-						TownyMessaging.sendDebugMsg("onBlockIgnite: Canceled " + block.getType().name() + " from igniting within " + coord.toString() + ".");
-						return true;
-					}
-				}
-				if (townBlock != null)
-					// Give a pass to Obsidian for portal lighting and Netherrack for fire decoration.
-					if (((block.getRelative(BlockFace.DOWN).getType() != Material.OBSIDIAN) || (block.getRelative(BlockFace.DOWN).getType() != Material.NETHERRACK)) && ((!townBlock.getTown().isFire() && !townyWorld.isForceFire() && !townBlock.getPermissions().fire) || (TownyAPI.getInstance().isWarTime() && TownySettings.isAllowWarBlockGriefing() && !townBlock.getTown().hasNation()))) {
-						TownyMessaging.sendDebugMsg("onBlockIgnite: Canceled " + block.getType().name() + " from igniting within " + coord.toString() + ".");
-						return true;
-					}
-			} catch (TownyException x) {
-				// Not a town so check the world setting for fire
-				if (!townyWorld.isFire()) {
+			/*
+			 * Event War piggybacking off of Flag War's fire control setting.
+			 */
+			if (townyWorld.isWarZone(coord) || TownyAPI.getInstance().isWarTime() && inWarringTown) {
+				if (TownyWarConfig.isAllowingFireInWarZone()) {
+					return false;
+				} else {
 					TownyMessaging.sendDebugMsg("onBlockIgnite: Canceled " + block.getType().name() + " from igniting within " + coord.toString() + ".");
 					return true;
 				}
 			}
-
-		} catch (NotRegisteredException e) {
-			// Failed to fetch the world
+			if (townBlock != null)
+				// Give a pass to Obsidian for portal lighting and Netherrack for fire decoration.
+				if (((block.getRelative(BlockFace.DOWN).getType() != Material.OBSIDIAN) || (block.getRelative(BlockFace.DOWN).getType() != Material.NETHERRACK)) && ((!townBlock.getTown().isFire() && !townyWorld.isForceFire() && !townBlock.getPermissions().fire) || (TownyAPI.getInstance().isWarTime() && TownySettings.isAllowWarBlockGriefing() && !townBlock.getTown().hasNation()))) {
+					TownyMessaging.sendDebugMsg("onBlockIgnite: Canceled " + block.getType().name() + " from igniting within " + coord.toString() + ".");
+					return true;
+				}
+		} catch (TownyException x) {
+			// Not a town so check the world setting for fire
+			if (!townyWorld.isFire()) {
+				TownyMessaging.sendDebugMsg("onBlockIgnite: Canceled " + block.getType().name() + " from igniting within " + coord.toString() + ".");
+				return true;
+			}
 		}
 
 		return false;
@@ -366,13 +360,13 @@ public class TownyBlockListener implements Listener {
 		TownyWorld townyWorld;
 		List<Block> blocks = event.blockList();
 		int count = 0;
+
+		townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(event.getBlock().getLocation().getWorld().getName());
 		
-		try {
-			townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(event.getBlock().getLocation().getWorld().getName());
-		} catch (NotRegisteredException e) {
-			e.printStackTrace();
+		if (townyWorld == null) {
 			return;
 		}
+		
 		for (Block block : blocks) {
 			count++;
 			
@@ -417,20 +411,19 @@ public class TownyBlockListener implements Listener {
 		}
 		TownBlock townBlock = null;
 		boolean isNeutral = false;
-		try {
-			townBlock = world.getTownBlock(coord);
-			if (townBlock.hasTown())
-				if (!War.isWarZone(townBlock.getWorldCoord()))
-					isNeutral = true;
-		} catch (NotRegisteredException e1) {
-			if (TownyAPI.getInstance().isWilderness(target.getBlock().getLocation())) {
-				isNeutral = !world.isExpl();
-				if (!world.isExpl() && !TownyAPI.getInstance().isWarTime())
-					return false;				
-				if (world.isExpl() && !TownyAPI.getInstance().isWarTime())
-					return true;	
-			}
+
+		townBlock = world.getTownBlock(coord);
+
+		if (townBlock == null) {
+			isNeutral = !world.isExpl();
+			if (!world.isExpl() && !TownyAPI.getInstance().isWarTime())
+				return false;
+			return world.isExpl() && !TownyAPI.getInstance().isWarTime();
 		}
+
+		if (townBlock.hasTown())
+			if (!War.isWarZone(townBlock.getWorldCoord()))
+				isNeutral = true;
 		
 		try {			
 			if (world.isUsingTowny() && !world.isForceExpl()) {

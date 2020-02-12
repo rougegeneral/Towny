@@ -35,6 +35,7 @@ import com.palmergames.bukkit.towny.war.eventwar.WarSpoils;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.NameValidation;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import javax.naming.InvalidNameException;
 import java.io.File;
@@ -252,15 +253,9 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		return universe.getNationsMap().get(name);
 	}
 
-	@Override
-	public TownyWorld getWorld(String name) throws NotRegisteredException {
-
-		TownyWorld world = universe.getWorldMap().get(name.toLowerCase());
-
-		if (world == null)
-			throw new NotRegisteredException("World not registered!");
-
-		return world;
+	@Nullable
+	public TownyWorld getWorld(String name) {
+		return universe.getWorldMap().get(name.toLowerCase());
 	}
 
 	@Override

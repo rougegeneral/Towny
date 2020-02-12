@@ -113,13 +113,8 @@ public class TownyPerms {
 			return;
 		}
 
-		TownyWorld World;
-
-		try {
-			World = townyUniverse.getDataSource().getWorld(player.getLocation().getWorld().getName());
-		} catch (NotRegisteredException e) {
-			// World not registered with Towny.
-			e.printStackTrace();
+		TownyWorld World = townyUniverse.getDataSource().getWorld(player.getLocation().getWorld().getName());
+		if (World == null) {
 			return;
 		}
 

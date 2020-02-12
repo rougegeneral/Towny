@@ -5,6 +5,7 @@ import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.confirmations.ConfirmationType;
+import com.palmergames.bukkit.towny.db.TownyDataSource;
 import com.palmergames.bukkit.towny.event.TownAddResidentRankEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentRankEvent;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
@@ -104,10 +105,12 @@ public class Resident extends TownyObject implements TownyInviteReceiver, Econom
 		if (!escaped) {
 			TownyMessaging.sendMsg(this, TownySettings.getLangString("msg_you_have_been_freed_from_jail"));
 			TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_player_has_been_freed_from_jail_number"), this.getName(), index));
-		} else
-			try {
+		} else {
+			
+			if (TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName()).getUnclaimedZoneName() != null) {
 				TownyMessaging.sendGlobalMessage(String.format(TownySettings.getLangString("msg_player_escaped_jail_into_wilderness"), player.getName(), TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName()).getUnclaimedZoneName()));
-			} catch (NotRegisteredException ignored) {}
+			}
+		}
 	}
 
 	public void setJailedByMayor(Player player, Integer index, Town town, Integer days) {
@@ -713,19 +716,20 @@ public class Resident extends TownyObject implements TownyInviteReceiver, Econom
 	}
 
 	@Override
-	public void addTownBlock(TownBlock townBlock) throws AlreadyRegisteredException {
-		if (hasTownBlock(townBlock))
-			throw new AlreadyRegisteredException();
-		else
-			townBlocks.add(townBlock);
+	public void addTownBlock(TownBlock townBlock) {
+		if (hasTownBlock(townBlock)) {
+			return;
+		}
+			
+		townBlocks.add(townBlock);
 	}
 
 	@Override
-	public void removeTownBlock(TownBlock townBlock) throws NotRegisteredException {
+	public void removeTownBlock(TownBlock townBlock) {
 		if (!hasTownBlock(townBlock))
-			throw new NotRegisteredException();
-		else
-			townBlocks.remove(townBlock);
+			return;
+		
+		townBlocks.remove(townBlock);
 	}
 
 	@Override

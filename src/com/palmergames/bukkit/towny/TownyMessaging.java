@@ -7,6 +7,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.ResidentList;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
 import com.palmergames.bukkit.util.Colors;
@@ -321,13 +322,16 @@ public class TownyMessaging {
 	public static void sendGlobalMessage(String line) {
 		LOGGER.info(ChatTools.stripColour("[Global Message] " + line));
 		for (Player player : BukkitTools.getOnlinePlayers()) {
-			if (player != null)
-				try {
-					if (TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName()).isUsingTowny())
-						player.sendMessage(TownySettings.getLangString("default_towny_prefix") + line);
-				} catch (NotRegisteredException e) {
-					e.printStackTrace();
+			if (player != null) {
+				TownyWorld world = TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName());
+				
+				if (world == null) {
+					return;
 				}
+				
+				if (world.isUsingTowny())
+					player.sendMessage(TownySettings.getLangString("default_towny_prefix") + line);
+			}
 		}
 	}
 	
@@ -341,13 +345,14 @@ public class TownyMessaging {
 	public static void sendPlainGlobalMessage(String line) {
 		LOGGER.info(ChatTools.stripColour("[Global Message] " + line));
 		for (Player player : BukkitTools.getOnlinePlayers()) {
-			if (player != null)
-				try {
-					if (TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName()).isUsingTowny())
-						player.sendMessage(line);
-				} catch (NotRegisteredException e) {
-					e.printStackTrace();
+			if (player != null) {
+				TownyWorld world = TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName());
+				if (world == null) {
+					return;
 				}
+				if (world.isUsingTowny())
+					player.sendMessage(line);
+			}
 		}		
 	}
 

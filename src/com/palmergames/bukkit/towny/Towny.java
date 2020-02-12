@@ -504,12 +504,14 @@ public class Towny extends JavaPlugin {
 
 	public void newCache(Player player) {
 
-		try {
-			playerCache.put(player.getName().toLowerCase(), new PlayerCache(TownyUniverse.getInstance().getDataSource().getWorld(player.getWorld().getName()), player));
-		} catch (NotRegisteredException e) {
+		TownyWorld playerWorld = TownyUniverse.getInstance().getDataSource().getWorld(player.getWorld().getName());
+		
+		if (playerWorld == null) {
 			TownyMessaging.sendErrorMsg(player, "Could not create permission cache for this world (" + player.getWorld().getName() + ".");
+			return;
 		}
-
+		
+		playerCache.put(player.getName().toLowerCase(), new PlayerCache(playerWorld, player));
 	}
 
 	public void deleteCache(Player player) {

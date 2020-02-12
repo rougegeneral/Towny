@@ -250,14 +250,9 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 						continue;
 					}
 					
-					TownyWorld world;
+					TownyWorld world = getWorld(tokens[0]);
 					
-					try {
-						
-						world = getWorld(tokens[0]);
-						
-					} catch (NotRegisteredException ex) {
-						
+					if (world == null) {
 						/*
 						 * The world is not listed.
 						 * Allow the creation of new worlds here to account
@@ -265,7 +260,6 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 						 */
 						newWorld(tokens[0]);
 						world = getWorld(tokens[0]);
-						
 					}
 					
 					int x = Integer.parseInt(tokens[1]);
@@ -859,26 +853,27 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 				line = keys.get("homeBlock");
 				if (line != null) {
 					tokens = line.split(",");
-					if (tokens.length == 3)
-						try {
-							TownyWorld world = getWorld(tokens[0]);
-							
-							try {
-								int x = Integer.parseInt(tokens[1]);
-								int z = Integer.parseInt(tokens[2]);
-								TownBlock homeBlock = world.getTownBlock(x, z);
-								town.forceSetHomeBlock(homeBlock);
-							} catch (NumberFormatException e) {
-								TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " homeBlock tried to load invalid location.");
-							} catch (NotRegisteredException e) {
-								TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " homeBlock tried to load invalid TownBlock.");
-							} catch (TownyException e) {
-								TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " does not have a home block.");
-							}
-							
-						} catch (NotRegisteredException e) {
+					if (tokens.length == 3) {
+						TownyWorld world = getWorld(tokens[0]);
+						
+						if (world == null) {
 							TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " homeBlock tried to load invalid world.");
+							return false;
 						}
+						
+						try {
+							int x = Integer.parseInt(tokens[1]);
+							int z = Integer.parseInt(tokens[2]);
+							TownBlock homeBlock = world.getTownBlock(x, z);
+							town.forceSetHomeBlock(homeBlock);
+						} catch (NumberFormatException e) {
+							TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " homeBlock tried to load invalid location.");
+						} catch (NotRegisteredException e) {
+							TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " homeBlock tried to load invalid TownBlock.");
+						} catch (TownyException e) {
+							TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " does not have a home block.");
+						}
+					}
 				}
 				
 				line = keys.get("spawn");
@@ -2317,54 +2312,51 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 				TownyMessaging.sendErrorMsg("[Warning] " + town.getName() + " BlockList does not have a World or data.");
 				continue;
 			}
-			try {
-				TownyWorld world = getWorld(split[0]);
-				for (String s : split[1].split(";")) {
-					String blockTypeData = null;
-					int indexOfType = s.indexOf("[");
-					if (indexOfType != -1) { //is found
-						int endIndexOfType = s.indexOf("]");
-						if (endIndexOfType != -1) {
-							blockTypeData = s.substring(indexOfType + 1, endIndexOfType);
-						}
-						s = s.substring(endIndexOfType + 1);
+
+			TownyWorld world = getWorld(split[0]);
+			for (String s : split[1].split(";")) {
+				String blockTypeData = null;
+				int indexOfType = s.indexOf("[");
+				if (indexOfType != -1) { //is found
+					int endIndexOfType = s.indexOf("]");
+					if (endIndexOfType != -1) {
+						blockTypeData = s.substring(indexOfType + 1, endIndexOfType);
 					}
-					String[] tokens = s.split(",");
-					if (tokens.length < 2)
-						continue;
-					try {
-						int x = Integer.parseInt(tokens[0]);
-						int z = Integer.parseInt(tokens[1]);
-
-						try {
-							world.newTownBlock(x, z);
-						} catch (AlreadyRegisteredException ignored) {
-						}
-						TownBlock townblock = world.getTownBlock(x, z);
-
-						if (town != null)
-							townblock.setTown(town);
-
-						if (resident != null && townblock.hasTown())
-							townblock.setResident(resident);
-
-						if (blockTypeData != null) {
-							utilLoadTownBlockTypeData(townblock, blockTypeData);
-						}
-
-						//if present set the plot price
-						if (tokens.length >= 3) {
-							if (tokens[2].equals("true"))
-								townblock.setPlotPrice(town.getPlotPrice());
-							else
-								townblock.setPlotPrice(Double.parseDouble(tokens[2]));
-						}
-
-					} catch (NumberFormatException | NotRegisteredException ignored) {
-					}
+					s = s.substring(endIndexOfType + 1);
 				}
-			} catch (NotRegisteredException e) {
-				// Continue; No longer necessary it's last statement!
+				String[] tokens = s.split(",");
+				if (tokens.length < 2)
+					continue;
+				try {
+					int x = Integer.parseInt(tokens[0]);
+					int z = Integer.parseInt(tokens[1]);
+
+					try {
+						world.newTownBlock(x, z);
+					} catch (AlreadyRegisteredException ignored) {
+					}
+					TownBlock townblock = world.getTownBlock(x, z);
+
+					if (town != null)
+						townblock.setTown(town);
+
+					if (resident != null && townblock.hasTown())
+						townblock.setResident(resident);
+
+					if (blockTypeData != null) {
+						utilLoadTownBlockTypeData(townblock, blockTypeData);
+					}
+
+					//if present set the plot price
+					if (tokens.length >= 3) {
+						if (tokens[2].equals("true"))
+							townblock.setPlotPrice(town.getPlotPrice());
+						else
+							townblock.setPlotPrice(Double.parseDouble(tokens[2]));
+					}
+
+				} catch (NumberFormatException | NotRegisteredException ignored) {
+				}
 			}
 		}
 	}
@@ -2470,16 +2462,15 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 	@Override
 	public PlotBlockData loadPlotData(String worldName, int x, int z) {
 
-		try {
-			TownyWorld world = getWorld(worldName);
-			TownBlock townBlock = new TownBlock(x, z, world);
+		TownyWorld world = getWorld(worldName);
 
-			return loadPlotData(townBlock);
-		} catch (NotRegisteredException e) {
-			// Failed to get world
-			e.printStackTrace();
+		if (world == null) {
+			return null;
 		}
-		return null;
+
+		TownBlock townBlock = new TownBlock(x, z, world);
+
+		return loadPlotData(townBlock);
 	}
 
 	/**

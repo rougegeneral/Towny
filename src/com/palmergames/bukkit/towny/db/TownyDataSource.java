@@ -13,6 +13,7 @@ import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -298,8 +299,13 @@ public abstract class TownyDataSource {
 	abstract public Nation getNation(String name) throws NotRegisteredException;
 
 	abstract public Nation getNation(UUID uiid) throws NotRegisteredException;
-
-	abstract public TownyWorld getWorld(String name) throws NotRegisteredException;
+	
+	@Nullable
+	abstract public TownyWorld getWorld(String name);
+	
+	public boolean hasWorld(String name) {
+		return getWorld(name) != null;
+	}
 
 	abstract public List<TownyWorld> getWorlds();
 

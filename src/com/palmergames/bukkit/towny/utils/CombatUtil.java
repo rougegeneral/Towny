@@ -114,18 +114,9 @@ public class CombatUtil {
 			return false;
 
 		Coord coord = Coord.parseCoord(defendingEntity);
-		TownBlock defenderTB = null;
-		TownBlock attackerTB = null;
-
-		try {
-			attackerTB = world.getTownBlock(Coord.parseCoord(attackingEntity));
-		} catch (NotRegisteredException ex) {
-		}
-
-		try {
-			defenderTB = world.getTownBlock(coord);
-		} catch (NotRegisteredException ex) {
-		}
+		
+		TownBlock attackerTB = world.getTownBlock(Coord.parseCoord(attackingEntity));
+		TownBlock defenderTB = world.getTownBlock(coord);
 		
 		/*
 		 * We have an attacking player

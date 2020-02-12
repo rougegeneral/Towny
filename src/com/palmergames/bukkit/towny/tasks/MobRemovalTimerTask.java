@@ -54,14 +54,11 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 		for (World world : server.getWorlds()) {
 			TownyWorld townyWorld;
 
-			// Filter worlds not registered
-			try {
-				townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(world.getName());
-			} catch (NotRegisteredException | NullPointerException e) {
-				// World was not registered by Towny, so we skip all mobs in it.
+			townyWorld = TownyUniverse.getInstance().getDataSource().getWorld(world.getName());
+
+			if (townyWorld == null) {
 				continue;
-			} // Spigot has unloaded this world.
-			
+			}
 			
 			// Filter worlds not using towny.
 			if (!townyWorld.isUsingTowny())

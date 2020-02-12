@@ -87,13 +87,14 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			try {
-				if (!TownyUniverse.getInstance().getDataSource().getWorld(player.getWorld().getName()).isUsingTowny()) {
-					TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_set_use_towny_off"));
-					return false;
-				}
-			} catch (NotRegisteredException e) {
-				// World not registered				
+			TownyWorld world = TownyUniverse.getInstance().getDataSource().getWorld(player.getWorld().getName());
+			if (world == null) {
+				return false;
+			}
+			
+			if (!world.isUsingTowny()) {
+				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_set_use_towny_off"));
+				return false;
 			}
 
 			if (args == null) {

@@ -93,17 +93,19 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	@Override
-	public void addTownBlock(TownBlock townBlock) throws AlreadyRegisteredException {
+	public void addTownBlock(TownBlock townBlock) {
 
-		if (hasTownBlock(townBlock))
-			throw new AlreadyRegisteredException();
-		else {
-			townBlocks.add(townBlock);
-			if (townBlocks.size() == 1 && !hasHomeBlock())
-				try {
-					setHomeBlock(townBlock);
-				} catch (TownyException ignored) {}
+		if (hasTownBlock(townBlock)) {
+			return;
 		}
+
+		townBlocks.add(townBlock);
+		if (townBlocks.size() == 1 && !hasHomeBlock()) {
+			try {
+				setHomeBlock(townBlock);
+			} catch (TownyException ignored) {}
+		}
+			
 	}
 
 	public void setTag(String text) throws TownyException {
@@ -127,7 +129,6 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	public Resident getMayor() {
-
 		return mayor;
 	}
 
@@ -762,25 +763,27 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	@Override
-	public void removeTownBlock(TownBlock townBlock) throws NotRegisteredException {
+	public void removeTownBlock(TownBlock townBlock) {
 
-		if (!hasTownBlock(townBlock))
-			throw new NotRegisteredException();
-		else {
-			// Remove the spawn point for this outpost.
-			if (townBlock.isOutpost())
-				removeOutpostSpawn(townBlock.getCoord());
-			if (townBlock.isJail())
-				removeJailSpawn(townBlock.getCoord());
-			
-			// Clear the towns homeblock if this is it.
-			try {
-				if (getHomeBlock() == townBlock)
-					setHomeBlock(null);
-			} catch (TownyException ignored) {}
-			townBlocks.remove(townBlock);
-			TownyUniverse.getInstance().getDataSource().saveTown(this);
+		if (!hasTownBlock(townBlock)) {
+			return;
 		}
+
+		// Remove the spawn point for this outpost.
+		if (townBlock.isOutpost()) {
+			removeOutpostSpawn(townBlock.getCoord());
+		}
+		if (townBlock.isJail()) {
+			removeJailSpawn(townBlock.getCoord());
+		}
+
+		// Clear the towns homeblock if this is it.
+		try {
+			if (getHomeBlock() == townBlock)
+				setHomeBlock(null);
+		} catch (TownyException ignored) {}
+		townBlocks.remove(townBlock);
+		TownyUniverse.getInstance().getDataSource().saveTown(this);
 	}
 
 	@Override
