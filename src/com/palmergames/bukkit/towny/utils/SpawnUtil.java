@@ -18,7 +18,6 @@ import com.palmergames.bukkit.towny.TownyTimerHandler;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Economical;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.NationSpawnLevel;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -26,6 +25,7 @@ import com.palmergames.bukkit.towny.object.SpawnType;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownSpawnLevel;
+import com.palmergames.bukkit.towny.object.EconomyAccount;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask;
@@ -278,7 +278,7 @@ public class SpawnUtil {
 
 		double travelCost = 0.0;
 		String spawnPermission = null;
-		Economical payee = null;
+		EconomyAccount payee = null;
 		// Figure out costs, payee and spawnPermmission slug for money.csv log.
 		switch (spawnType) {
 		case RESIDENT:
@@ -288,7 +288,7 @@ public class SpawnUtil {
 			// spawncost to.)
 			travelCost = Math.min(townSpawnPermission.getCost(town), townSpawnPermission.getCost());
 			spawnPermission = String.format(spawnType.getTypeName() + " (%s)", townSpawnPermission);
-			payee = town;
+			payee = town.getAccount();
 			break;
 		case NATION:
 			// Taking whichever is smaller, the cost of the spawn price set by the nation,
@@ -296,7 +296,7 @@ public class SpawnUtil {
 			// spawncost to.)
 			travelCost = Math.min(nationSpawnPermission.getCost(nation), nationSpawnPermission.getCost());
 			spawnPermission = String.format(spawnType.getTypeName() + " (%s)", nationSpawnPermission);
-			payee = nation;
+			payee = nation.getAccount();
 			break;
 		}
 
@@ -305,7 +305,7 @@ public class SpawnUtil {
 			if ((!townyUniverse.getPermissionSource().has(player,
 					PermissionNodes.TOWNY_COMMAND_TOWNYADMIN_TOWN_SPAWN_FREECHARGE.getNode()))
 					&& (travelCost > 0 && TownySettings.isUsingEconomy()
-							&& (resident.getHoldingBalance() < travelCost)))
+							&& (resident.getAccount().getHoldingBalance() < travelCost)))
 				throw new TownyException(notAffordMSG);
 		} catch (EconomyException ignored) {
 		}
@@ -335,11 +335,11 @@ public class SpawnUtil {
 		if (!townyUniverse.getPermissionSource().has(player,
 				PermissionNodes.TOWNY_COMMAND_TOWNYADMIN_TOWN_SPAWN_FREECHARGE.getNode())) {
 			if (!TownySettings.isTownSpawnPaidToTown())
-				payee = Economical.SERVER_ACCOUNT;
+				payee = EconomyAccount.SERVER_ACCOUNT;
 			// Show message if we are using an Economy and are charging for spawn travel.
 			try {
 				if (travelCost > 0 && TownySettings.isUsingEconomy()
-						&& resident.payTo(travelCost, payee, spawnPermission)) {
+						&& resident.getAccount().payTo(travelCost, payee, spawnPermission)) {
 					TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_cost_spawn"),
 							TownyEconomyHandler.getFormattedBalance(travelCost)));
 				}

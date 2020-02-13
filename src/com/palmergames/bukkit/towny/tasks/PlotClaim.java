@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.PlotObjectGroup;
+import com.palmergames.bukkit.towny.object.PlotGroup;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -83,7 +83,7 @@ public class PlotClaim extends Thread {
 					
 						worldCoord.getTownBlock().getPlotObjectGroup().setResident(resident);
 						worldCoord.getTownBlock().getPlotObjectGroup().setPrice(-1);
-						TownyMessaging.sendPrefixedTownMessage(worldCoord.getTownBlock().getTown(), String.format(TownySettings.getLangString("msg_player_successfully_bought_group_x"), player.getName(), worldCoord.getTownBlock().getPlotObjectGroup().getGroupName()));
+						TownyMessaging.sendPrefixedTownMessage(worldCoord.getTownBlock().getTown(), String.format(TownySettings.getLangString("msg_player_successfully_bought_group_x"), player.getName(), worldCoord.getTownBlock().getPlotObjectGroup().getName()));
 						
 						TownyUniverse.getInstance().getDataSource().savePlotGroup(worldCoord.getTownBlock().getPlotObjectGroup());
 						
@@ -169,7 +169,7 @@ public class PlotClaim extends Thread {
 			try {
 				TownBlock townBlock = worldCoord.getTownBlock();
 				Town town = townBlock.getTown();
-				PlotObjectGroup group = townBlock.getPlotObjectGroup();
+				PlotGroup group = townBlock.getPlotObjectGroup();
 
 				if ((resident.hasTown() && (resident.getTown() != town) && (!townBlock.getType().equals(TownBlockType.EMBASSY))) || ((!resident.hasTown()) && (!townBlock.getType().equals(TownBlockType.EMBASSY))))
 					throw new TownyException(TownySettings.getLangString("msg_err_not_part_town"));
@@ -180,7 +180,7 @@ public class PlotClaim extends Thread {
 					if (group.getPrice() != -1) {
 						// Plot is for sale
 
-						if (TownySettings.isUsingEconomy() && !resident.payTo(group.getPrice(), owner, "Plot Group - Buy From Seller"))
+						if (TownySettings.isUsingEconomy() && !resident.getAccount().payTo(group.getPrice(), owner, "Plot Group - Buy From Seller"))
 							throw new TownyException(TownySettings.getLangString("msg_no_money_purchase_plot"));
 
 						int maxPlots = TownySettings.getMaxResidentPlots(resident);
@@ -207,7 +207,7 @@ public class PlotClaim extends Thread {
 						townyUniverse.getDataSource().saveTownBlock(townBlock);
 
 						if (i >= worldCoords.size() - 2) {
-							TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_player_successfully_bought_group_x"),resident.getName(), group.getGroupName()));
+							TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_player_successfully_bought_group_x"),resident.getName(), group.getName()));
 						}
 
 						// Update any caches for this WorldCoord
@@ -215,7 +215,7 @@ public class PlotClaim extends Thread {
 					} else if (player.hasPermission(PermissionNodes.TOWNY_COMMAND_PLOT_ASMAYOR.getNode())) {
 						//Plot isn't for sale but re-possessing for town.
 
-						if (TownySettings.isUsingEconomy() && !town.payTo(0.0, owner, "Plot - Buy Back"))
+						if (TownySettings.isUsingEconomy() && !town.getAccount().payTo(0.0, owner, "Plot - Buy Back"))
 							throw new TownyException(TownySettings.getLangString("msg_town_no_money_purchase_plot"));
 
 						TownyMessaging.sendPrefixedTownMessage(town, TownySettings.getBuyResidentPlotMsg(town.getName(), owner.getName(), 0.0));
@@ -244,11 +244,11 @@ public class PlotClaim extends Thread {
 
 					double bankcap = TownySettings.getTownBankCap();
 					if (bankcap > 0) {
-						if (townBlock.getPlotPrice() + town.getHoldingBalance() > bankcap)
+						if (townBlock.getPlotPrice() + town.getAccount().getHoldingBalance() > bankcap)
 							throw new TownyException(String.format(TownySettings.getLangString("msg_err_deposit_capped"), bankcap));
 					}
 
-					if (TownySettings.isUsingEconomy() && !resident.payTo(townBlock.getPlotObjectGroup().getPrice(), town, "Plot - Buy From Town"))
+					if (TownySettings.isUsingEconomy() && !resident.getAccount().payTo(townBlock.getPlotObjectGroup().getPrice(), town, "Plot - Buy From Town"))
 						throw new TownyException(TownySettings.getLangString("msg_no_money_purchase_plot"));
 
 					townBlock.setResident(resident);
@@ -282,7 +282,7 @@ public class PlotClaim extends Thread {
 				if (townBlock.getPlotPrice() != -1) {
 					// Plot is for sale
 
-					if (TownySettings.isUsingEconomy() && !resident.payTo(townBlock.getPlotPrice(), owner, "Plot - Buy From Seller"))
+					if (TownySettings.isUsingEconomy() && !resident.getAccount().payTo(townBlock.getPlotPrice(), owner, "Plot - Buy From Seller"))
 						throw new TownyException(TownySettings.getLangString("msg_no_money_purchase_plot"));
 
 					int maxPlots = TownySettings.getMaxResidentPlots(resident);
@@ -312,7 +312,7 @@ public class PlotClaim extends Thread {
 				} else if (player.hasPermission(PermissionNodes.TOWNY_COMMAND_PLOT_ASMAYOR.getNode())) {
 					//Plot isn't for sale but re-possessing for town.
 
-					if (TownySettings.isUsingEconomy() && !town.payTo(0.0, owner, "Plot - Buy Back"))
+					if (TownySettings.isUsingEconomy() && !town.getAccount().payTo(0.0, owner, "Plot - Buy Back"))
 						throw new TownyException(TownySettings.getLangString("msg_town_no_money_purchase_plot"));
 
 					TownyMessaging.sendPrefixedTownMessage(town, TownySettings.getBuyResidentPlotMsg(town.getName(), owner.getName(), 0.0));
@@ -340,11 +340,11 @@ public class PlotClaim extends Thread {
 				
 				double bankcap = TownySettings.getTownBankCap();
 				if (bankcap > 0) {
-					if (townBlock.getPlotPrice() + town.getHoldingBalance() > bankcap)
+					if (townBlock.getPlotPrice() + town.getAccount().getHoldingBalance() > bankcap)
 						throw new TownyException(String.format(TownySettings.getLangString("msg_err_deposit_capped"), bankcap));
 				}
 
-				if (TownySettings.isUsingEconomy() && !resident.payTo(townBlock.getPlotPrice(), town, "Plot - Buy From Town"))
+				if (TownySettings.isUsingEconomy() && !resident.getAccount().payTo(townBlock.getPlotPrice(), town, "Plot - Buy From Town"))
 					throw new TownyException(TownySettings.getLangString("msg_no_money_purchase_plot"));
 
 				townBlock.setPlotPrice(-1);

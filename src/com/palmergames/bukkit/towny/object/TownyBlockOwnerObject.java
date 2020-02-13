@@ -10,65 +10,50 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class TownyBlockOwnerObject extends TownyObject implements Economical {
-	protected transient List<TownBlock> townBlocks = new ArrayList<>();
-	public TownyPermission permissions = new TownyPermission();
-	
-	protected TownyBlockOwnerObject(HashMap<String, Object> loadMap) {
-		super(loadMap);
-	}
-	
-	protected TownyBlockOwnerObject(UUID identifier) {
-		super(identifier);
-	}
-	
-	public void setTownblocks(List<TownBlock> townblocks) {
+/**
+ * Allows objects to contain townblocks to be accessed/manipulated. 
+ * 
+ * @author EdgarL
+ * @author Shade
+ * @author Suneet Tipirneni (Siris)
+ */
+public interface TownBlockOwner extends Permissible {
 
-		this.townBlocks = townblocks;
-		setChanged(true);
-	}
+	/**
+	 * Sets the townblocks
+	 * 
+	 * @param townBlocks the townblocks to set.
+	 */
+	void setTownblocks(List<TownBlock> townBlocks);
 
-	public List<TownBlock> getTownBlocks() {
+	/**
+	 * Gets the townblocks.
+	 * 
+	 * @return The townblocks this object contains.
+	 */
+	List<TownBlock> getTownBlocks();
 
-		return townBlocks;
-	}
+	/**
+	 * Checks whether object has townblock or not.
+	 * 
+	 * @param townBlock The townblock to check for.
+	 * @return A boolean indicating if it was found or not.
+	 */
+	boolean hasTownBlock(TownBlock townBlock);
 
-	public boolean hasTownBlock(TownBlock townBlock) {
+	/**
+	 * Adds a townblock to the list of existing townblocks.
+	 * 
+	 * @param townBlock The townblock to add.
+	 * @throws AlreadyRegisteredException When the townblock is already in the list.
+	 */
+	void addTownBlock(TownBlock townBlock) throws AlreadyRegisteredException;
 
-		return townBlocks.contains(townBlock);
-	}
-
-	public void addTownBlock(TownBlock townBlock) throws AlreadyRegisteredException {
-
-		if (hasTownBlock(townBlock))
-			throw new AlreadyRegisteredException();
-		else
-			townBlocks.add(townBlock);
-		setChanged(true);
-	}
-
-	public void removeTownBlock(TownBlock townBlock) throws NotRegisteredException {
-
-		if (!hasTownBlock(townBlock))
-			throw new NotRegisteredException();
-		else
-			townBlocks.remove(townBlock);
-	}
-
-	public void setPermissions(String line) {
-
-		//permissions.reset(); not needed, already done in permissions.load()
-		permissions.load(line);
-	}
-
-	public TownyPermission getPermissions() {
-
-		return permissions;
-	}
-	
-	@Override
-	public abstract World getBukkitWorld();
-	
-	@Override
-	public abstract String getEconomyName();
+	/**
+	 * Removes townblock from the list of existing townblocks.
+	 * 
+	 * @param townBlock The townblock to remove.
+	 * @throws NotRegisteredException Thrown when the townblock given is not in the list.
+	 */
+	void removeTownBlock(TownBlock townBlock) throws NotRegisteredException;
 }

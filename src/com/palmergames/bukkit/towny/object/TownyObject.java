@@ -10,8 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class TownyObject implements Saveable, Changed {
-	private final UUID identifier;
+public abstract class TownyObject impelements Saveable, Nameable, Changed {
 	private String name;
 	private boolean changed = false;
 	
@@ -61,8 +60,8 @@ public abstract class TownyObject implements Saveable, Changed {
 			metadata = new HashSet<>();
 
 		String[] objects = str.split(";");
-		for (int i = 0; i < objects.length; i++) {
-			//metadata.add(CustomDataField.load(objects[i]));
+		for (String object : objects) {
+			//metadata.add(CustomDataField.load(object));
 		}
 	}
 	

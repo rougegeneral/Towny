@@ -1,19 +1,10 @@
 package com.palmergames.bukkit.towny.war.eventwar;
 
-import com.palmergames.bukkit.towny.object.Economical;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
+import com.palmergames.bukkit.towny.object.EconomyAccount;
 
-public class WarSpoils implements Economical {
-	
-	@Override
-	public World getBukkitWorld() {
-		return Bukkit.getWorlds().get(0);
-	}
-	
-	@Override
-	public String getEconomyName() {
-		//TODO: Make configurable.
-		return "towny-war-chest";
+public class WarSpoils extends EconomyAccount {
+
+	public WarSpoils() {
+		super("towny-war-chest");
 	}
 }

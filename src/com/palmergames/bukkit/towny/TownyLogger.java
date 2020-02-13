@@ -1,10 +1,10 @@
 package com.palmergames.bukkit.towny;
 
 import com.palmergames.bukkit.towny.database.TownyDatabase;
-import com.palmergames.bukkit.towny.object.Economical;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.EconomyAccount;
 import com.palmergames.util.FileMgmt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -128,27 +128,47 @@ public class TownyLogger {
 		ctx.updateLoggers();
 	}
 	
-	public static void logMoneyTransaction(Economical a, double amount, Economical b, String reason) {
-		if (reason == null) {
-			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", "Unknown Reason", getObjectName(a), amount, getObjectName(b)));
+	public void refreshDebugLogger() {
+		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		Configuration config = ctx.getConfiguration();
+		LoggerConfig townyDebugConfig = config.getLoggerConfig("com.palmergames.bukkit.towny.debug");
+		townyDebugConfig.setAdditive(TownySettings.getDebug());
+		ctx.updateLoggers();
+	}
+	
+	public void logMoneyTransaction(EconomyAccount a, double amount, EconomyAccount b, String reason) {
+		
+		String sender;
+		String receiver;
+		
+		if (a == null) {
+			sender = "None";
 		} else {
-			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", reason, getObjectName(a), amount, getObjectName(b)));
+			sender = a.getName();
+		}
+		
+		if (b == null) {
+			receiver = "None";
+		} else {
+			receiver = b.getName();
+		}
+		
+		if (reason == null) {
+			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", "Unknown Reason", sender, amount, receiver));
+		} else {
+			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", reason, sender, amount, receiver));
 		}
 	}
 	
-	private static String getObjectName(Economical obj) {
-		String type;
-		if (obj == null) {
-			type = "Server";
-		} else if (obj instanceof Resident) {
-			type = "Resident";
-		} else if (obj instanceof Town) {
-			type = "Town";
-		} else if (obj instanceof Nation) {
-			type = "Nation";
+	public void logMoneyTransaction(String a, double amount, String b, String reason) {
+		if (reason == null) {
+			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", "Unknown Reason", a, amount, b));
 		} else {
-			type = "?";
+			LOGGER_MONEY.info(String.format("%s,%s,%s,%s", reason, a, amount, b));
 		}
-		return String.format("[%s] %s", type, obj != null ? obj.getEconomyName() : "");
+	}
+
+	public static TownyLogger getInstance() {
+		return instance;
 	}
 }

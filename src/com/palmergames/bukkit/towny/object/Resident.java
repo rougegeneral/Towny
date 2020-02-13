@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Resident extends TownyBlockOwnerObject implements ResidentModes, TownyInviteReceiver {
-	private transient List<Resident> friends = new ArrayList<>();
+public class Resident extends TownyObject implements TownyInviteReceiver, EconomyHandler, TownBlockOwner {
+	private List<Resident> friends = new ArrayList<>();
 	// private List<Object[][][]> regenUndo = new ArrayList<>(); // Feature is disabled as of MC 1.13, maybe it'll come back.
 	@JsonAdapter(TownFieldSerializer.class)
 	private transient Town town = null;
@@ -53,13 +53,12 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 	private transient List<String> modes = new ArrayList<>();
 	private transient ConfirmationType confirmationType;
 	private transient List<Invite> receivedinvites = new ArrayList<>();
- 
-	private transient List<String> townRanks = new ArrayList<>();
-	private transient List<String> nationRanks = new ArrayList<>();
-	
-	public Resident(HashMap<String, Object> loadMap) {
-		super(loadMap);
-	}
+	private transient EconomyAccount account = new EconomyAccount(getName());
+
+	private List<String> townRanks = new ArrayList<>();
+	private List<String> nationRanks = new ArrayList<>();
+	private List<TownBlock> townBlocks = new ArrayList<>();
+	private TownyPermission permissions = new TownyPermission();
 
 	public Resident(UUID identifier) {
 		super(identifier);
@@ -355,8 +354,7 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 		for (Resident resident : new ArrayList<>(friends))
 			try {
 				removeFriend(resident);
-			} catch (NotRegisteredException e) {
-			}
+			} catch (NotRegisteredException ignored) {}
 	}
 
 	public void clear() throws EmptyTownException {
@@ -370,8 +368,7 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 				setTitle("");
 				setSurname("");
 				updatePerms();
-			} catch (NotRegisteredException e) {
-			}
+			} catch (NotRegisteredException ignored) {}
 	}
 
 	public void updatePerms() {
@@ -459,21 +456,18 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 //
 //		}
 //	}	
-
-	@Override
+	
 	public List<String> getModes() {
 
 		return this.modes;
 	}
-
-	@Override
+	
 	public boolean hasMode(String mode) {
 
 		return this.modes.contains(mode.toLowerCase());
 	}
-
-	@Override
-	public void toggleMode(String newModes[], boolean notify) {
+	
+	public void toggleMode(String[] newModes, boolean notify) {
 
 		/*
 		 * Toggle any modes passed to us on/off.
@@ -498,8 +492,7 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 		if (notify)
 			TownyMessaging.sendMsg(this, (TownySettings.getLangString("msg_modes_set") + StringMgmt.join(getModes(), ",")));
 	}
-
-	@Override
+	
 	public void setModes(String[] modes, boolean notify) {
 
 		this.modes.clear();
@@ -510,8 +503,7 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 
 
 	}
-
-	@Override
+	
 	public void clearModes() {
 
 		this.modes.clear();
@@ -619,21 +611,6 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 
 	}
 
-	@Override
-	public World getBukkitWorld() {
-		Player player = BukkitTools.getPlayer(getName());
-		if (player != null) {
-			return player.getWorld();
-		} else {
-			return Bukkit.getWorlds().get(0);
-		}
-	}
-	
-	@Override
-	public String getEconomyName() {
-		return getName();
-	}
-	
 	public boolean isAlliedWith(Resident otherresident) {
 		if (this.hasNation() && this.hasTown() && otherresident.hasTown() && otherresident.hasNation()) {
 			try {
@@ -691,6 +668,82 @@ public class Resident extends TownyBlockOwnerObject implements ResidentModes, To
 		super.removeMetaData(md);
 
 		TownyUniverse.getInstance().getDataSource().saveResident(this);
+	}
+
+	@Override
+	public EconomyAccount getAccount() {
+		if (account == null) {
+
+			String accountName = StringMgmt.trimMaxLength(getName(), 32);
+			World world;
+
+			Player player = BukkitTools.getPlayer(getName());
+			if (player != null) {
+				world = player.getWorld();
+			} else {
+				world = BukkitTools.getWorlds().get(0);
+			}
+
+			account = new EconomyAccount(accountName, world);
+		}
+		
+		return account;
+	}
+
+	@Override
+	public void setTownblocks(List<TownBlock> townBlocks) {
+		this.townBlocks = townBlocks;
+	}
+
+	@Override
+	public List<TownBlock> getTownBlocks() {
+		return townBlocks;
+	}
+
+	@Override
+	public boolean hasTownBlock(TownBlock townBlock) {
+		return townBlocks.contains(townBlock);
+	}
+
+	@Override
+	public void addTownBlock(TownBlock townBlock) throws AlreadyRegisteredException {
+		if (hasTownBlock(townBlock))
+			throw new AlreadyRegisteredException();
+		else
+			townBlocks.add(townBlock);
+	}
+
+	@Override
+	public void removeTownBlock(TownBlock townBlock) throws NotRegisteredException {
+		if (!hasTownBlock(townBlock))
+			throw new NotRegisteredException();
+		else
+			townBlocks.remove(townBlock);
+	}
+
+	@Override
+	public void setPermissions(String line) {
+		this.permissions.load(line);
+	}
+
+	@Override
+	public TownyPermission getPermissions() {
+		return permissions;
+	}
+
+	/**
+	 * @deprecated As of 0.97.0.0+ please use {@link EconomyAccount#getWorld()} instead.
+	 *
+	 * @return The world this resides in.
+	 */
+	@Deprecated
+	public World getBukkitWorld() {
+		Player player = BukkitTools.getPlayer(getName());
+		if (player != null) {
+			return player.getWorld();
+		} else {
+			return BukkitTools.getWorlds().get(0);
+		}
 	}
 	
 	@Override

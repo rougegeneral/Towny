@@ -17,11 +17,11 @@ import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Coord;
-import com.palmergames.bukkit.towny.object.PlotObjectGroup;
+import com.palmergames.bukkit.towny.object.PlotGroup;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.TownBlockOwner;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.object.TownyPermissionChange;
@@ -160,7 +160,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 								
 								if (block.hasPlotObjectGroup()) {
 									// This block is part of a group, special tasks need to be done.
-									PlotObjectGroup group = block.getPlotObjectGroup();
+									PlotGroup group = block.getPlotObjectGroup();
 
 									// Add the confirmation for claiming a plot group.
 									ConfirmationHandler.addConfirmation(resident, ConfirmationType.GROUP_CLAIM_ACTION, new GroupConfirmation(group, player));
@@ -195,7 +195,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 						if (maxPlots >= 0 && resident.getTownBlocks().size() + selection.size() > maxPlots)
 							throw new TownyException(String.format(TownySettings.getLangString("msg_max_plot_own"), maxPlots));
 
-						if (TownySettings.isUsingEconomy() && (!resident.canPayFromHoldings(cost)))
+						if (TownySettings.isUsingEconomy() && (!resident.getAccount().canPayFromHoldings(cost)))
 							throw new TownyException(String.format(TownySettings.getLangString("msg_no_funds_claim"), selection.size(), TownyEconomyHandler.getFormattedBalance(cost)));
 
 						// Start the claim task
@@ -245,7 +245,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 								townyUniverse.getDataSource().saveTownBlock(tb);
 							}
 							
-							player.sendMessage(String.format(TownySettings.getLangString("msg_plot_evict_group"), townBlock.getPlotObjectGroup().getGroupName()));
+							player.sendMessage(String.format(TownySettings.getLangString("msg_plot_evict_group"), townBlock.getPlotObjectGroup().getName()));
 							return true;
 						}
 
@@ -472,7 +472,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 							// Mayor/Assistant of the town.
 							
 							// Test we are allowed to work on this plot
-							TownyBlockOwnerObject owner = plotTestOwner(resident, townBlock);
+							TownBlockOwner owner = plotTestOwner(resident, townBlock);
 
 							setTownBlockPermissions(player, owner, townBlock, StringMgmt.remFirstArg(split));
 
@@ -519,7 +519,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 								Coord key = Coord.parseCoord(plugin.getCache(player).getLastLocation());
 								
 								 if (OutpostUtil.OutpostTests(town, resident, townyWorld, key, isAdmin, true)) {
-									 if (TownySettings.isUsingEconomy() && !town.pay(TownySettings.getOutpostCost(), String.format("Plot Set Outpost"))) 
+									 if (TownySettings.isUsingEconomy() && !town.getAccount().pay(TownySettings.getOutpostCost(), String.format("Plot Set Outpost"))) 
 										 throw new TownyException(TownySettings.getLangString("msg_err_cannot_afford_to_set_outpost"));
 
 									 TownyMessaging.sendMessage(player, String.format(TownySettings.getLangString("msg_plot_set_cost"), TownyEconomyHandler.getFormattedBalance(TownySettings.getOutpostCost()), TownySettings.getLangString("outpost")));
@@ -614,20 +614,20 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 	 * Returns a TownyPermissionChange object representing the change action
 	 *
 	 * @param player Player initiator
-	 * @param townyBlockOwnerObject Resident/Town with the targeted permissions change
+	 * @param townBlockOwner Resident/Town with the targeted permissions change
 	 * @param townBlock Targeted town block
 	 * @param split Permission arguments
 	 * @return a TownyPermissionChange object
 	 */
-	public static TownyPermissionChange setTownBlockPermissions(Player player, TownyBlockOwnerObject townyBlockOwnerObject, TownBlock townBlock, String[] split) {
+	public static TownyPermissionChange setTownBlockPermissions(Player player, TownBlockOwner townBlockOwner, TownBlock townBlock, String[] split) {
 		TownyPermissionChange permChange = null;
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		if (split.length == 0 || split[0].equalsIgnoreCase("?")) {
 
 			player.sendMessage(ChatTools.formatTitle("/... set perm"));
-			if (townyBlockOwnerObject instanceof Town)
+			if (townBlockOwner instanceof Town)
 				player.sendMessage(ChatTools.formatCommand("Level", "[resident/nation/ally/outsider]", "", ""));
-			if (townyBlockOwnerObject instanceof Resident)
+			if (townBlockOwner instanceof Resident)
 				player.sendMessage(ChatTools.formatCommand("Level", "[friend/town/ally/outsider]", "", ""));
 
 			player.sendMessage(ChatTools.formatCommand("Type", "[build/destroy/switch/itemuse]", "", ""));
@@ -652,7 +652,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 					perm.change(permChange);
 					townyUniverse.getDataSource().saveTownBlock(townBlock);
 
-					if (townyBlockOwnerObject instanceof Town)
+					if (townBlockOwner instanceof Town)
 						TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_set_perms_reset"), "Town owned"));
 					else
 						TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_set_perms_reset"), "your"));
@@ -758,7 +758,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				TownyMessaging.sendMsg(player, TownySettings.getLangString("msg_set_perms"));
 				TownyMessaging.sendMessage(player, (Colors.Green + " Perm: " + ((townyBlockOwnerObject instanceof Resident) ? perm.getColourString().replace("n", "t") : perm.getColourString().replace("f", "r"))));
 				TownyMessaging.sendMessage(player, (Colors.Green + " Perm: " + ((townyBlockOwnerObject instanceof Resident) ? perm.getColourString2().replace("n", "t") : perm.getColourString2().replace("f", "r"))));
-				TownyMessaging.sendMessage(player, Colors.Green + "PvP: " + ((!perm.pvp) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Explosions: " + ((perm.explosion) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Firespread: " + ((perm.fire) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Mob Spawns: " + ((perm.mobs) ? Colors.Red + "ON" : Colors.LightGreen + "OFF"));
+				TownyMessaging.sendMessage(player, Colors.Green + "PvP: " + ((perm.pvp) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Explosions: " + ((perm.explosion) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Firespread: " + ((perm.fire) ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Mob Spawns: " + ((perm.mobs) ? Colors.Red + "ON" : Colors.LightGreen + "OFF"));
 			}
 
 
@@ -878,7 +878,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			throw new TownyException(TownySettings.getLangString("msg_err_must_belong_town"));
 	}
 
-	public void setGroupForSale(Resident resident, PlotObjectGroup group, double price) throws TownyException {
+	public void setGroupForSale(Resident resident, PlotGroup group, double price) throws TownyException {
 		group.setPrice(price);
 
 		if (resident.hasTown()) {
@@ -892,9 +892,9 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				}
 
 				if (price != -1) {
-					TownyMessaging.sendPrefixedTownMessage(resident.getTown(), String.format(TownySettings.getLangString("msg_plot_group_set_for_sale"), group.getGroupName()));
+					TownyMessaging.sendPrefixedTownMessage(resident.getTown(), String.format(TownySettings.getLangString("msg_plot_group_set_for_sale"), group.getName()));
 					if (group.getTown() != resident.getTown())
-						TownyMessaging.sendMessage(resident, String.format(TownySettings.getLangString("msg_plot_group_set_for_sale"), group.getGroupName()));
+						TownyMessaging.sendMessage(resident, String.format(TownySettings.getLangString("msg_plot_group_set_for_sale"), group.getName()));
 				} else {
 					Player p = TownyAPI.getInstance().getPlayer(resident);
 					if (p == null) {
@@ -939,7 +939,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 					// Make sure we are allowed to set these permissions.
 					toggleTest(player, townBlock, StringMgmt.join(split, " "));
 					
-					if (TownySettings.getPVPCoolDownTime() > 0) {
+					if (TownySettings.getPVPCoolDownTime() > 0 && !townyUniverse.getPermissionSource().testPermission(player, PermissionNodes.TOWNY_ADMIN.getNode())) {
 						// Test to see if the pvp cooldown timer is active for the town this plot belongs to.
 						if (CooldownTimerTask.hasCooldown(townBlock.getTown().getName(), CooldownType.PVP))
 							throw new TownyException(String.format(TownySettings.getLangString("msg_err_cannot_toggle_pvp_x_seconds_remaining"), CooldownTimerTask.getCooldownRemaining(townBlock.getTown().getName(), CooldownType.PVP)));
@@ -951,7 +951,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 
 					townBlock.getPermissions().pvp = !townBlock.getPermissions().pvp;
 					// Add a cooldown timer for this plot.
-					if (TownySettings.getPVPCoolDownTime() > 0)
+					if (TownySettings.getPVPCoolDownTime() > 0 && !townyUniverse.getPermissionSource().testPermission(player, PermissionNodes.TOWNY_ADMIN.getNode()))
 						CooldownTimerTask.addCooldownTimer(townBlock.getWorldCoord().toString(), CooldownType.PVP);
 					TownyMessaging.sendMessage(player, String.format(TownySettings.getLangString("msg_changed_pvp"), "Plot", townBlock.getPermissions().pvp ? TownySettings.getLangString("enabled") : TownySettings.getLangString("disabled")));
 
@@ -1001,7 +1001,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 	 * @param plotGroup - PlotObjectGroup object.
 	 * @param split  - Current command arguments.
 	 */
-	public void plotGroupToggle(Player player, PlotObjectGroup plotGroup, String[] split) {
+	public void plotGroupToggle(Player player, PlotGroup plotGroup, String[] split) {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 
 		if (split.length == 0 || split[0].equalsIgnoreCase("?")) {
@@ -1135,7 +1135,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 	 * @return - returns owner of plot.
 	 * @throws TownyException - Exception.
 	 */
-	public TownyBlockOwnerObject plotTestOwner(Resident resident, TownBlock townBlock) throws TownyException {
+	public TownBlockOwner plotTestOwner(Resident resident, TownBlock townBlock) throws TownyException {
 
 		Player player = BukkitTools.getPlayer(resident.getName());
 		boolean isAdmin = TownyUniverse.getInstance().getPermissionSource().isTownyAdmin(player);
@@ -1235,7 +1235,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			player.sendMessage(ChatTools.formatCommand("/plot group", "notforsale | nfs", "", "Ex: /plot group notforsale"));
 
 			if (townBlock.hasPlotObjectGroup())
-				TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("status_plot_group_name_and_size"), townBlock.getPlotObjectGroup().getGroupName(), townBlock.getPlotObjectGroup().getTownBlocks().size()));
+				TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("status_plot_group_name_and_size"), townBlock.getPlotObjectGroup().getName(), townBlock.getPlotObjectGroup().getTownBlocks().size()));
 			
 			return true;
 		}
@@ -1243,10 +1243,10 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 		if (split[0].equalsIgnoreCase("add") || split[0].equalsIgnoreCase("new") || split[0].equalsIgnoreCase("create")) {
 
 			// Add the group to the new plot.
-			PlotObjectGroup newGroup = null;
+			PlotGroup newGroup = null;
 
 			if (townBlock.hasPlotObjectGroup()) {
-				TownyMessaging.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_plot_already_belongs_to_a_group"), townBlock.getPlotObjectGroup().getGroupName()));
+				TownyMessaging.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_plot_already_belongs_to_a_group"), townBlock.getPlotObjectGroup().getName()));
 				return false;
 			}
 
@@ -1255,11 +1255,11 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				UUID plotGroupID = townyUniverse.generatePlotGroupID();
 				String plotGroupName = split[1];
 
-				newGroup = new PlotObjectGroup(plotGroupID, plotGroupName, town);
+				newGroup = new PlotGroup(plotGroupID, plotGroupName, town);
 
 				// Don't add the group to the town data if it's already there.
-				if (town.hasObjectGroupName(newGroup.getGroupName())) {
-					newGroup = town.getPlotObjectGroupFromName(newGroup.getGroupName());
+				if (town.hasObjectGroupName(newGroup.getName())) {
+					newGroup = town.getPlotObjectGroupFromName(newGroup.getName());
 				}
 
 				townBlock.setPlotObjectGroup(newGroup);
@@ -1283,7 +1283,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			townyUniverse.getDataSource().saveTownBlock(townBlock);
 			townyUniverse.getDataSource().saveTown(town);
 
-			TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_plot_was_put_into_group_x"), townBlock.getX(), townBlock.getZ(), newGroup.getGroupName()));
+			TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_plot_was_put_into_group_x"), townBlock.getX(), townBlock.getZ(), newGroup.getName()));
 
 		} else if (split[0].equalsIgnoreCase("remove")) {
 
@@ -1291,7 +1291,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_plot_not_associated_with_a_group"));
 				return false;
 			}
-			String name = townBlock.getPlotObjectGroup().getGroupName();
+			String name = townBlock.getPlotObjectGroup().getName();
 			// Remove the plot from the group.
 			townBlock.getPlotObjectGroup().removeTownBlock(townBlock);
 
@@ -1311,14 +1311,14 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				return false;
 			}
 
-			String oldName = townBlock.getPlotObjectGroup().getGroupName();
+			String oldName = townBlock.getPlotObjectGroup().getName();
 			// Change name;
 			TownyUniverse.getInstance().getDataSource().renameGroup(townBlock.getPlotObjectGroup(), newName);
 			TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("msg_plot_renamed_from_x_to_y"), oldName, newName));
 
 		} else if (split[0].equalsIgnoreCase("forsale") || split[0].equalsIgnoreCase("fs")) {
 			// This means the player wants to fs the plot group they are in.
-			PlotObjectGroup group = townBlock.getPlotObjectGroup();
+			PlotGroup group = townBlock.getPlotObjectGroup();
 			
 			if (group == null) {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_plot_not_associated_with_a_group"));
@@ -1338,11 +1338,11 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			TownyUniverse.getInstance().getDataSource().savePlotGroup(group);
 			TownyUniverse.getInstance().getDataSource().savePlotGroupList();
 
-			TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_player_put_group_up_for_sale"), player.getName(), group.getGroupName(), TownyEconomyHandler.getFormattedBalance(group.getPrice())));
+			TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_player_put_group_up_for_sale"), player.getName(), group.getName(), TownyEconomyHandler.getFormattedBalance(group.getPrice())));
 			
 		} else if (split[0].equalsIgnoreCase("notforsale") || split[0].equalsIgnoreCase("nfs")) {
 			// This means the player wants to nfs the plot group they are in.
-			PlotObjectGroup group = townBlock.getPlotObjectGroup();
+			PlotGroup group = townBlock.getPlotObjectGroup();
 			
 			if (group == null) {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_plot_not_associated_with_a_group"));
@@ -1355,7 +1355,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			TownyUniverse.getInstance().getDataSource().savePlotGroup(group);
 			TownyUniverse.getInstance().getDataSource().savePlotGroupList();
 
-			TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_player_made_group_not_for_sale"), player.getName(), group.getGroupName()));
+			TownyMessaging.sendPrefixedTownMessage(town, String.format(TownySettings.getLangString("msg_player_made_group_not_for_sale"), player.getName(), group.getName()));
 		} else if (split[0].equalsIgnoreCase("toggle")) {
 			
 			if (townBlock.getPlotObjectGroup() == null) {
@@ -1378,13 +1378,13 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				TownyMessaging.sendErrorMsg(player, TownySettings.getLangString("msg_err_plot_not_associated_with_a_group"));
 				return false;
 			}
-			TownyBlockOwnerObject townyBlockOwnerObject = plotTestOwner(resident, townBlock);
+			TownBlockOwner townBlockOwner = plotTestOwner(resident, townBlock);
 			
 			if (split.length < 2) {
 				player.sendMessage(ChatTools.formatTitle("/plot group set"));
-				if (townyBlockOwnerObject instanceof Town)
+				if (townBlockOwner instanceof Town)
 					player.sendMessage(ChatTools.formatCommand("Level", "[resident/nation/ally/outsider]", "", ""));
-				if (townyBlockOwnerObject instanceof Resident)
+				if (townBlockOwner instanceof Resident)
 					player.sendMessage(ChatTools.formatCommand("Level", "[friend/town/ally/outsider]", "", ""));				
 				player.sendMessage(ChatTools.formatCommand("Type", "[build/destroy/switch/itemuse]", "", ""));
 				player.sendMessage(ChatTools.formatCommand("/plot group set", "perm", "[on/off]", "Toggle all permissions"));
@@ -1404,7 +1404,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				// Create confirmation.
 				GroupConfirmation confirmation = new GroupConfirmation(townBlock.getPlotObjectGroup(), player);
 				
-				confirmation.setTownBlockOwner(townyBlockOwnerObject);				
+				confirmation.setTownBlockOwner(townBlockOwner);				
 				confirmation.setArgs(StringMgmt.remArgs(split, 2));
 				ConfirmationHandler.addConfirmation(resident, ConfirmationType.GROUP_SET_PERM_ACTION, confirmation);
 
@@ -1440,7 +1440,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			player.sendMessage(ChatTools.formatCommand("/plot group", "notforsale | nfs", "", "Ex: /plot group notforsale"));
 
 			if (townBlock.hasPlotObjectGroup())
-				TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("status_plot_group_name_and_size"), townBlock.getPlotObjectGroup().getGroupName(), townBlock.getPlotObjectGroup().getTownBlocks().size()));
+				TownyMessaging.sendMsg(player, String.format(TownySettings.getLangString("status_plot_group_name_and_size"), townBlock.getPlotObjectGroup().getName(), townBlock.getPlotObjectGroup().getTownBlocks().size()));
 			
 			return true;
 		}

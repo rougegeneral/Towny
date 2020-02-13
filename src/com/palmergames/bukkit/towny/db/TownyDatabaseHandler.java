@@ -15,7 +15,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.exceptions.TownyRuntimeException;
 import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.PlotObjectGroup;
+import com.palmergames.bukkit.towny.object.PlotGroup;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -405,7 +405,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		return universe.getTownsMap().get(name);
 	}
 	
-	public PlotObjectGroup getPlotObjectGroup(String townName, UUID groupID) {
+	public PlotGroup getPlotObjectGroup(String townName, UUID groupID) {
 		return universe.getGroup(townName, groupID);
 	}
 
@@ -633,14 +633,11 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		return TownyUniverse.getInstance().getTownBlocks();
 	}
 	
-	public List<PlotObjectGroup> getAllPlotGroups() {
-		List<PlotObjectGroup> groups = new ArrayList<>();
-		groups.addAll(universe.getGroups());
-		
-		return groups;
+	public List<PlotGroup> getAllPlotGroups() {
+		return new ArrayList<>(universe.getGroups());
 	}
 	
-	public void newPlotGroup(PlotObjectGroup group) {
+	public void newPlotGroup(PlotGroup group) {
 		universe.getGroups().add(group);
 	}
 
@@ -1112,9 +1109,9 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public void renameGroup(PlotObjectGroup group, String newName) throws AlreadyRegisteredException {
+	public void renameGroup(PlotGroup group, String newName) throws AlreadyRegisteredException {
 		// Create new one
-		group.setGroupName(newName);
+		group.setName(newName);
 		
 		// Save
 		savePlotGroup(group);
@@ -1276,7 +1273,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 		List<Town> towns = new ArrayList<>(succumbingNation.getTowns());
 		Town lastTown = null;
 		try {
-			succumbingNation.payTo(succumbingNation.getHoldingBalance(), prevailingNation, "Nation merge bank accounts.");
+			succumbingNation.getAccount().payTo(succumbingNation.getAccount().getHoldingBalance(), prevailingNation, "Nation merge bank accounts.");
 			for (Town town : towns) {			
 				lastTown = town;
 				for (Resident res : town.getResidents()) {
