@@ -23,6 +23,7 @@ import com.palmergames.util.StringMgmt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -548,7 +549,7 @@ public class Nation extends TownyObject implements ResidentList, TownyInviter, B
 	}
 
 	@Override
-	public boolean hasResident(String name) {
+	public boolean hasResident(@NotNull String name) {
 
 		for (Town town : getTowns())
 			if (town.hasResident(name))

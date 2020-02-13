@@ -199,7 +199,7 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	@Override
-	public boolean hasResident(String name) {
+	public boolean hasResident(@NotNull String name) {
 
 		for (Resident resident : residents)
 			if (resident.getName().equalsIgnoreCase(name))

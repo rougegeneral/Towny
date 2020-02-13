@@ -391,7 +391,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
                 }
 
                 if (rs == 0) // if entry doesn't exist then try to insert
-                    return UpdateDB(tb_name, args, null);
+                    UpdateDB(tb_name, args, null);
 
             } catch (SQLException e) {
                 TownyMessaging.sendErrorMsg("SQL closing: " + e.getMessage() + " --> " + stmt.toString());
@@ -436,7 +436,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
                 Map.Entry<String, Object> me = i.next();
                 wherecode.append("`").append(me.getKey()).append("` = ");
                 if (me.getValue() instanceof String)
-                    wherecode.append("'").append(((String) me.getValue()).replace("'", "\''")).append("'");
+                    wherecode.append("'").append(((String) me.getValue()).replace("'", "''")).append("'");
                 else if (me.getValue() instanceof Boolean)
                     wherecode.append("'").append(((Boolean) me.getValue()) ? "1" : "0").append("'");
                 else
@@ -473,9 +473,15 @@ public final class TownySQLSource extends TownyDatabaseHandler {
             while (rs.next()) {
 
                 TownyWorld world = getWorld(rs.getString("world"));
+                
+                if (world == null) {
+                	TownyMessaging.sendErrorMsg("world is null!");
+                	return false;
+				}
+                
                 int x = Integer.parseInt(rs.getString("x"));
                 int z = Integer.parseInt(rs.getString("z"));
-
+				
 				world.newTownBlock(x, z);
 
             }
@@ -2389,11 +2395,13 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 						return;
 					}
 
-					if (town != null)
+					if (town != null) {
 						townblock.setTown(town);
+					}
 
-					if (resident != null && townblock.hasTown())
+					if (resident != null && townblock.hasTown()) {
 						townblock.setResident(resident);
+					}
 
 					if (blockTypeData != null) {
 						utilLoadTownBlockTypeData(townblock, blockTypeData);
