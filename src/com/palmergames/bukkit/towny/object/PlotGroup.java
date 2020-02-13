@@ -68,14 +68,6 @@ public class PlotGroup extends ObjectGroup implements TownBlockOwner {
 		return town;
 	}
 
-	/**
-	 *
-	 * @return The qualified resident mode string.
-	 */
-	public String toModeString() {
-		return "Group{" + this.toString() + "}";
-	}
-
 	public double getPrice() {
 		return price;
 	}
