@@ -676,7 +676,7 @@ public class TownyWorld extends TownyObject {
 				double dist = Math.sqrt(Math.pow(townCoord.getX() - key.getX(), 2) + Math.pow(townCoord.getZ() - key.getZ(), 2));
 				if (dist < min)
 					min = dist;
-			} catch (TownyException e) {
+			} catch (TownyException ignored) {
 			}
 
 		return (int) Math.ceil(min);
@@ -719,7 +719,7 @@ public class TownyWorld extends TownyObject {
 					if (dist < min)
 						min = dist;
 				}
-			} catch (TownyException e) {
+			} catch (TownyException ignored) {
 			}
 
 		return (int) Math.ceil(min);

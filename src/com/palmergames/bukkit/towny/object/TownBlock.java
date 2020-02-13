@@ -6,9 +6,7 @@ import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.event.PlotChangeOwnerEvent;
 import com.palmergames.bukkit.towny.event.PlotChangeTypeEvent;
-import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Bukkit;
@@ -195,6 +193,7 @@ public class TownBlock extends TownyObject {
 		this.type = type;
 
 		// Custom plot settings here
+		assert type != null;
 		switch (type) {
 		
 		case RESIDENTIAL:
@@ -294,9 +293,9 @@ public class TownBlock extends TownyObject {
 		if (cost > 0)
 			TownyMessaging.sendMessage(resident, String.format(TownySettings.getLangString("msg_plot_set_cost"), TownyEconomyHandler.getFormattedBalance(cost), type));
 
-		if (this.isJail())
+		if (this.isJail() && this.getTown() != null) {
 			this.getTown().removeJailSpawn(this.getCoord());
-		
+		}
 		setType(type);
 		
 	}
