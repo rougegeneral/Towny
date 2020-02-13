@@ -12,6 +12,8 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashSet;
 
 public class TownBlock extends TownyObject {
@@ -52,10 +54,13 @@ public class TownBlock extends TownyObject {
 		} catch (NullPointerException ignored) {}
 	}
 
-	public Town getTown() throws NotRegisteredException {
-
-		if (!hasTown())
-			throw new NotRegisteredException(String.format("The TownBlock at (%s, %d, %d) is not registered to a town.", world.getName(), x, z));
+	/**
+	 * Gets the Town this townblock belongs to.
+	 * 
+	 * @return null if it has no parent town, the Town otherwise.
+	 */
+	@Nullable
+	public Town getTown() {
 		return town;
 	}
 
@@ -85,10 +90,18 @@ public class TownBlock extends TownyObject {
 		this.resident = resident;
 	}
 
-	public Resident getResident() throws NotRegisteredException {
+	/**
+	 * Get's the resident that owns the townblock.
+	 * 
+	 * @return null if there is not resident owner, the owner otherwise.
+	 */
+	@Nullable
+	public Resident getResident() {
 
-		if (!hasResident())
-			throw new NotRegisteredException(String.format("The TownBlock at (%s, %d, %d) is not registered to a resident.", world.getName(), x, z));
+		if (!hasResident()) {
+			return null;
+		}
+			
 		return resident;
 	}
 
@@ -98,18 +111,7 @@ public class TownBlock extends TownyObject {
 	}
 
 	public boolean isOwner(TownBlockOwner owner) {
-
-		try {
-			if (owner == getTown())
-				return true;
-		} catch (NotRegisteredException ignored) {}
-
-		try {
-			if (owner == getResident())
-				return true;
-		} catch (NotRegisteredException ignored) {}
-
-		return false;
+		return owner == getTown() || owner == getResident();
 	}
 
 	public void setPlotPrice(double ForSale) {
@@ -300,12 +302,13 @@ public class TownBlock extends TownyObject {
 	}
 
 	public boolean isHomeBlock() {
-
-		try {
+		
+		Town town = getTown();
+		if (town != null) {
 			return getTown().isHomeBlock(this);
-		} catch (NotRegisteredException e) {
-			return false;
 		}
+		
+		return false;
 	}
 	
 	@Override

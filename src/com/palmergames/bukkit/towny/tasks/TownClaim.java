@@ -183,11 +183,13 @@ public class TownClaim extends Thread {
 
 		try {
 			TownBlock townBlock = worldCoord.getTownBlock();
-			try {
-				throw new AlreadyRegisteredException(String.format(TownySettings.getLangString("msg_already_claimed"), townBlock.getTown().getName()));
-			} catch (NotRegisteredException e) {
+			
+			if (townBlock.getTown() == null) {
+				TownyMessaging.sendErrorMsg("townblock has no town!");
 				throw new AlreadyRegisteredException(TownySettings.getLangString("msg_already_claimed_2"));
 			}
+			
+			throw new AlreadyRegisteredException(String.format(TownySettings.getLangString("msg_already_claimed"), townBlock.getTown().getName()));
 		} catch (NotRegisteredException e) {
 			final TownBlock townBlock = worldCoord.getTownyWorld().newTownBlock(worldCoord);
 			townBlock.setTown(town);

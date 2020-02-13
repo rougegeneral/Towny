@@ -277,22 +277,12 @@ public class CombatUtil {
 	public static boolean preventPvP(TownyWorld world, TownBlock townBlock) {
 
 		if (townBlock != null) {
-			try {
 
-				/*
-				 * Check the attackers TownBlock and it's Town for their PvP
-				 * status
-				 */
-				if (townBlock.getTown().isAdminDisabledPVP())
-					return true;
-
-				if (!townBlock.getTown().isPVP() && !townBlock.getPermissions().pvp && !world.isForcePVP())
-					return true;
-				
-				if (townBlock.isHomeBlock() && world.isForcePVP() && TownySettings.isForcePvpNotAffectingHomeblocks())
-					return true;
-
-			} catch (NotRegisteredException ex) {
+			/*
+			 * Check the attackers TownBlock and it's Town for their PvP
+			 * status
+			 */
+			if (townBlock.getTown() == null) {
 				/*
 				 * Failed to fetch the town data
 				 * so check world PvP
@@ -301,15 +291,22 @@ public class CombatUtil {
 					return true;
 			}
 
+			if (townBlock.getTown().isAdminDisabledPVP())
+				return true;
+
+			if (!townBlock.getTown().isPVP() && !townBlock.getPermissions().pvp && !world.isForcePVP())
+				return true;
+
+			return townBlock.isHomeBlock() && world.isForcePVP() && TownySettings.isForcePvpNotAffectingHomeblocks();
+
 		} else {
 
 			/*
 			 * Attacker isn't in a TownBlock so check the world PvP
 			 */
-			if (!isWorldPvP(world))
-				return true;
+			return !isWorldPvP(world);
 		}
-		return false;
+
 	}
 
 	/**

@@ -111,34 +111,37 @@ public class TownyFormatter {
 
 		List<String> out = new ArrayList<String>();
 
-		try {
-			TownyObject owner;
-			Town town = townBlock.getTown();
-			TownyWorld world = townBlock.getWorld();
+		TownyObject owner;
+		Town town = townBlock.getTown();
+		TownyWorld world = townBlock.getWorld();
 
-			if (townBlock.hasResident()) {
-				owner = townBlock.getResident();
-			} else {
-				owner = townBlock.getTown();
-			}
-			
-
-			out.add(ChatTools.formatTitle(TownyFormatter.getFormattedName(owner) + ((BukkitTools.isOnline(owner.getName())) ? TownySettings.getLangString("online") : "")));
-			if (!townBlock.getType().equals(TownBlockType.RESIDENTIAL))
-				out.add(TownySettings.getLangString("status_plot_type") + townBlock.getType().toString());							
-			out.add(TownySettings.getLangString("status_perm") + ((owner instanceof Resident) ? townBlock.getPermissions().getColourString().replace("n", "t") : townBlock.getPermissions().getColourString().replace("f", "r")));
-			out.add(TownySettings.getLangString("status_perm") + ((owner instanceof Resident) ? townBlock.getPermissions().getColourString2().replace("n", "t") : townBlock.getPermissions().getColourString2().replace("f", "r")));
-			out.add(TownySettings.getLangString("status_pvp") + ((town.isPVP() || world.isForcePVP() || townBlock.getPermissions().pvp) ? TownySettings.getLangString("status_on"): TownySettings.getLangString("status_off")) + 
-					TownySettings.getLangString("explosions") + ((world.isForceExpl() || townBlock.getPermissions().explosion) ? TownySettings.getLangString("status_on"): TownySettings.getLangString("status_off")) + 
-					TownySettings.getLangString("firespread") + ((town.isFire() || world.isForceFire() || townBlock.getPermissions().fire) ? TownySettings.getLangString("status_on"):TownySettings.getLangString("status_off")) + 
-					TownySettings.getLangString("mobspawns") + ((town.hasMobs() || world.isForceTownMobs() || townBlock.getPermissions().mobs) ?  TownySettings.getLangString("status_on"): TownySettings.getLangString("status_off")));
-
-			if (townBlock.hasPlotObjectGroup())
-				out.add(String.format(TownySettings.getLangString("status_plot_group_name_and_size"), townBlock.getPlotObjectGroup().getName(), townBlock.getPlotObjectGroup().getTownBlocks().size()));
-			out.addAll(getExtraFields(townBlock));
-		} catch (NotRegisteredException e) {
-			out.add("Error: " + e.getMessage());
+		if (townBlock.hasResident()) {
+			owner = townBlock.getResident();
+		} else {
+			owner = townBlock.getTown();
 		}
+		
+		if (owner == null || town == null || world == null) {
+			out.add("Error: Could not get town block status");
+			return out;
+		}
+
+
+		out.add(ChatTools.formatTitle(TownyFormatter.getFormattedName(owner) + ((BukkitTools.isOnline(owner.getName())) ? TownySettings.getLangString("online") : "")));
+		if (!townBlock.getType().equals(TownBlockType.RESIDENTIAL))
+			out.add(TownySettings.getLangString("status_plot_type") + townBlock.getType().toString());
+		out.add(TownySettings.getLangString("status_perm") + ((owner instanceof Resident) ? townBlock.getPermissions().getColourString().replace("n", "t") : townBlock.getPermissions().getColourString().replace("f", "r")));
+		out.add(TownySettings.getLangString("status_perm") + ((owner instanceof Resident) ? townBlock.getPermissions().getColourString2().replace("n", "t") : townBlock.getPermissions().getColourString2().replace("f", "r")));
+		out.add(TownySettings.getLangString("status_pvp") + ((town.isPVP() || world.isForcePVP() || townBlock.getPermissions().pvp) ? TownySettings.getLangString("status_on"): TownySettings.getLangString("status_off")) +
+			TownySettings.getLangString("explosions") + ((world.isForceExpl() || townBlock.getPermissions().explosion) ? TownySettings.getLangString("status_on"): TownySettings.getLangString("status_off")) +
+			TownySettings.getLangString("firespread") + ((town.isFire() || world.isForceFire() || townBlock.getPermissions().fire) ? TownySettings.getLangString("status_on"):TownySettings.getLangString("status_off")) +
+			TownySettings.getLangString("mobspawns") + ((town.hasMobs() || world.isForceTownMobs() || townBlock.getPermissions().mobs) ?  TownySettings.getLangString("status_on"): TownySettings.getLangString("status_off")));
+
+		if (townBlock.hasPlotObjectGroup())
+			out.add(String.format(TownySettings.getLangString("status_plot_group_name_and_size"), townBlock.getPlotObjectGroup().getName(), townBlock.getPlotObjectGroup().getTownBlocks().size()));
+		out.addAll(getExtraFields(townBlock));
+
+		
 		out = formatStatusScreens(out);
 		return out;
 	}

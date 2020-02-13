@@ -103,16 +103,13 @@ public class TownyWar {
 	public static List<CellUnderAttack> getCellsUnderAttack(Town town) {
 		List<CellUnderAttack> cells = new ArrayList<>();
 		for(CellUnderAttack cua : cellsUnderAttack.values()) {
-			try {
-				Town townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
-				if (townUnderAttack == null) {
-					continue;
-				}
-				if(townUnderAttack == town) {
-					cells.add(cua);
-				}
+
+			Town townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
+			if (townUnderAttack == null) {
+				continue;
 			}
-			catch(NotRegisteredException ignored) {
+			if(townUnderAttack == town) {
+				cells.add(cua);
 			}
 		}
 		return cells;
@@ -120,16 +117,13 @@ public class TownyWar {
 	
 	public static boolean isUnderAttack(Town town) {
 		for(CellUnderAttack cua : cellsUnderAttack.values()) {
-			try {
-				Town townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
-				if (townUnderAttack == null) {
-					continue;
-				}
-				if(townUnderAttack == town) {
-					return true;
-				}
+
+			Town townUnderAttack = TownyAPI.getInstance().getTownBlock(cua.getFlagBaseBlock().getLocation()).getTown();
+			if (townUnderAttack == null) {
+				continue;
 			}
-			catch(NotRegisteredException ignored) {
+			if(townUnderAttack == town) {
+				return true;
 			}
 		}
 		return false;

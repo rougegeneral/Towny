@@ -7,6 +7,7 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlotGroup;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
@@ -264,12 +266,8 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 					
 					int x = Integer.parseInt(tokens[1]);
 					int z = Integer.parseInt(tokens[2]);
-					
-					try {
-						world.newTownBlock(x, z);
-					} catch (AlreadyRegisteredException ignored) {
-					}
-					
+
+					world.newTownBlock(x, z);
 				}
 			}
 			
@@ -2192,18 +2190,13 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 		list.add("price=" + townBlock.getPlotPrice());
 
 		// town
-		try {
+		if (townBlock.getTown() != null) {
 			list.add("town=" + townBlock.getTown().getName());
-		} catch (NotRegisteredException ignored) {
 		}
 
 		// resident
 		if (townBlock.hasResident()) {
-
-			try {
-				list.add("resident=" + townBlock.getResident().getName());
-			} catch (NotRegisteredException ignored) {
-			}
+			list.add("resident=" + Objects.requireNonNull(townBlock.getResident()).getName());
 		}
 
 		// type
@@ -2314,6 +2307,11 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 			}
 
 			TownyWorld world = getWorld(split[0]);
+			
+			if (world == null) {
+				continue;
+			}
+			
 			for (String s : split[1].split(";")) {
 				String blockTypeData = null;
 				int indexOfType = s.indexOf("[");
@@ -2331,11 +2329,14 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 					int x = Integer.parseInt(tokens[0]);
 					int z = Integer.parseInt(tokens[1]);
 
-					try {
-						world.newTownBlock(x, z);
-					} catch (AlreadyRegisteredException ignored) {
-					}
+					world.newTownBlock(x, z);
+					
 					TownBlock townblock = world.getTownBlock(x, z);
+					
+					if (townblock == null) {
+						TownyMessaging.sendErrorMsg("TownBlock could not be found at " + new Coord(x,z));
+						return;
+					}
 
 					if (town != null)
 						townblock.setTown(town);
@@ -2355,7 +2356,7 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 							townblock.setPlotPrice(Double.parseDouble(tokens[2]));
 					}
 
-				} catch (NumberFormatException | NotRegisteredException ignored) {
+				} catch (NumberFormatException ignored) {
 				}
 			}
 		}

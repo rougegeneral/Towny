@@ -336,10 +336,8 @@ public class PlayerCacheUtil {
 			}
 
 			// Town Owner Override
-			try {
-				if (townBlock.getTown().isMayor(resident)) // || townBlock.getTown().hasAssistant(resident))
-					return TownBlockStatus.TOWN_OWNER;
-			} catch (NotRegisteredException e) {
+			if (townBlock.getTown() != null && townBlock.getTown().isMayor(resident)) { // || townBlock.getTown().hasAssistant(resident))
+				return TownBlockStatus.TOWN_OWNER;
 			}
 			
 			// Resident Plot rights

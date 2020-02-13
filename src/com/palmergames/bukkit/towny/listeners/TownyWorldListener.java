@@ -129,37 +129,28 @@ public class TownyWorldListener implements Listener {
 				townBlock = TownyAPI.getInstance().getTownBlock(event.getLocation());
 				// Resident Owned Location
 				if (townBlock.hasResident()) {
-					try {
-						resident = townBlock.getResident();
-					} catch (NotRegisteredException e) {
-					}
+					resident = townBlock.getResident();
 					otherTownBlock = TownyAPI.getInstance().getTownBlock(blockState.getLocation());
-					try {
-						// if residents don't match.
-						if (otherTownBlock.hasResident() && otherTownBlock.getResident() != resident) {
-							removed.add(blockState);
-							continue;
+
+					// if residents don't match.
+					if (otherTownBlock.hasResident() && otherTownBlock.getResident() != resident) {
+						removed.add(blockState);
+						continue;
 						// if plot doesn't have a resident.
-						} else if (!otherTownBlock.hasResident()) {
-							removed.add(blockState);
-							continue;
+					} else if (!otherTownBlock.hasResident()) {
+						removed.add(blockState);
+						continue;
 						// if both townblock have same owner. 
-						} else if (resident == otherTownBlock.getResident()) {
-							continue;
-						}
-					} catch (NotRegisteredException e) {
+					} else if (resident == otherTownBlock.getResident()) {
+						continue;
 					}
 				// Town Owned Location
 				} else {
-					try {
-						town = townBlock.getTown();
-					} catch (NotRegisteredException e) {
-					}
-					try {
-						otherTownBlock = TownyAPI.getInstance().getTownBlock(blockState.getLocation());
-						otherTown = otherTownBlock.getTown();
-					} catch (NotRegisteredException e) {
-					}
+
+					town = townBlock.getTown();
+
+					otherTownBlock = TownyAPI.getInstance().getTownBlock(blockState.getLocation());
+					otherTown = otherTownBlock.getTown();
 					// If towns don't match.
 					if (town != otherTown) {						
 						removed.add(blockState);
@@ -169,7 +160,7 @@ public class TownyWorldListener implements Listener {
 						removed.add(blockState);
 						continue;
 					// If towns match.
-					} else if (town == otherTown) {
+					} else {
 						continue;
 					}
 				}

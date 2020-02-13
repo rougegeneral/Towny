@@ -627,11 +627,14 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 			// Do not remove Embassy plots
 			if (townBlock.getType() != TownBlockType.EMBASSY) {
 				townBlock.setResident(null);
-				try {
-					townBlock.setPlotPrice(townBlock.getTown().getPlotPrice());
-				} catch (NotRegisteredException e) {
-					e.printStackTrace();
+				Town town = townBlock.getTown();
+				
+				if (town == null) {
+					TownyMessaging.sendErrorMsg("Could not get townblock from coordinate + " + townBlock.getCoord());
+					continue;
 				}
+				
+				townBlock.setPlotPrice(townBlock.getTown().getPlotPrice());
 				TownyUniverse.getInstance().getDataSource().saveTownBlock(townBlock);
 				
 				// Set the plot permissions to mirror the towns.

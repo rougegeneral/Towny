@@ -85,11 +85,10 @@ public class TownyAsciiMap {
 						if (resident.getTown() == townblock.getTown()) {
 							// own town
 							townyMap[y][x] = Colors.LightGreen;
-							try {
-								if (resident == townblock.getResident())
-									//own plot
-									townyMap[y][x] = Colors.Yellow;
-							} catch (NotRegisteredException e) {
+
+							if (townblock.getResident() != null && resident == townblock.getResident()) {
+								//own plot
+								townyMap[y][x] = Colors.Yellow;
 							}
 						} else if (resident.hasNation()) {
 							if (resident.getTown().getNation().hasTown(townblock.getTown()))
@@ -158,13 +157,16 @@ public class TownyAsciiMap {
 		}
 
 		// Current town block data
-		try {
-			TownBlock townblock = world.getTownBlock(pos);
-			TownyMessaging.sendMsg(player, (TownySettings.getLangString("town_sing") + ": " + (townblock.hasTown() ? townblock.getTown().getName() : TownySettings.getLangString("status_no_town")) + " : " + TownySettings.getLangString("owner_status") + ": " + (townblock.hasResident() ? townblock.getResident().getName() : TownySettings.getLangString("status_no_town"))));
-		} catch (TownyException e) {
+
+		TownBlock townblock = world.getTownBlock(pos);
+		
+		if (townblock == null || townblock.getTown() == null || resident.getName() == null) {
 			//plugin.sendErrorMsg(player, e.getError());
 			// Send a blank line instead of an error, to keep the map position tidy.
 			player.sendMessage("");
+			return;
 		}
+		
+		TownyMessaging.sendMsg(player, (TownySettings.getLangString("town_sing") + ": " + (townblock.hasTown() ? townblock.getTown().getName() : TownySettings.getLangString("status_no_town")) + " : " + TownySettings.getLangString("owner_status") + ": " + (townblock.hasResident() ? townblock.getResident().getName() : TownySettings.getLangString("status_no_town"))));
 	}
 }

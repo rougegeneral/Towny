@@ -37,9 +37,9 @@ public class TownPreUnclaimEvent extends Event implements Cancellable {
     public TownPreUnclaimEvent(TownBlock _townBlock) {
         super(!Bukkit.getServer().isPrimaryThread());
         this.townBlock = _townBlock;
-        try {
+        
+        if (townBlock.getTown() != null) {
 			this.town = townBlock.getTown();
-		} catch (NotRegisteredException e) {
 		}
     }
 

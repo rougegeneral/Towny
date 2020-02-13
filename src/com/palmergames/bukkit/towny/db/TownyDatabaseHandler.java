@@ -332,12 +332,8 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		
 		if (event.isCancelled())
 			return;
-
-		Resident resident = null;
-		try {
-			resident = townBlock.getResident();
-		} catch (NotRegisteredException ignored) {
-		}
+		
+		Resident resident = townBlock.getResident();
 		
 		TownyWorld world = townBlock.getWorld();
 		WorldCoord coord = townBlock.getWorldCoord(); 
@@ -371,18 +367,13 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		
 		if (event.isCancelled())
 			return;
-		
-		Town town = null;
 //		Resident resident = null;                   - Removed in 0.95.2.5
 //		try {
 //			resident = townBlock.getResident();
 //		} catch (NotRegisteredException ignored) {
 //		}
-		try {
-			town = townBlock.getTown();
-		} catch (NotRegisteredException ignored) {
-		}
 
+		Town town = townBlock.getTown();
 		TownyWorld world = townBlock.getWorld();
 		world.removeTownBlock(townBlock);
 

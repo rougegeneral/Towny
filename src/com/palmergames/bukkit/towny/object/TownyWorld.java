@@ -9,10 +9,12 @@ import com.palmergames.bukkit.towny.object.TownyPermission.ActionType;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 
@@ -103,15 +105,33 @@ public class TownyWorld extends TownyObject {
 		return townBlocks.get(coord);
 	}
 
-	public void newTownBlock(int x, int z) throws AlreadyRegisteredException {
-
+	/**
+	 * Creates a new townblock from given x and y coordinate.
+	 * 
+	 * @param x The x component.
+	 * @param z The y component.
+	 */
+	public void newTownBlock(int x, int z) {
 		newTownBlock(new Coord(x, z));
 	}
 
-	public TownBlock newTownBlock(Coord key) throws AlreadyRegisteredException {
-
-		if (hasTownBlock(key))
-			throw new AlreadyRegisteredException();
+	/**
+	 * Adds a townblock to the world.
+	 * 
+	 * @param key The coordinate of the TownBlock
+	 * @return The newly added TownBlock
+	 */
+	@NotNull
+	public TownBlock newTownBlock(Coord key) {
+		
+		// Perform a single fetch for efficiency.
+		TownBlock townBlock = townBlocks.get(key);
+		
+		// Return existing townblock if it exists.
+		if (townBlock != null)
+			return townBlock;
+		
+		// If not create the new one.
 		townBlocks.put(new Coord(key.getX(), key.getZ()), new TownBlock(key.getX(), key.getZ(), this));
 		return townBlocks.get(new Coord(key.getX(), key.getZ()));
 	}
@@ -121,12 +141,12 @@ public class TownyWorld extends TownyObject {
 		return townBlocks.containsKey(key);
 	}
 
-	public TownBlock getTownBlock(int x, int z) throws NotRegisteredException {
-
+	@Nullable
+	public TownBlock getTownBlock(int x, int z) {
 		return getTownBlock(new Coord(x, z));
 	}
 
-	public List<TownBlock> getTownBlocks(Town town) {
+	public List<TownBlock> getTownBlocks(@NotNull Town town) {
 
 		List<TownBlock> out = new ArrayList<>();
 		for (TownBlock townBlock : town.getTownBlocks())
@@ -136,7 +156,6 @@ public class TownyWorld extends TownyObject {
 	}
 
 	public Collection<TownBlock> getTownBlocks() {
-
 		return townBlocks.values();
 	}
 
@@ -157,18 +176,15 @@ public class TownyWorld extends TownyObject {
 
 	public void removeTownBlock(TownBlock townBlock) {
 
-		if (hasTownBlock(townBlock.getCoord())) {			
-	
-			try {
-				if (townBlock.hasResident())
-					townBlock.getResident().removeTownBlock(townBlock);
-			} catch (NotRegisteredException e) {
+		if (hasTownBlock(townBlock.getCoord())) {
+
+			if (townBlock.hasResident())
+				Objects.requireNonNull(townBlock.getResident()).removeTownBlock(townBlock);
+
+			if (townBlock.hasTown()) {
+				townBlock.getTown().removeTownBlock(townBlock);
 			}
-			try {
-				if (townBlock.hasTown())
-					townBlock.getTown().removeTownBlock(townBlock);
-			} catch (NotRegisteredException e) {
-			}
+				
 	
 			removeTownBlock(townBlock.getCoord());
 		}

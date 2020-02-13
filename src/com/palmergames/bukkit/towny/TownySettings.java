@@ -837,12 +837,16 @@ public class TownySettings {
 	public static String[] getWarTimeScoreTownBlockEliminatedMsg(Town town, int n, TownBlock fallenTownBlock) {
 
 		String townBlockName = "";
-		try {
-			Town fallenTown = ((TownBlock)fallenTownBlock).getTown();
-			townBlockName = "[" + fallenTown.getName() + "](" + ((TownBlock)fallenTownBlock).getCoord().toString() + ")";
-		} catch (NotRegisteredException e) {
-			townBlockName = "(" + ((TownBlock)fallenTownBlock).getCoord().toString() + ")";
+
+		Town fallenTown = fallenTownBlock.getTown();
+		
+		if (fallenTown == null) {
+			townBlockName = "(" + fallenTownBlock.getCoord().toString() + ")";
+			return parseString(String.format(getLangString("MSG_WAR_SCORE_TOWNBLOCK_ELIM"), town.getName(), n, townBlockName));
 		}
+		
+		townBlockName = "[" + fallenTown.getName() + "](" + ((TownBlock)fallenTownBlock).getCoord().toString() + ")";
+		
 		return parseString(String.format(getLangString("MSG_WAR_SCORE_TOWNBLOCK_ELIM"), town.getName(), n, townBlockName));
 	}
 	

@@ -14,6 +14,7 @@ import com.palmergames.bukkit.towny.db.TownyFlatFileSource.elements;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.PlotGroup;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -475,10 +476,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
                 int x = Integer.parseInt(rs.getString("x"));
                 int z = Integer.parseInt(rs.getString("z"));
 
-                try {
-                    world.newTownBlock(x, z);
-                } catch (AlreadyRegisteredException ignored) {
-                }
+				world.newTownBlock(x, z);
 
             }
 
@@ -2381,12 +2379,15 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 				try {
 					int x = Integer.parseInt(tokens[0]);
 					int z = Integer.parseInt(tokens[1]);
-
-					try {
-						world.newTownBlock(x, z);
-					} catch (AlreadyRegisteredException ignored) {
-					}
+					
+					world.newTownBlock(x, z);
+					
 					TownBlock townblock = world.getTownBlock(x, z);
+					
+					if (townblock == null) {
+						TownyMessaging.sendErrorMsg("Could not find townblock at " + new Coord(x,z));
+						return;
+					}
 
 					if (town != null)
 						townblock.setTown(town);
@@ -2406,7 +2407,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 							townblock.setPlotPrice(Double.parseDouble(tokens[2]));
 					}
 
-				} catch (NumberFormatException | NotRegisteredException ignored) {
+				} catch (NumberFormatException ignored) {
 				}
 			}
         }
