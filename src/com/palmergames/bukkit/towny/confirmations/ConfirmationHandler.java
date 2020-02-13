@@ -13,7 +13,7 @@ import com.palmergames.bukkit.towny.object.PlotGroup;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.TownBlockOwner;
 import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.object.TownyPermissionChange;
 import com.palmergames.bukkit.towny.object.WorldCoord;
@@ -322,7 +322,7 @@ public class ConfirmationHandler {
 				
 				// Test the waters
 				TownBlock tb = confirmation.getGroup().getTownBlocks().get(0);
-				TownyBlockOwnerObject townyBlockOwnerObject = confirmation.getTownBlockOwner();				
+				TownBlockOwner townyBlockOwnerObject = confirmation.getTownBlockOwner();				
 				
 				// setTownBlockPermissions returns a towny permission change object
 				TownyPermissionChange permChange = PlotCommand.setTownBlockPermissions(confirmation.getPlayer(), townyBlockOwnerObject, tb, confirmation.getArgs());

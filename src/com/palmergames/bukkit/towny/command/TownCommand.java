@@ -33,7 +33,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.SpawnType;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownyBlockOwnerObject;
+import com.palmergames.bukkit.towny.object.TownBlockOwner;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.object.TownyPermissionChange;
@@ -2811,12 +2811,12 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 	}
 
 	// wrapper function for non friend setting of perms
-	public static void setTownBlockOwnerPermissions(Player player, TownyBlockOwnerObject townyBlockOwnerObject, String[] split) {
+	public static void setTownBlockOwnerPermissions(Player player, TownBlockOwner townyBlockOwnerObject, String[] split) {
 
 		setTownBlockPermissions(player, townyBlockOwnerObject, townyBlockOwnerObject.getPermissions(), split, false);
 	}
 
-	public static void setTownBlockPermissions(Player player, TownyBlockOwnerObject townyBlockOwnerObject, TownyPermission perm, String[] split, boolean friend) {
+	public static void setTownBlockPermissions(Player player, TownBlockOwner townyBlockOwnerObject, TownyPermission perm, String[] split, boolean friend) {
 		TownyUniverse townyUniverse = TownyUniverse.getInstance();
 		if (split.length == 0 || split[0].equalsIgnoreCase("?")) {
 
@@ -3138,7 +3138,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		}
 	}
 
-	public static boolean isEdgeBlock(TownyBlockOwnerObject owner, List<WorldCoord> worldCoords) {
+	public static boolean isEdgeBlock(TownBlockOwner owner, List<WorldCoord> worldCoords) {
 
 		// TODO: Better algorithm that doesn't duplicates checks.
 
@@ -3148,7 +3148,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		return false;
 	}
 
-	public static boolean isEdgeBlock(TownyBlockOwnerObject owner, WorldCoord worldCoord) {
+	public static boolean isEdgeBlock(TownBlockOwner owner, WorldCoord worldCoord) {
 
 		int[][] offset = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 		for (int i = 0; i < 4; i++)
@@ -3164,7 +3164,7 @@ public class TownCommand extends BaseCommand implements CommandExecutor {
 		return false;
 	}
 
-	public static void checkIfSelectionIsValid(TownyBlockOwnerObject owner, List<WorldCoord> selection, boolean attachedToEdge, double blockCost, boolean force) throws TownyException {
+	public static void checkIfSelectionIsValid(TownBlockOwner owner, List<WorldCoord> selection, boolean attachedToEdge, double blockCost, boolean force) throws TownyException {
 
 		if (force)
 			return;

@@ -25,8 +25,9 @@ import java.nio.charset.StandardCharsets;
  */
 public class TownyLogger {
 	private static final Logger LOGGER_MONEY = LogManager.getLogger("com.palmergames.bukkit.towny.money");
-	
+	private static TownyLogger instance = new TownyLogger();
 	public static void initialize() {
+		
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		Configuration config = ctx.getConfiguration();
 		// Get log location.
@@ -121,14 +122,6 @@ public class TownyLogger {
 	}
 	
 	public static void refreshDebugLogger() {
-		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-		Configuration config = ctx.getConfiguration();
-		LoggerConfig townyDebugConfig = config.getLoggerConfig("com.palmergames.bukkit.towny.debug");
-		townyDebugConfig.setAdditive(TownySettings.getDebug());
-		ctx.updateLoggers();
-	}
-	
-	public void refreshDebugLogger() {
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		Configuration config = ctx.getConfiguration();
 		LoggerConfig townyDebugConfig = config.getLoggerConfig("com.palmergames.bukkit.towny.debug");

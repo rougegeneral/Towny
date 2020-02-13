@@ -192,7 +192,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public boolean savePlotGroup(PlotObjectGroup group) {
+	public boolean savePlotGroup(PlotGroup group) {
 		return false;
 	}
 
@@ -274,7 +274,7 @@ public final class TownyDatabaseHandler extends TownyDataSource {
 	public void deleteFile(String file) { }
 
 	@Override
-	public void deletePlotGroup(PlotObjectGroup group) {
+	public void deletePlotGroup(PlotGroup group) {
 
 	}
 

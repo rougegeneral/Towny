@@ -1376,9 +1376,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 			World world;
 
 			if (hasWorld()) {
-				world = BukkitTools.getWorld(getWorld().getName());
+				world = Bukkit.getWorld(getWorld().getName());
 			} else {
-				world = BukkitTools.getWorlds().get(0);
+				world = Bukkit.getWorlds().get(0);
 			}
 			
 			account = new EconomyAccount(accountName, world);
@@ -1395,9 +1395,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	@Deprecated
 	public World getBukkitWorld() {
 		if (hasWorld()) {
-			return BukkitTools.getWorld(getWorld().getName());
+			return Bukkit.getWorld(getWorld().getName());
 		} else {
-			return BukkitTools.getWorlds().get(0);
+			return Bukkit.getWorlds().get(0);
 		}
 	}
 

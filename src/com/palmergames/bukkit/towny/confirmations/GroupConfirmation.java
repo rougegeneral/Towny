@@ -35,7 +35,7 @@ public class GroupConfirmation {
 		this.args = args;
 	}
 	
-	public TownyBlockOwnerObject getTownBlockOwner() {
+	public TownBlockOwner getTownBlockOwner() {
 		return owner;
 	}
 

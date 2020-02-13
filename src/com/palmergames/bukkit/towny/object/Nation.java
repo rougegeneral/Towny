@@ -688,9 +688,9 @@ public class Nation extends TownyObject implements ResidentList, TownyInviter, B
 			World world;
 
 			if (hasCapital() && getCapital().hasWorld()) {
-				world = BukkitTools.getWorld(getCapital().getWorld().getName());
+				world = Bukkit.getWorld(getCapital().getWorld().getName());
 			} else {
-				world = BukkitTools.getWorlds().get(0);
+				world = Bukkit.getWorlds().get(0);
 			}
 
 			account = new EconomyAccount(accountName, world);
@@ -708,9 +708,9 @@ public class Nation extends TownyObject implements ResidentList, TownyInviter, B
 	@Deprecated
 	public World getBukkitWorld() {
 		if (hasCapital() && getCapital().hasWorld()) {
-			return BukkitTools.getWorld(getCapital().getWorld().getName());
+			return Bukkit.getWorld(getCapital().getWorld().getName());
 		} else {
-			return BukkitTools.getWorlds().get(0);
+			return Bukkit.getWorlds().get(0);
 		}
 	}
 

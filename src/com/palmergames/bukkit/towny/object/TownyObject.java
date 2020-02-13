@@ -10,9 +10,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class TownyObject impelements Saveable, Nameable, Changed {
+public abstract class TownyObject implements Saveable, Nameable, Changed {
 	private String name;
 	private boolean changed = false;
+	private UUID identifier;
 	
 	private HashSet<CustomDataField> metadata = null;
 	

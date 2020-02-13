@@ -8,6 +8,8 @@ import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.util.BukkitTools;
 import org.bukkit.World;
 
+import java.util.Map;
+
 /**
  * Economy object which provides an interface with the Economy Handler.
  *
@@ -15,21 +17,27 @@ import org.bukkit.World;
  * @author Shade
  * @author Suneet Tipirneni (Siris)
  */
-public class EconomyAccount extends TownyObject {
+public class EconomyAccount implements Nameable {
 	public static final TownyServerAccount SERVER_ACCOUNT = new TownyServerAccount();
 	private World world;
+	private String name;
 	
 	protected EconomyAccount(String name, World world) {
-		super(name);
+		this.name = name;
 		this.world = world;
 	}
 	
 	protected EconomyAccount(String name) {
-		super(name);
+		this.name = name;
 	}
 
 	public World getWorld() {
 		return world;
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 
 	private static final class TownyServerAccount extends EconomyAccount {
