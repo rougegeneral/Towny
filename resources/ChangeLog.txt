@@ -4159,3 +4159,14 @@ v0.92.0.11:
     - This will make it possible for players to read books on lecterns without having switch perms.
     - Players will still be unable to take the book (unless they have destroy permissions in the plot.)
   - QOL interface changes/redundancy removal, courtesy of Siris with PR #3677.
+  - Readd economy lookups for town and nation banks, deprecated.
+  - Readd pay() and collect() to Towns and Nations, deprecated, courtesy of Siris with PR #3697.
+0.95.2.16:
+  - New Language: Taiwanese courtesy of shou692199 with PR #3689.
+    - set language: zh-TW.yml in config to use.
+  - Fix for potentially causing too many file open exceptions on servers with large databases and small Open File Limits.
+  - New Feature: smart tab-completion of most Towny commands, courtesy of Siris with PR #3700.
+    - Closes #3314.
+  - Removed unneeded permission check for /n spawn.
+    - towny.command.nation.spawn node is no longer tested for.
+    - towny.nation.spawn.* nodes still remain in use. 
