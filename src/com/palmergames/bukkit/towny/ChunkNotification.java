@@ -89,7 +89,7 @@ public class ChunkNotification {
 			if (fromTown == null || fromResident == null) {
 				fromWild = true;
 			}
-		} catch (NotRegisteredException e) {
+		} catch (NotRegisteredException | NullPointerException e) {
 			fromWild = true;
 		}
 
@@ -107,7 +107,7 @@ public class ChunkNotification {
 			if (toPlotGroupBlock)
 				toForSale = toTownBlock.getPlotObjectGroup().getPrice() != -1;
 			
-		} catch (NotRegisteredException e) {
+		} catch (NotRegisteredException | NullPointerException e) {
 			toWild = true;
 		}
 		

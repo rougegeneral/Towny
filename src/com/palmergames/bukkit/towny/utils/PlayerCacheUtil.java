@@ -257,7 +257,7 @@ public class PlayerCacheUtil {
 				townBlock.setLocked(false);
 			}
 
-		} catch (NotRegisteredException e) {
+		} catch (NotRegisteredException | NullPointerException e) {
 			// Has to be wilderness because townblock = null;
 
 			// When nation zones are enabled we do extra tests to determine if this is near to a nation.
@@ -430,7 +430,7 @@ public class PlayerCacheUtil {
 		try {
 			townBlock = pos.getTownBlock();
 			targetTown = townBlock.getTown();
-		} catch (NotRegisteredException e) {
+		} catch (NotRegisteredException | NullPointerException e) {
 
 			try {
 				// Wilderness Permissions

@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -127,6 +128,7 @@ public class WorldCoord extends Coord {
 	 * @return the relevant TownBlock instance.
 	 * @throws NotRegisteredException - If there is no TownBlock @ WorldCoord, then this exception.
 	 */
+	@Nullable
 	public TownBlock getTownBlock() throws NotRegisteredException {
 		return getTownyWorld().getTownBlock(getCoord());
 	}

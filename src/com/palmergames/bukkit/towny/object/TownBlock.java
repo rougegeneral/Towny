@@ -10,6 +10,8 @@ import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -61,10 +63,10 @@ public class TownBlock extends TownyObject {
 	public Town getTown() {
 		return town;
 	}
-
+	
+	@Contract
 	public boolean hasTown() {
-
-		return town != null;
+		return getTown() != null;
 	}
 
 	public void setResident(Resident resident) {

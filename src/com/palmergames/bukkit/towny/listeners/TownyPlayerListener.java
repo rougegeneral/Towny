@@ -66,6 +66,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Handle events for all Player related events
@@ -835,11 +836,15 @@ public class TownyPlayerListener implements Listener {
 			// Required so we don't fire events on NPCs from plugins like citizens.
 			Resident resident = TownyUniverse.getInstance().getDataSource().getResident(player.getName());
 			try {
-				to.getTownBlock();
-				if (to.getTownBlock().hasTown()) { 
+				if (to.getTownBlock() == null || from.getTownBlock() == null) {
+					return;
+				}
+				
+				if (to.getTownBlock().hasTown() && from.getTownBlock().hasTown()) {
+					
 					try {
 						Town fromTown = from.getTownBlock().getTown();
-						if (!to.getTownBlock().getTown().equals(fromTown)){
+						if (!Objects.equals(to.getTownBlock().getTown(), fromTown)){
 							Bukkit.getServer().getPluginManager().callEvent(new PlayerEnterTownEvent(player,to,from,to.getTownBlock().getTown(), pme)); // From Town into different Town.
 							Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from,from.getTownBlock().getTown(), pme));//
 						}
@@ -852,7 +857,7 @@ public class TownyPlayerListener implements Listener {
 						Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from, from.getTownBlock().getTown(), pme));
 					}
 				}
-			} catch (NotRegisteredException e) {
+			} catch (NotRegisteredException | NullPointerException e) {
 				Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveTownEvent(player,to,from, from.getTownBlock().getTown(), pme));
 			}
 
