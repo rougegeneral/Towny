@@ -446,6 +446,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			throw new AlreadyRegisteredException("A resident with the name " + filteredName + " is already in use.");
 
 		universe.getResidentMap().put(filteredName.toLowerCase(), new Resident(filteredName));
+		universe.getResidentsTrie().addKey(filteredName);
 	}
 
 	@Override
@@ -466,6 +467,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 				throw new AlreadyRegisteredException("The town " + filteredName + " is already in use.");
 
 			universe.getTownsMap().put(filteredName.toLowerCase(), new Town(filteredName));
+			universe.getTownsTrie().addKey(filteredName);
 
 		} finally {
 			lock.unlock();
@@ -490,6 +492,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 				throw new AlreadyRegisteredException("The nation " + filteredName + " is already in use.");
 
 			universe.getNationsMap().put(filteredName.toLowerCase(), new Nation(filteredName));
+			universe.getNationsTrie().addKey(filteredName);
 
 		} finally {
 			lock.unlock();
@@ -546,6 +549,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		deleteResident(resident);
 		// Remove the residents record from memory.
 		universe.getResidentMap().remove(name.toLowerCase());
+		universe.getResidentsTrie().removeKey(name.toLowerCase());
 
 		// Clear accounts
 		if (TownySettings.isUsingEconomy() && TownySettings.isDeleteEcoAccount())
@@ -622,6 +626,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		}
 		saveWorld(townyWorld);
 		
+		universe.getTownsTrie().removeKey(town.getName().toLowerCase());
 		universe.getTownsMap().remove(town.getName().toLowerCase());
 		plugin.resetCache();
 		deleteTown(town);
@@ -671,6 +676,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		List<Town> toSave = new ArrayList<>(nation.getTowns());
 		nation.clear();
 
+		universe.getNationsTrie().removeKey(nation.getName().toLowerCase());
 		universe.getNationsMap().remove(nation.getName().toLowerCase());
 
 		for (Town town : toSave) {
@@ -803,9 +809,11 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			 * Remove the old town from the townsMap
 			 * and rename to the new name
 			 */
+			universe.getTownsTrie().removeKey(town.getName().toLowerCase());
 			universe.getTownsMap().remove(town.getName().toLowerCase());
 			town.setName(filteredName);
 			universe.getTownsMap().put(filteredName.toLowerCase(), town);
+			universe.getTownsTrie().addKey(filteredName.toLowerCase());
 			world.addTown(town);
 
 			// If this was a nation capitol
@@ -816,6 +824,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			town.setRegistered(oldregistration);
 			if (TownySettings.isUsingEconomy()) {
 				try {
+					town.getAccount().setName(TownySettings.getTownAccountPrefix() + town.getName());
 					town.getAccount().setBalance(townBalance, "Rename Town - Transfer to new account");
 				} catch (EconomyException e) {
 					e.printStackTrace();
@@ -917,11 +926,14 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			 */
 			oldName = nation.getName();
 			universe.getNationsMap().remove(oldName.toLowerCase());
+			universe.getNationsTrie().removeKey(oldName.toLowerCase());
 			nation.setName(filteredName);
 			universe.getNationsMap().put(filteredName.toLowerCase(), nation);
+			universe.getNationsTrie().addKey(filteredName.toLowerCase());
 
 			if (TownyEconomyHandler.isActive()) {
 				try {
+					nation.getAccount().setName(TownySettings.getNationAccountPrefix() + nation.getName());
 					nation.getAccount().setBalance(nationBalance, "Rename Nation - Transfer to new account");
 				} catch (EconomyException e) {
 					e.printStackTrace();
@@ -1040,12 +1052,15 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			//remove old resident from residentsMap
 			//rename the resident
 			universe.getResidentMap().remove(oldName.toLowerCase());
+			universe.getResidentsTrie().removeKey(oldName);
 			resident.setName(newName);
 			universe.getResidentMap().put(newName.toLowerCase(), resident);
+			universe.getResidentsTrie().addKey(newName);
 			
 			//add everything back to the resident
 			if (TownyEconomyHandler.getVersion().startsWith("iConomy 5") && TownySettings.isUsingEconomy()) {
 				try {
+					resident.getAccount().setName(resident.getName());
 					resident.getAccount().setBalance(balance, "Rename Player - Transfer to new account");
 				} catch (EconomyException e) {
 					e.printStackTrace();
