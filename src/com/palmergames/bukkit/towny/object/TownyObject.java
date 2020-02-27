@@ -24,6 +24,7 @@ public abstract class TownyObject implements Saveable, Nameable, Changed {
 	
 	protected TownyObject(UUID identifier) {
 		this.identifier = identifier;
+	}
 
 	@Override
 	public String toString() {

@@ -510,26 +510,6 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 		return output;
 	}
 
-	public List<String> getTopBankBalance(List<EconomyAccount> list, int maxListing) throws EconomyException {
-
-		List<String> output = new ArrayList<>();
-		KeyValueTable<EconomyAccount, Double> kvTable = new KeyValueTable<>();
-		for (EconomyAccount obj : list) {
-			kvTable.put(obj, obj.getHoldingBalance());
-		}
-		kvTable.sortByValue();
-		kvTable.reverse();
-		int n = 0;
-		for (KeyValue<EconomyAccount, Double> kv : kvTable.getKeyValues()) {
-			n++;
-			if (maxListing != -1 && n > maxListing)
-				break;
-			EconomyAccount town = kv.key;
-			output.add(String.format(Colors.LightGray + "%-20s " + Colors.Gold + "|" + Colors.Blue + " %s", town.getFormattedName(), TownyEconomyHandler.getFormattedBalance(kv.value)));
-		}
-		return output;
-	}
-
 	public List<String> getMostResidents(List<ResidentList> list, int maxListing) {
 
 		List<String> output = new ArrayList<>();
