@@ -33,6 +33,7 @@ import com.palmergames.bukkit.towny.tasks.CooldownTimerTask;
 import com.palmergames.bukkit.towny.tasks.PlotClaim;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask.CooldownType;
 import com.palmergames.bukkit.towny.utils.AreaSelectionUtil;
+import com.palmergames.bukkit.towny.utils.NameUtil;
 import com.palmergames.bukkit.towny.utils.OutpostUtil;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
@@ -47,7 +48,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,6 +78,52 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 		output.add(ChatTools.formatCommand(TownySettings.getLangString("res_sing"), "/plot group", "?", ""));
 		output.add(TownySettings.getLangString("msg_nfs_abr"));
 	}
+	
+	private static final List<String> plotTabCompletes = new ArrayList<>(Arrays.asList(
+		"claim",
+		"unclaim",
+		"forsale",
+		"fs",
+		"notforsale",
+		"nfs",
+		"evict",
+		"perm",
+		"set",
+		"toggle",
+		"clear",
+		"group"
+	));
+	
+	private static final List<String> plotGroupTabCompletes = new ArrayList<>(Arrays.asList(
+		"add",
+		"remove",
+		"set",
+		"toggle",
+		"fs",
+		"notforsale",
+		"forsale",
+		"perm"
+	));
+	
+	private static final List<String> plotSetTabCompletes = new ArrayList<>(Arrays.asList(
+		"reset",
+		"shop",
+		"embassy",
+		"arena",
+		"wilds",
+		"inn",
+		"jail",
+		"farm",
+		"bank",
+		"outpost",
+		"name",
+		"perm"
+	));
+	
+	private static final List<String> plotRectCircleCompletes = new ArrayList<>(Arrays.asList(
+		"rect",
+		"circle"
+	));
 
 	public PlotCommand(Towny instance) {
 
@@ -113,6 +161,51 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			for (String line : output)
 				sender.sendMessage(Colors.strip(line));
 		return true;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (sender instanceof Player) {
+			switch (args[0].toLowerCase()) {
+				case "set":
+					if (args.length == 2) {
+						return NameUtil.filterByStart(plotSetTabCompletes, args[1]);
+					}
+					if (args.length > 2 && args[1].equalsIgnoreCase("perm")) {
+						return permTabComplete(StringMgmt.remArgs(args, 2));
+					}
+				case "toggle":
+					return toggleTabCompletes(StringMgmt.remArgs(args, 2));
+				case "claim":
+				case "notforsale":
+				case "nfs":
+					if (args.length == 2)
+						return NameUtil.filterByStart(plotRectCircleCompletes, args[1]);
+					break;
+				case "forsale":
+				case "fs":
+					switch (args.length) {
+						case 2:
+							return NameUtil.filterByStart(Collections.singletonList("within"), args[1]);
+						case 3:
+							return NameUtil.filterByStart(plotRectCircleCompletes, args[2]);
+					}
+					break;
+				case "group":
+					if (args.length == 2) {
+						return NameUtil.filterByStart(plotGroupTabCompletes, args[1]);
+					} else if (args.length > 2) {
+						return permTabComplete(StringMgmt.remFirstArg(args));
+					}
+					break;
+				default:
+					if (args.length == 1)
+						return NameUtil.filterByStart(plotTabCompletes, args[0]);
+					break;
+			}
+		}
+
+		return Collections.emptyList();
 	}
 
 	public boolean parsePlotCommand(Player player, String[] split) throws TownyException {
@@ -413,8 +506,12 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 						plugin.getHUDManager().togglePermHUD(player);
 						
 					} else {
-						TownBlock townBlock = new WorldCoord(world, Coord.parseCoord(player)).getTownBlock();
-						TownyMessaging.sendMessage(player, TownyFormatter.getStatus(townBlock));
+						if (TownyAPI.getInstance().isWilderness(player.getLocation())) {
+							TownyMessaging.sendMessage(player, TownyFormatter.getStatus(TownyUniverse.getInstance().getDataSource().getWorld(player.getLocation().getWorld().getName())));
+						} else {
+							TownBlock townBlock = new WorldCoord(world, Coord.parseCoord(player)).getTownBlock();
+							TownyMessaging.sendMessage(player, TownyFormatter.getStatus(townBlock));
+						}
 					}
 
 				} else if (split[0].equalsIgnoreCase("toggle")) {
@@ -948,6 +1045,14 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 						if (CooldownTimerTask.hasCooldown(townBlock.getWorldCoord().toString(), CooldownType.PVP))
 							throw new TownyException(String.format(TownySettings.getLangString("msg_err_cannot_toggle_pvp_x_seconds_remaining"), CooldownTimerTask.getCooldownRemaining(townBlock.getWorldCoord().toString(), CooldownType.PVP)));
 					}
+					
+					// Prevent plot pvp from being enabled if admin pvp is disabled
+					if (townBlock.getTown().isAdminDisabledPVP() && !townBlock.getPermissions().pvp)
+						throw new TownyException(String.format(TownySettings.getLangString("msg_err_admin_controlled_pvp_prevents_you_from_changing_pvp"), "adminDisabledPVP", "on"));
+					
+					// Prevent plot pvp from being disabled if admin pvp is enabled
+					if (townBlock.getTown().isAdminEnabledPVP() && townBlock.getPermissions().pvp)
+						throw new TownyException(String.format(TownySettings.getLangString("msg_err_admin_controlled_pvp_prevents_you_from_changing_pvp"), "adminEnabledPVP", "off"));
 
 					townBlock.getPermissions().pvp = !townBlock.getPermissions().pvp;
 					// Add a cooldown timer for this plot.
@@ -1175,36 +1280,6 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 			return owner;
 		}
 
-	}
-
-	/**
-	 * Overridden method custom for this command set.
-	 * 
-	 */
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-
-		LinkedList<String> output = new LinkedList<>();
-		String lastArg = "";
-
-		// Get the last argument
-		if (args.length > 0) {
-			lastArg = args[args.length - 1].toLowerCase();
-		}
-
-		if (!lastArg.equalsIgnoreCase("")) {
-
-			// Match residents
-			for (Resident resident : TownyUniverse.getInstance().getDataSource().getResidents()) {
-				if (resident.getName().toLowerCase().startsWith(lastArg)) {
-					output.add(resident.getName());
-				}
-
-			}
-
-		}
-
-		return output;
 	}
 	
 	private boolean handlePlotGroupCommand(String[] split, Player player) throws TownyException {

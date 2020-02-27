@@ -10,6 +10,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
+import com.palmergames.bukkit.towny.utils.NameUtil;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
 import com.palmergames.bukkit.util.Colors;
@@ -22,6 +23,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,6 +40,37 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 	private static final List<String> townyworld_set = new ArrayList<>();
 	private static final List<String> townyworld_set_console = new ArrayList<>();
 	private static TownyWorld Globalworld;
+	
+	private static final List<String> townyWorldTabCompletes = new ArrayList<>(Arrays.asList(
+		"list",
+		"toggle",
+		"set",
+		"regen",
+		"undo"
+	));
+
+	private static final List<String> townyWorldToggleTabCompletes = new ArrayList<>(Arrays.asList(
+		"claimable",
+		"usingtowny",
+		"pvp",
+		"forcepvp",
+		"explosion",
+		"forceexplosion",
+		"fire",
+		"townmobs",
+		"worldmobs",
+		"revertunclaim",
+		"revertexpl",
+		"warallowed"
+	));
+	
+	private static List<String> townySetTabCompletes = new ArrayList<>(Arrays.asList(
+		"usedefault",
+		"wildperm",
+		"wildignore",
+		"wildregen",
+		"wildname"
+	));
 	
 	private boolean isConsole = false;
 
@@ -84,6 +117,26 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 		townyworld_help.clear();
 		Globalworld = null;
 		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		
+		switch (args[0].toLowerCase()) {
+			case "toggle":
+				if (args.length == 2)
+					return NameUtil.filterByStart(townyWorldToggleTabCompletes, args[1]);
+				break;
+			case "set":
+				if (args.length == 2)
+					return NameUtil.filterByStart(townySetTabCompletes, args[1]);
+				break;
+			default:
+				if (args.length == 1)
+					return filterByStartOrGetTownyStartingWith(townyWorldTabCompletes, args[0], "+w");
+		}
+		
+		return Collections.emptyList();
 	}
 
 	private void parseWorldFromConsole(CommandSender sender, String[] split) {

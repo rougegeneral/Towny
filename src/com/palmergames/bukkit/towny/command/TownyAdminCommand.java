@@ -32,6 +32,7 @@ import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.tasks.PlotClaim;
 import com.palmergames.bukkit.towny.tasks.TownClaim;
 import com.palmergames.bukkit.towny.utils.AreaSelectionUtil;
+import com.palmergames.bukkit.towny.utils.NameUtil;
 import com.palmergames.bukkit.towny.utils.ResidentUtil;
 import com.palmergames.bukkit.towny.utils.SpawnUtil;
 import com.palmergames.bukkit.util.BukkitTools;
@@ -53,7 +54,9 @@ import javax.naming.InvalidNameException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Send a list of all general townyadmin help commands to player Command:
@@ -66,6 +69,97 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 	private static final List<String> ta_help = new ArrayList<>();
 	private static final List<String> ta_panel = new ArrayList<>();
 	private static final List<String> ta_unclaim = new ArrayList<>();
+	private static final List<String> adminTabCompletes = new ArrayList<>(Arrays.asList(
+		"delete",
+		"plot",
+		"resident",
+		"town",
+		"nation",
+		"reset",
+		"toggle",
+		"set",
+		"givebonus",
+		"reload",
+		"backup",
+		"checkperm",
+		"newday",
+		"unclaim",
+		"purge",
+		"mysqldump",
+		"tpplot",
+		"database"
+	));
+
+	private static final List<String> adminTownTabCompletes = new ArrayList<>(Arrays.asList(
+		"new",
+		"add",
+		"remove",
+		"kick",
+		"rename",
+		"spawn",
+		"tpplot",
+		"outpost",
+		"delete",
+		"rank",
+		"toggle",
+		"set",
+		"meta"
+	));
+
+	private static final List<String> adminNationTabCompletes = new ArrayList<>(Arrays.asList(
+		"add",
+		"rename",
+		"delete",
+		"toggle",
+		"set",
+		"meta"
+	));
+
+	private static final List<String> adminToggleTabCompletes = new ArrayList<>(Arrays.asList(
+		"war",
+		"neutral",
+		"npc",
+		"debug",
+		"devmode",
+		"withdraw"
+	));
+	
+	private static final List<String> adminPlotTabCompletes = new ArrayList<>(Arrays.asList(
+		"claim",
+		"meta"
+	));
+	
+	private static final List<String> adminPlotMetaTabCompletes = new ArrayList<>(Arrays.asList(
+		"set",
+		"add",
+		"remove"
+	));
+	
+	private static final List<String> adminDatabaseTabCompletes = new ArrayList<>(Arrays.asList(
+		"save",
+		"load"
+	));
+	
+	private static final List<String> adminResidentTabCompletes = new ArrayList<>(Arrays.asList(
+		"rename",
+		"friend"
+	));
+	
+	private static final List<String> adminResidentFriendTabCompletes = new ArrayList<>(Arrays.asList(
+		"add",
+		"remove",
+		"list",
+		"clear"
+	));
+	
+	private static final List<String> adminSetCompletes = new ArrayList<>(Arrays.asList(
+		"mayor",
+		"capital",
+		"title",
+		"surname",
+		"plot"
+	));
+	
 
 	private boolean isConsole;
 	private Player player;
@@ -129,6 +223,141 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 		}
 
 		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		
+		switch (args[0].toLowerCase()) {
+			case "set":
+				if (args.length > 1) {
+					switch (args[1].toLowerCase()) {
+						case "mayor":
+							switch (args.length) {
+								case 3:
+									return getTownyStartingWith(args[2], "t");
+								case 4:
+									return filterByStartOrGetTownyStartingWith(Collections.singletonList("npc"), args[3], "+r");
+							}
+						case "capital":
+						case "plot":
+							if (args.length == 3)
+								return getTownyStartingWith(args[2], "t");
+						case "title":
+						case "surname":
+							if (args.length == 3)
+								return getTownyStartingWith(args[2], "r");
+						default:
+							if (args.length == 2)
+								return NameUtil.filterByStart(adminSetCompletes, args[1]);
+					}
+				}
+			case "plot":
+				if (args.length == 2) {
+					return NameUtil.filterByStart(adminPlotTabCompletes, args[1]);
+				} else if (args.length > 2) {
+					switch (args[1].toLowerCase()) {
+						case "claim":
+							return getTownyStartingWith(args[2], "r");
+						case "meta":
+							if (args.length == 3)
+								return NameUtil.filterByStart(adminPlotMetaTabCompletes, args[2]);
+					}
+				}
+				break;
+			case "givebonus":
+				if (args.length == 2)
+					return getTownyStartingWith(args[1], "rt");
+				break;
+			case "toggle":
+				if (args.length == 2) {
+					return NameUtil.filterByStart(adminToggleTabCompletes, args[1]);
+				} else if (args.length == 3 && args[1].equalsIgnoreCase("npc")) {
+					return getTownyStartingWith(args[2], "r");
+				}
+				break;
+			case "tpplot":
+				if (args.length == 2) {
+					return NameUtil.filterByStart(TownyUniverse.getInstance().getDataSource().getWorlds()
+						.stream()
+						.map(TownyWorld::getName)
+						.collect(Collectors.toList()), args[1]);
+				}
+				break;
+			case "checkperm":
+			case "delete":
+				if (args.length == 2)
+					return getTownyStartingWith(args[1], "r");
+				break;
+			case "database":
+				if (args.length == 2)
+					return NameUtil.filterByStart(adminDatabaseTabCompletes, args[1]);
+				break;
+			case "resident":
+				switch (args.length) {
+					case 2:
+						return getTownyStartingWith(args[1], "r");
+					case 3:
+						return NameUtil.filterByStart(adminResidentTabCompletes, args[2]);
+					case 4:
+						if (args[2].equalsIgnoreCase("friend"))
+							return NameUtil.filterByStart(adminResidentFriendTabCompletes, args[3]);
+				}
+				break;
+			case "town":
+				if (args.length == 2) {
+					return filterByStartOrGetTownyStartingWith(Collections.singletonList("new"), args[1], "+t");
+				} else if (args.length > 2 && !args[1].equalsIgnoreCase("new")) {
+					switch (args[2].toLowerCase()) {
+						case "add":
+							if (args.length == 4)
+								return null;
+						case "kick":
+							if (args.length == 4)
+								return NameUtil.getTownResidentNamesOfPlayerStartingWith(player, args[3]);
+						case "rank":
+							return TownCommand.townRankTabComplete(player, StringMgmt.remArgs(args, 2));
+						case "set":
+							return TownCommand.townSetTabComplete(player, StringMgmt.remArgs(args, 2));
+						case "toggle":
+							if (args.length == 4)
+								return NameUtil.filterByStart(TownCommand.townToggleTabCompletes, args[3]);
+						default:
+							if (args.length == 3)
+								return NameUtil.filterByStart(adminTownTabCompletes, args[2]);
+					}
+				}
+				break;
+			case "nation":
+				if (args.length == 2) {
+					return filterByStartOrGetTownyStartingWith(Collections.singletonList("new"), args[1], "+n");
+				} else if (args.length > 2 && !args[1].equalsIgnoreCase("new")) {
+					switch (args[2].toLowerCase()) {
+						case "add":
+							if (args.length == 4)
+								return getTownyStartingWith(args[3], "t");
+						case "toggle":
+							if (args.length == 4) 
+								return NameUtil.filterByStart(NationCommand.nationToggleTabCompletes, args[3]);
+						case "set":
+							return NationCommand.nationSetTabComplete(player, StringMgmt.remArgs(args, 2));
+						case "merge":
+							if (args.length == 4)
+								return getTownyStartingWith(args[3], "n");
+						default:
+							if (args.length == 3)
+								return NameUtil.filterByStart(adminNationTabCompletes, args[2]);
+					}
+				} else if (args.length == 4 && args[1].equalsIgnoreCase("new")) {
+					return getTownyStartingWith(args[3], "t");
+				}
+				break;
+			default:
+				if (args.length == 1)
+					return NameUtil.filterByStart(adminTabCompletes, args[0]);
+		}
+		
+		return Collections.emptyList();
 	}
 
 	private Object getSender() {
