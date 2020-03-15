@@ -16,6 +16,7 @@ import com.palmergames.bukkit.towny.object.TownyWorld;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,6 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
@@ -216,6 +219,52 @@ public class TownyWorldListener implements Listener {
 				break;
 			}
 		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerPortalEvent(PlayerPortalEvent event) {
+
+		// Check if this is caused by portal enter or not.
+		if (event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL && event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+			return;
+		}
+
+		Player player = event.getPlayer();
+
+		if (player.isOp()) {
+			return;
+		}
+
+		// Get the townblock the player is on.
+		WorldCoord playerCoord = WorldCoord.parseWorldCoord(player.getLocation());
+
+		TownBlock townBlock;
+		Town town;
+		Resident resident;
+		try {
+			townBlock = playerCoord.getTownBlock();
+			town = townBlock.getTown();
+			resident = TownyUniverse.getInstance().getDataSource().getResident(player.getName());
+		} catch (NotRegisteredException e) {
+			return;
+		}
+
+		if (town.hasResident(resident) && !townBlock.getPermissions().getResidentPerm(TownyPermission.ActionType.ITEM_USE)) {
+			// Send error message.
+			TownyMessaging.sendErrorMsg(player, "Residents can't itemuse.");
+			return;
+		}
+
+		if (!townBlock.getPermissions().getOutsiderPerm(TownyPermission.ActionType.ITEM_USE)) {
+			// Send error message.
+			TownyMessaging.sendErrorMsg(player, "Outsiders can't itemuse.");
+			return;
+		}
+
+		// This player is not allowed to use the portal.
+		event.setCancelled(true);
+
+
 	}
 
 }
