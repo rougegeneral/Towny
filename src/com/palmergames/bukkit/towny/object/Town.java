@@ -80,6 +80,7 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		permissions.loadDefault(this);
 	}
 
+	// We don't need to track changes for this because town blocks already track their own changes.
 	@Override
 	public void setTownblocks(List<TownBlock> townblocks) {
 		this.townBlocks = townblocks;
@@ -95,6 +96,7 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		return townBlocks.contains(townBlock);
 	}
 
+	// We don't need to track changes for this because town blocks already track their own changes.
 	@Override
 	public void addTownBlock(TownBlock townBlock) throws AlreadyRegisteredException {
 
@@ -117,6 +119,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		if (this.tag.matches(" "))
 			this.tag = "";
 		Bukkit.getPluginManager().callEvent(new TownTagChangeEvent(this.tag, this));
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public String getTag() {
@@ -156,6 +160,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		this.mayor = mayor;
 		
 		TownyPerms.assignPermissions(mayor, null);
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public Nation getNation() throws NotRegisteredException {
@@ -179,6 +185,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 			throw new AlreadyRegisteredException();
 		this.nation = nation;
 		TownyPerms.updateTownPerms(this);
+		// Track Changes.
+		setChanged(true);
 	}
 
 	@Override
@@ -224,6 +232,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		resident.setTown(this);
 		
 		BukkitTools.getPluginManager().callEvent(new TownAddResidentEvent(resident, this));
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public void addResidentCheck(Resident resident) throws AlreadyRegisteredException {
@@ -262,6 +272,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	public void setHasUpkeep(boolean hasUpkeep) {
 
 		this.hasUpkeep = hasUpkeep;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public boolean hasUpkeep() {
@@ -272,6 +284,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	public void setHasMobs(boolean hasMobs) {
 
 		this.permissions.mobs = hasMobs;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public boolean hasMobs() {
@@ -282,16 +296,22 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	public void setPVP(boolean isPVP) {
 
 		this.permissions.pvp = isPVP;
+		// Track Changes.
+		setChanged(true);
 	}
 	
 	public void setAdminDisabledPVP(boolean isPVPDisabled) {
 
 		this.adminDisabledPVP = isPVPDisabled;
+		// Track Changes.
+		setChanged(true);
 	}
 	
 	public void setAdminEnabledPVP(boolean isPVPEnabled) {
 
 		this.adminEnabledPVP = isPVPEnabled;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public boolean isPVP() {
@@ -335,16 +355,18 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		if (this.getTaxes() > 100) {
 			this.setTaxes(0);
 		}
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public boolean isTaxPercentage() {
-
 		return isTaxPercentage;
 	}
 
 	public void setFire(boolean isFire) {
-
 		this.permissions.fire = isFire;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public boolean isFire() {
@@ -353,8 +375,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	public void setTownBoard(String townBoard) {
-
 		this.townBoard = townBoard;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public String getTownBoard() {
@@ -362,8 +385,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	public void setBonusBlocks(int bonusBlocks) {
-
 		this.bonusBlocks = bonusBlocks;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public int getTotalBlocks() {
@@ -433,8 +457,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	public void addBonusBlocks(int bonusBlocks) {
-
 		this.bonusBlocks += bonusBlocks;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	public void setPurchasedBlocks(int purchasedBlocks) {
@@ -448,8 +473,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	}
 
 	public void addPurchasedBlocks(int purchasedBlocks) {
-
 		this.purchasedBlocks += purchasedBlocks;
+		// Track Changes.
+		setChanged(true);
 	}
 
 	/**
@@ -510,6 +536,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 					}
 				}	
 			}
+		
+		// Track Changes.
+		setChanged(true);
 			
 		return true;
 	}
@@ -575,6 +604,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 			this.world.addTown(this);
 		} catch (AlreadyRegisteredException ignored) {
 		}
+		
+		setChanged(true);
 	}
 
 	/**
@@ -603,7 +634,6 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		} else {
 
 			remove(resident);
-
 			if (getNumResidents() == 0) {
 				throw new EmptyTownException(this);
 			}
@@ -612,8 +642,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 
 	private void removeAllResidents() {
 
-		for (Resident resident : new ArrayList<>(residents))
+		for (Resident resident : new ArrayList<>(residents)) {
 			remove(resident);
+		}
 	}
 
 	private void remove(Resident resident) {
@@ -621,6 +652,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		resident.setTitle("");
 		resident.setSurname("");
 		resident.updatePerms();
+
+		// Track resident changes.
+		resident.setChanged(true);
 
 		for (TownBlock townBlock : new ArrayList<>(resident.getTownBlocks())) {
 			
@@ -693,6 +727,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 			this.spawn = spawn;
 		} else
 			throw new TownyException(TownySettings.getLangString("msg_err_spawn_not_within_homeblock"));
+
+		// Track Changes
+		setChanged(true);
 	}
 	
 	/**
@@ -789,6 +826,9 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	@Override
 	public void setPermissions(String line) {
 		permissions.load(line);
+
+		// Track Changes
+		setChanged(true);
 	}
 
 	@Override
@@ -821,6 +861,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 			throw new TownyException(TownySettings.getLangString("msg_err_location_is_not_within_a_town"));
 		}
 
+		// Track Changes
+		setChanged(true);
 	}
 	
 	/**
@@ -878,10 +920,15 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 				outpostSpawns.remove(spawn);
 			}
 		}
+
+		// Track Changes
+		setChanged(true);
 	}
 
 	public void setPlotPrice(double plotPrice) {
 		this.plotPrice = Math.min(plotPrice, TownySettings.getMaxPlotPrice());
+		// Track Changes
+		setChanged(true);
 	}
 
 	public double getPlotPrice() {
@@ -912,6 +959,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 
 	public void setCommercialPlotPrice(double commercialPlotPrice) {
 		this.commercialPlotPrice = Math.min(commercialPlotPrice, TownySettings.getMaxPlotPrice());
+		// Track Changes
+		setChanged(true);
 	}
 
 	public double getCommercialPlotPrice() {
@@ -921,6 +970,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 
 	public void setEmbassyPlotPrice(double embassyPlotPrice) {
 		this.embassyPlotPrice = Math.min(embassyPlotPrice, TownySettings.getMaxPlotPrice());
+		// Track Changes
+		setChanged(true);
 	}
 
 	public double getEmbassyPlotPrice() {
@@ -931,6 +982,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	public void setSpawnCost(double spawnCost) {
 
 		this.spawnCost = spawnCost;
+		// Track Changes
+		setChanged(true);
 	}
 
 	public double getSpawnCost() {
@@ -954,6 +1007,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 
 	public void setCommercialPlotTax(double commercialTax) {
 		this.commercialPlotTax = Math.min(commercialTax, TownySettings.getMaxTax());
+		// Track Changes
+		setChanged(true);
 	}
 
 	public double getCommercialPlotTax() {
@@ -963,6 +1018,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 
 	public void setEmbassyPlotTax(double embassyPlotTax) {
 		this.embassyPlotTax = Math.min(embassyPlotTax, TownySettings.getMaxTax());
+		// Track Changes
+		setChanged(true);
 	}
 
 	public double getEmbassyPlotTax() {
@@ -973,6 +1030,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	public void setOpen(boolean isOpen) {
 
 		this.isOpen = isOpen;
+		// Track Changes
+		setChanged(true);
 	}
 
 	public boolean isOpen() {
@@ -1038,6 +1097,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	public void setPublic(boolean isPublic) {
 
 		this.isPublic = isPublic;
+		// Track Changes
+		setChanged(true);
 	}
 
 	public boolean isPublic() {
@@ -1069,6 +1130,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 			throw new TownyException(TownySettings.getLangString("msg_err_location_is_not_within_a_town"));
 		}
 
+		// Track Changes
+		setChanged(true);
 	}
 	
 	public void removeJailSpawn(Coord coord) {
@@ -1272,6 +1335,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		super.addMetaData(md);
 
 		TownyUniverse.getInstance().getDataSource().saveTown(this);
+		// Track Changes
+		setChanged(true);
 	}
 
 	@Override
@@ -1279,6 +1344,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 		super.removeMetaData(md);
 
 		TownyUniverse.getInstance().getDataSource().saveTown(this);
+		// Track Changes
+		setChanged(true);
 	}
 	
 	public void setConquered(boolean conquered) {
@@ -1291,6 +1358,8 @@ public class Town extends TownyObject implements ResidentList, TownyInviter, Obj
 	
 	public void setConqueredDays(int conqueredDays) {
 		this.conqueredDays = conqueredDays;
+		// Track Changes
+		setChanged(true);
 	}
 	
 	public int getConqueredDays() {

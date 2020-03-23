@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public abstract class TownyObject implements Nameable {
+public abstract class TownyObject implements Nameable, Changed {
 	private String name;
-
 	private HashSet<CustomDataField<?>> metadata = null;
+	private boolean changed = false;
 	
 	protected TownyObject(String name) {
 		this.name = name;
@@ -94,5 +94,14 @@ public abstract class TownyObject implements Nameable {
 			metadata.add(CustomDataField.load(object));
 		}
 	}
-	
+
+	@Override
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+
+	@Override
+	public boolean isChanged() {
+		return changed;
+	}
 }
