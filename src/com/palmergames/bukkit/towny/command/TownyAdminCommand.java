@@ -461,15 +461,10 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 			} else if (split[0].equalsIgnoreCase("reload")) {
 				
-				// Let the player know that the database is loading in the background.
-				TownyMessaging.sendMessage(player, "Towny is reloading...");
-				
 				reloadTowny(false);
 
 			} else if (split[0].equalsIgnoreCase("reset")) {
-
-				// Let the player know that the database is loading in the background.
-				TownyMessaging.sendMessage(player, "Towny is reloading...");
+				
 				reloadTowny(true);
 
 			} else if (split[0].equalsIgnoreCase("backup")) {
@@ -1463,6 +1458,9 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 		if (reset) {
 			TownyUniverse.getInstance().getDataSource().deleteFile(plugin.getConfigPath());
 		}
+
+		// Let the player know that the database is loading in the background.
+		TownyMessaging.sendMessage(sender, "Towny is reloading...");
 		
 		CompletableFuture.supplyAsync(() -> TownyUniverse.getInstance().loadSettings()).thenAccept((loaded) -> {
 				// Because this task relies on the previous one, we need
@@ -1479,6 +1477,9 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 				// Update permissions for all online players
 				TownyPerms.updateOnlinePerms();
+
+				// Let the user know that the reload is done.
+				TownyMessaging.sendMsg(sender, TownySettings.getLangString("msg_reloaded"));
 		});
 		
 		long end = System.currentTimeMillis();
