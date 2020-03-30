@@ -60,9 +60,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -455,15 +457,19 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 				throw new TownyException(TownySettings.getLangString("msg_err_command_disable"));
 
 			if (split[0].equalsIgnoreCase("givebonus") || split[0].equalsIgnoreCase("giveplots")) {
-
 				giveBonus(StringMgmt.remFirstArg(split));
 
 			} else if (split[0].equalsIgnoreCase("reload")) {
-
+				
+				// Let the player know that the database is loading in the background.
+				TownyMessaging.sendMessage(player, "Towny is reloading...");
+				
 				reloadTowny(false);
 
 			} else if (split[0].equalsIgnoreCase("reset")) {
 
+				// Let the player know that the database is loading in the background.
+				TownyMessaging.sendMessage(player, "Towny is reloading...");
 				reloadTowny(true);
 
 			} else if (split[0].equalsIgnoreCase("backup")) {
@@ -1450,14 +1456,35 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 	}
 
 	public void reloadTowny(Boolean reset) {
+		
+		long start = System.currentTimeMillis();
 
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-			TownyUniverse.getInstance().loadSettings();
-			TownyMessaging.sendMsg(sender, TownySettings.getLangString("msg_reloaded"));
-			// TownyMessaging.sendMsg(TownySettings.getLangString("msg_reloaded"));
+		// No need for async for this task.
+		if (reset) {
+			TownyUniverse.getInstance().getDataSource().deleteFile(plugin.getConfigPath());
+		}
+		
+		CompletableFuture.supplyAsync(() -> TownyUniverse.getInstance().loadSettings()).thenAccept((loaded) -> {
+				// Because this task relies on the previous one, we need
+				// to run this in an "async-await" chain.
+			
+				// Check if the load failed.
+				if (!loaded) {
+					Towny.getPlugin().setError(true);
+					return;
+				}
+				
+				// Register all child permissions for ranks
+				TownyPerms.registerPermissionNodes();
+
+				// Update permissions for all online players
+				TownyPerms.updateOnlinePerms();
 		});
-
-		TownyMessaging.sendErrorMsg("hi");
+		
+		long end = System.currentTimeMillis();
+		
+		TownyMessaging.sendErrorMsg("took " + (end - start) + "ms to reload");
+	
 	}
 
 	/**
