@@ -65,7 +65,7 @@ public class TownyUniverse {
     }
     
     // TODO: Put loadSettings into the constructor, since it is 1-time-run code.
-    boolean loadSettings() {
+	public boolean loadSettings() {
         
         try {
             TownySettings.loadConfig(rootFolder + File.separator + "settings" + File.separator + "config.yml", towny.getVersion());

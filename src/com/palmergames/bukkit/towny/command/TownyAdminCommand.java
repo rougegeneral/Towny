@@ -59,6 +59,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -1447,21 +1451,13 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 	public void reloadTowny(Boolean reset) {
 
-		if (reset) {
-			TownyUniverse.getInstance().getDataSource().deleteFile(plugin.getConfigPath());
-		}
-		if (plugin.load()) {
-			
-			// Register all child permissions for ranks
-			TownyPerms.registerPermissionNodes();
-			
-			// Update permissions for all online players
-			TownyPerms.updateOnlinePerms();
-			
-		}
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+			TownyUniverse.getInstance().loadSettings();
+			TownyMessaging.sendMsg(sender, TownySettings.getLangString("msg_reloaded"));
+			// TownyMessaging.sendMsg(TownySettings.getLangString("msg_reloaded"));
+		});
 
-		TownyMessaging.sendMsg(sender, TownySettings.getLangString("msg_reloaded"));
-		// TownyMessaging.sendMsg(TownySettings.getLangString("msg_reloaded"));
+		TownyMessaging.sendErrorMsg("hi");
 	}
 
 	/**
