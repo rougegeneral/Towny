@@ -13,7 +13,7 @@ import org.bukkit.entity.Entity;
  */
 public class Coord {
 
-	protected static int cellSize = 16;
+	protected static int cellSize = 64;
 	protected int x, z;
 
 	public Coord(int x, int z) {
